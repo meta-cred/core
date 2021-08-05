@@ -1,0 +1,30 @@
+{
+  "name": "creditor",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next",
+    "build": "next build",
+    "start": "next start",
+    "typecheck": "tsc",
+    "lint": "next lint",
+    "clean": "rimraf --no-glob ./.next ./out ./coverage ./tsconfig.tsbuildinfo"
+  },
+  "dependencies": {
+    "@chakra-ui/icons": "1.0.14",
+    "@chakra-ui/react": "1.6.5",
+    "@chakra-ui/theme-tools": "1.1.8",
+    "@emotion/react": "11.4.0",
+    "@emotion/styled": "11.3.0",
+    "framer-motion": "4.1.17",
+    "next": "11.0.1",
+    "react": "17.0.2",
+    "react-dom": "17.0.2"
+  },
+  "engines": {
+    "node": ">=14",
+    "yarn": ">=1.22.0",
+    "npm": "please-use-yarn"
+  },
+  "license": "GPL-3.0"
+}

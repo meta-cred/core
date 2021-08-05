@@ -1,26 +1,43 @@
 {
   "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "scripts": {
-    "dev": "next",
-    "build": "next build",
-    "start": "next start"
-  },
-  "dependencies": {
-    "@chakra-ui/icons": "^1.0.5",
-    "@chakra-ui/react": "^1.4.2",
-    "@chakra-ui/theme-tools": "1.1.2",
-    "@emotion/react": "11.1.5",
-    "@emotion/styled": "11.1.5",
-    "framer-motion": "^4.0.3",
-    "next": "latest",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "clean": "yarn workspaces run clean",
+    "dev": "yarn workspaces run dev",
+    "build": "yarn workspaces run build",
+    "start": "yarn workspaces run start",
+    "typecheck": "yarn workspaces run typecheck",
+    "lint": "eslint \"**/*.{ts,tsx,js,jsx}\""
   },
   "devDependencies": {
-    "@types/node": "^14.6.0",
-    "@types/react": "^17.0.3",
-    "@types/react-dom": "^17.0.3",
-    "typescript": "4.3.2"
+    "@types/node": "14.17.9",
+    "@types/react": "17.0.15",
+    "@types/react-dom": "17.0.9",
+    "@typescript-eslint/eslint-plugin": "4.29.0",
+    "@typescript-eslint/parser": "4.29.0",
+    "eslint": "7.32.0",
+    "eslint-config-airbnb-typescript": "12.3.1",
+    "eslint-config-next": "11.0.1",
+    "eslint-config-prettier": "8.3.0",
+    "eslint-import-resolver-typescript": "2.4.0",
+    "eslint-plugin-import": "2.23.4",
+    "eslint-plugin-jsx-a11y": "6.4.1",
+    "eslint-plugin-react": "7.24.0",
+    "eslint-plugin-react-hooks": "4.2.0",
+    "eslint-plugin-simple-import-sort": "7.0.0",
+    "husky": "7.0.1",
+    "lint-staged": "11.1.1",
+    "prettier": "2.3.2",
+    "rimraf": "3.0.2",
+    "typescript": "4.3.5"
   },
-  "license": "MIT"
+  "engines": {
+    "node": ">=14",
+    "yarn": ">=1.22.0",
+    "npm": "please-use-yarn"
+  },
+  "license": "GPL-3.0"
 }
