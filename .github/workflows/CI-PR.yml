@@ -1,0 +1,72 @@
+name: MetaCred CI
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+jobs:
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.4.0
+        with:
+          access_token: ${{ github.token }}
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 14.x
+
+      - uses: actions/cache@v2
+        with:
+          path: '**/node_modules'
+          key: nodeModules-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Install packages
+        run: yarn --frozen-lockfile
+
+      - name: Typechecking
+        run: yarn typecheck
+
+      - name: Linting
+        run: yarn lint
+
+      - name: Testing
+        run: yarn test --ci --coverage
+
+  build:
+    name: Web Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.4.0
+        with:
+          access_token: ${{ github.token }}
+
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 14.x
+
+      - uses: actions/cache@v2
+        with:
+          path: '**/node_modules'
+          key: nodeModules-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Install packages
+        run: yarn --frozen-lockfile
+        env:
+          CI: true
+
+      - name: Build NextJS App
+        run: yarn build
+        env:
+          CI: true
