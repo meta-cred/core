@@ -1,0 +1,6 @@
+next.config.js
+.next
+
+# jest
+coverage
+

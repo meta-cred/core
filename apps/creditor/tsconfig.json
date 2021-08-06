@@ -2,12 +2,16 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "baseUrl": "./src",
-    "target": "es5",
+    "target": "esnext",
     "lib": ["dom", "dom.iterable", "esnext"],
     "noEmit": true,
     "incremental": true,
     "tsBuildInfoFile": ".next/.tsbuildinfo",
-    "jsx": "preserve"
+    "jsx": "preserve",
+    "paths": {
+      "@meta-cred/utils/*": ["../../../packages/utils/src/*"],
+      "@meta-cred/utils": ["../../../packages/utils/src/index"]
+    }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"]
 }
