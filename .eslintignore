@@ -4,3 +4,4 @@ next.config.js
 # jest
 coverage
 
+dist
