@@ -10,4 +10,4 @@ Stack:
 - ESLint
 - Prettier
 - lint-staged + husky (lint + typecheck on push, format code on commit, etc)
-- microbundle
+- tsup

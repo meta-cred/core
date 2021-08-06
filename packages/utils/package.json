@@ -4,15 +4,13 @@
   "type": "module",
   "source": "src/index.ts",
   "main": "dist/index.cjs",
-  "exports": "./dist/index.modern.js",
-  "module": "dist/index.m.js",
-  "unpkg": "./dist/index.umd.js",
+  "module": "dist/index.js",
   "types": "dist/index.d.ts",
   "license": "MIT",
   "private": true,
   "scripts": {
-    "build": "microbundle",
-    "dev": "microbundle watch",
+    "build": "tsup",
+    "dev": "tsup --watch",
     "typecheck": "tsc --noEmit",
     "clean": "rimraf --no-glob ./.dist"
   },
