@@ -28,8 +28,11 @@ jobs:
           path: '**/node_modules'
           key: nodeModules-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
 
-      - name: Install packages
-        run: yarn --frozen-lockfile
+      - name: Yarn install
+        run: yarn --immutable
+
+      - name: Build packages
+        run: yarn build:packages
 
       - name: Typechecking
         run: yarn typecheck

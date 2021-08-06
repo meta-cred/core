@@ -5,14 +5,15 @@
     "packages/*"
   ],
   "scripts": {
-    "clean": "yarn workspaces run clean",
-    "dev": "yarn workspaces run dev",
-    "build": "yarn workspaces run build",
-    "start": "yarn workspaces run start",
-    "test": "yarn workspaces run test",
-    "typecheck": "yarn workspaces run typecheck",
+    "clean": "yarn workspaces foreach -ptv run clean",
+    "dev": "yarn workspaces foreach -pvi run dev",
+    "build": "yarn workspaces foreach -ptv run build",
+    "build:packages": "yarn workspaces foreach -ptv --include '@meta-cred/*' run build",
+    "test": "yarn workspaces foreach -pv run test",
+    "typecheck": "yarn workspaces foreach -pv run typecheck",
     "lint": "eslint \"**/*.{ts,tsx,js,jsx}\"",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "creditor": "yarn workspace creditor-app"
   },
   "devDependencies": {
     "@types/node": "14.17.9",
@@ -34,11 +35,12 @@
     "lint-staged": "11.1.1",
     "prettier": "2.3.2",
     "rimraf": "3.0.2",
+    "tsup": "4.13.1",
     "typescript": "4.3.5"
   },
   "engines": {
     "node": ">=12",
-    "yarn": ">=1.22.0",
+    "yarn": ">= 2",
     "npm": "please-use-yarn"
   },
   "license": "GPL-3.0"

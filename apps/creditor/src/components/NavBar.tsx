@@ -7,9 +7,12 @@ import {
   HStack,
   IconButton,
   Stack,
+  Text,
   useColorModeValue,
   useDisclosure,
 } from '@chakra-ui/react';
+import { formatEtherDecimals } from '@meta-cred/utils';
+import { shortenAddress, useEtherBalance, useEthers } from '@usedapp/core';
 import React from 'react';
 
 import { DarkModeSwitch } from './DarkModeSwitch';
@@ -21,6 +24,8 @@ export type Props = {
 
 export const NavBar: React.FC<Props> = ({ links = [] }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { activateBrowserWallet, account, deactivate } = useEthers();
+  const etherBalance = useEtherBalance(account);
 
   const bgColor = useColorModeValue(
     'rgba(255, 255, 255, 0.8)',
@@ -60,12 +65,24 @@ export const NavBar: React.FC<Props> = ({ links = [] }) => {
             ))}
           </HStack>
         </HStack>
-        <Flex alignItems="center">
-          <Button variant="solid" mr={4}>
-            Connect Wallet
+        <HStack align="center">
+          {etherBalance ? (
+            <Text>Balance: {formatEtherDecimals(etherBalance)} ETH</Text>
+          ) : null}
+          <Button
+            variant="solid"
+            onClick={() => {
+              if (account) {
+                deactivate();
+              } else {
+                activateBrowserWallet();
+              }
+            }}
+          >
+            {account ? shortenAddress(account) : 'Connect Wallet'}
           </Button>
           <DarkModeSwitch />
-        </Flex>
+        </HStack>
       </Flex>
 
       {isOpen ? (
