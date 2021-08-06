@@ -9,7 +9,7 @@
     "typecheck": "tsc",
     "lint": "next lint",
     "test": "echo 'No Tests'",
-    "clean": "rimraf --no-glob ./.next ./out ./coverage ./tsconfig.tsbuildinfo"
+    "clean": "rimraf --no-glob ./.next ./out ./coverage"
   },
   "dependencies": {
     "@chakra-ui/icons": "1.0.14",

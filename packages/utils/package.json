@@ -13,7 +13,8 @@
   "scripts": {
     "build": "microbundle",
     "dev": "microbundle watch",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "clean": "rimraf --no-glob ./.dist"
   },
   "dependencies": {
     "ethers": "5.4.1"
