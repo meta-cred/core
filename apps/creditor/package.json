@@ -17,6 +17,7 @@
     "@chakra-ui/theme-tools": "1.1.8",
     "@emotion/react": "11.4.0",
     "@emotion/styled": "11.3.0",
+    "@meta-cred/ui": "workspace:*",
     "@meta-cred/utils": "workspace:*",
     "@usedapp/core": "0.4.4",
     "ethers": "5.4.1",
