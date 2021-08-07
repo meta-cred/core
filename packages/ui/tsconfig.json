@@ -2,11 +2,15 @@
   "extends": "../../tsconfig.package.json",
   "compilerOptions": {
     "jsx": "preserve",
-    "emitDeclarationOnly": true,
     "module": "esnext",
+    "baseUrl": "src",
     "rootDir": "src",
     "tsBuildInfoFile": "dist/.tsbuildinfo",
-    "outDir": "dist"
+    "outDir": "dist",
+    "paths": {
+      "@meta-cred/utils/*": ["../utils/src/*"],
+      "@meta-cred/utils": ["../utils/src/index"]
+    }
   },
   "include": ["src"],
   "exclude": ["node_modules", "dist"]

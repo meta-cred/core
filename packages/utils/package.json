@@ -14,7 +14,12 @@
     "clean": "rimraf --no-glob ./.dist"
   },
   "dependencies": {
-    "ethers": "5.4.1"
+    "@types/react": "17.0.15",
+    "bnc-onboard": "1.33.0",
+    "ethers": "5.4.1",
+    "js-base64": "3.6.1",
+    "nanoid": "3.1.23",
+    "use-onboard": "0.2.6"
   },
   "devDependencies": {
     "tsup": "4.13.1",

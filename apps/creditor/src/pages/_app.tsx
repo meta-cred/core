@@ -1,11 +1,11 @@
 import { ChakraProvider } from '@chakra-ui/react';
-import { DAppProvider } from '@usedapp/core';
+import { WalletProvider } from '@meta-cred/utils/WalletProvider';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
 import React from 'react';
 
 import { SEO } from '../components/SEO';
-import { DAPP_CONFIG } from '../config';
+import { ChainId } from '../config';
 import { SEO_TITLE } from '../constants';
 import { theme } from '../theme';
 
@@ -17,9 +17,9 @@ const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => (
       <link rel="shortcut icon" type="image/x-icon" href="/favicon.png" />
     </Head>
     <SEO />
-    <DAppProvider config={DAPP_CONFIG}>
+    <WalletProvider networkId={ChainId.Mainnet}>
       <Component {...pageProps} />
-    </DAppProvider>
+    </WalletProvider>
   </ChakraProvider>
 );
 

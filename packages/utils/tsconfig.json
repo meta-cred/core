@@ -1,6 +1,7 @@
 {
   "extends": "../../tsconfig.package.json",
   "compilerOptions": {
+    "jsx": "preserve",
     "module": "esnext",
     "target": "esnext",
     "rootDir": "src",
