@@ -1,7 +1,7 @@
 import { Heading } from '@chakra-ui/react';
 import React from 'react';
 
-import { Container } from '../components/Container';
+import { Container } from '../layout/Container';
 import { PageLayout } from '../layout/PageLayout';
 
 const Index: React.FC = () => (

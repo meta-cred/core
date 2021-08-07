@@ -7,6 +7,7 @@
   "scripts": {
     "clean": "yarn workspaces foreach -ptv run clean",
     "dev": "yarn workspaces foreach -pvi run dev",
+    "dev:app": "yarn workspaces foreach -pvi --include '*-app' run dev",
     "build": "yarn workspaces foreach -ptv run build",
     "build:packages": "yarn workspaces foreach -ptv --include '@meta-cred/*' run build",
     "test": "yarn workspaces foreach -pv run test",
