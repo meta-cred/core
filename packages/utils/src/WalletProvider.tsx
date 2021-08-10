@@ -1,9 +1,10 @@
 import { Ens } from 'bnc-onboard/dist/src/interfaces';
 import { providers } from 'ethers';
-import React, { createContext, useCallback, useState } from 'react';
+import React, { createContext, useCallback, useMemo, useState } from 'react';
 import { useOnboard } from 'use-onboard';
 
 import { authenticateWallet, clearToken, getExistingAuth } from './authToken';
+import { CHAIN_NAMES, ChainId } from './constants';
 
 export type IWalletContext = {
   provider: providers.Web3Provider | null;
@@ -30,19 +31,58 @@ export const WalletContext = createContext<IWalletContext>({
 });
 
 interface WalletProviderOptions {
-  children: React.ReactElement;
+  children: React.ReactNode;
   onboardDappId?: string;
+  infuraKey: string;
   networkId: number;
+  appName?: string;
+  darkMode?: boolean;
 }
 
 export const WalletProvider: React.FC<WalletProviderOptions> = ({
   children,
-  networkId = 1,
+  networkId = ChainId.Mainnet,
   onboardDappId,
+  infuraKey,
+  appName,
+  darkMode,
 }) => {
   const [ens, setEns] = useState<Ens>({});
   const [isConnecting, setIsConnecting] = useState<boolean>(false);
   const [authToken, setAuthToken] = useState<string | null>(null);
+
+  const networkName = CHAIN_NAMES[networkId as keyof typeof CHAIN_NAMES];
+
+  const rpcUrl = `https://${networkName.toLowerCase()}.infura.io/v3/${infuraKey}`;
+
+  const wallets = useMemo(
+    () => [
+      { walletName: 'metamask', preferred: true },
+      {
+        walletName: 'walletConnect',
+        preferred: true,
+        infuraKey,
+      },
+      {
+        walletName: 'walletLink',
+        preferred: true,
+        rpcUrl,
+      },
+      {
+        walletName: 'ledger',
+        preferred: true,
+        rpcUrl,
+      },
+      {
+        walletName: 'lattice',
+        rpcUrl,
+        appName,
+      },
+      { walletName: 'torus', appName, infuraKey },
+      { walletName: 'status' },
+    ],
+    [infuraKey, rpcUrl, appName],
+  );
 
   const {
     selectWallet,
@@ -54,8 +94,13 @@ export const WalletProvider: React.FC<WalletProviderOptions> = ({
     options: {
       dappId: onboardDappId, // optional API key
       hideBranding: true,
-      darkMode: true,
+      darkMode,
       networkId, // Ethereum network ID
+      networkName: CHAIN_NAMES[networkId as keyof typeof CHAIN_NAMES],
+      walletSelect: {
+        wallets,
+        description: '',
+      },
       subscriptions: {
         ens: (ensData) => {
           setEns(ensData);
@@ -74,6 +119,7 @@ export const WalletProvider: React.FC<WalletProviderOptions> = ({
   const connectWallet = useCallback(async () => {
     setIsConnecting(true);
     try {
+      disconnect();
       await selectWallet();
       setIsConnecting(false);
     } catch (error) {
