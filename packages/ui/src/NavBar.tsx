@@ -25,7 +25,7 @@ export const NavBar: React.FC<Props> = ({ logo, right, children = [] }) => {
   );
 
   const bgCss = {
-    backdropFilter: 'saturate(180%) blur(5px)',
+    backdropFilter: 'saturate(180%) blur(10px)',
     backgroundColor: bgColor,
   };
 
@@ -38,17 +38,18 @@ export const NavBar: React.FC<Props> = ({ logo, right, children = [] }) => {
         w="full"
         minH={16}
         px={4}
-        boxShadow="sm"
-        zIndex={999}
+        boxShadow="xs"
+        zIndex={9}
         justify="space-between"
         align="center"
         css={bgCss}
       >
-        <HStack spacing={8} alignItems="center">
+        <HStack spacing={[3, 6]} alignItems="center">
           <IconButton
             size="md"
             icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
             aria-label="Open Menu"
+            variant="ghost"
             display={{ md: 'none' }}
             onClick={isOpen ? onClose : onOpen}
           />
@@ -61,21 +62,23 @@ export const NavBar: React.FC<Props> = ({ logo, right, children = [] }) => {
       </Flex>
 
       <SlideFade in={isOpen} offsetY={-8}>
-        <Box
-          p={4}
-          display={{ md: 'none' }}
-          top={16}
-          bottom={0}
-          zIndex={999}
-          pos="fixed"
-          w="full"
-          minH="calc(100vh - 4rem)"
-          css={bgCss}
-        >
-          <Stack as="nav" spacing={4}>
-            {children}
-          </Stack>
-        </Box>
+        {isOpen ? (
+          <Box
+            p={4}
+            display={{ md: 'none' }}
+            top={16}
+            bottom={0}
+            zIndex={9}
+            pos="fixed"
+            w="full"
+            minH="calc(100vh - 4rem)"
+            css={bgCss}
+          >
+            <Stack as="nav" spacing={4}>
+              {children}
+            </Stack>
+          </Box>
+        ) : null}
       </SlideFade>
     </Box>
   );
