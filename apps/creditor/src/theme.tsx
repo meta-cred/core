@@ -75,6 +75,12 @@ export const theme = extendTheme({
         width: '3',
         height: '3',
       },
+      '.bn-onboard-custom.bn-onboard-modal-content-close.bn-onboard-dark-mode-close-background':
+        {
+          ':hover': {
+            background: 'whiteAlpha.100',
+          },
+        },
       '.bn-onboard-custom.bn-onboard-select-info-container > button': {
         display: 'none',
       },

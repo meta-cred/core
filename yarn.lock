@@ -2147,9 +2147,11 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@meta-cred/utils@workspace:packages/utils"
   dependencies:
+    "@types/hoist-non-react-statics": 3.3.1
     "@types/react": 17.0.15
     bnc-onboard: 1.33.0
     ethers: 5.4.1
+    hoist-non-react-statics: 3.3.2
     js-base64: 3.6.1
     nanoid: 3.1.23
     tsup: 4.13.1
@@ -2510,6 +2512,16 @@ __metadata:
   dependencies:
     "@types/node": "*"
   checksum: 1dc1cbbd7a1e8bf3614752e9602f558762a901031f499f3055828b5e3e2bba16e5b88c27b3c4152ad795248fbe4086c731a5c4b0f29bb243f1875beeeabee59c
+  languageName: node
+  linkType: hard
+
+"@types/hoist-non-react-statics@npm:3.3.1":
+  version: 3.3.1
+  resolution: "@types/hoist-non-react-statics@npm:3.3.1"
+  dependencies:
+    "@types/react": "*"
+    hoist-non-react-statics: ^3.3.0
+  checksum: 2c0778570d9a01d05afabc781b32163f28409bb98f7245c38d5eaf082416fdb73034003f5825eb5e21313044e8d2d9e1f3fe2831e345d3d1b1d20bcd12270719
   languageName: node
   linkType: hard
 
@@ -7835,7 +7847,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"hoist-non-react-statics@npm:^3.3.1":
+"hoist-non-react-statics@npm:3.3.2, hoist-non-react-statics@npm:^3.3.0, hoist-non-react-statics@npm:^3.3.1":
   version: 3.3.2
   resolution: "hoist-non-react-statics@npm:3.3.2"
   dependencies:

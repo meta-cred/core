@@ -8,7 +8,7 @@ const Index: React.FC = () => (
   <PageLayout>
     <Container>
       <VStack spacing="6">
-        <Image src="/favicon.png" maxW="32" />
+        <Image src="/favicon.png" boxSize="32" />
         <Heading>Welcome to MetaCred</Heading>
       </VStack>
     </Container>
