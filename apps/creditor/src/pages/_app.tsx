@@ -1,12 +1,11 @@
 import { ChakraProvider } from '@chakra-ui/react';
-import { WalletProvider } from '@meta-cred/utils/WalletProvider';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
 import React from 'react';
 
 import { SEO } from '../components/SEO';
-import { ChainId } from '../config';
 import { SEO_TITLE } from '../constants';
+import { ThemedWalletProvider } from '../providers/ThemedWalletProvider';
 import { theme } from '../theme';
 
 const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => (
@@ -17,9 +16,9 @@ const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => (
       <link rel="shortcut icon" type="image/x-icon" href="/favicon.png" />
     </Head>
     <SEO />
-    <WalletProvider networkId={ChainId.Mainnet}>
+    <ThemedWalletProvider>
       <Component {...pageProps} />
-    </WalletProvider>
+    </ThemedWalletProvider>
   </ChakraProvider>
 );
 
