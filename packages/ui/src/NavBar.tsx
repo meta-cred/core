@@ -62,21 +62,23 @@ export const NavBar: React.FC<Props> = ({ logo, right, children = [] }) => {
       </Flex>
 
       <SlideFade in={isOpen} offsetY={-8}>
-        <Box
-          p={4}
-          display={{ md: 'none' }}
-          top={16}
-          bottom={0}
-          zIndex={9}
-          pos="fixed"
-          w="full"
-          minH="calc(100vh - 4rem)"
-          css={bgCss}
-        >
-          <Stack as="nav" spacing={4}>
-            {children}
-          </Stack>
-        </Box>
+        {isOpen ? (
+          <Box
+            p={4}
+            display={{ md: 'none' }}
+            top={16}
+            bottom={0}
+            zIndex={9}
+            pos="fixed"
+            w="full"
+            minH="calc(100vh - 4rem)"
+            css={bgCss}
+          >
+            <Stack as="nav" spacing={4}>
+              {children}
+            </Stack>
+          </Box>
+        ) : null}
       </SlideFade>
     </Box>
   );

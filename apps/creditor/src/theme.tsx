@@ -11,6 +11,7 @@ export const theme = extendTheme({
         zIndex: 99,
       },
       '.bn-onboard-custom.bn-onboard-modal-content': {
+        top: '-4rem',
         marginX: '4',
         maxWidth: 'md',
       },
@@ -42,7 +43,7 @@ export const theme = extendTheme({
         borderRadius: 'md',
         transitionProperty: 'var(--chakra-transition-property-common)',
         transitionDuration: 'var(--chakra-transition-duration-normal)',
-        width: { base: '56', md: '52' },
+        width: { base: '100%', md: '52' },
         ':hover': {
           background: 'blackAlpha.200',
           boxShadow: 'none',
