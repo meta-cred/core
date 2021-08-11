@@ -5,3 +5,5 @@ next.config.js
 coverage
 
 dist
+
+tsup.config.ts

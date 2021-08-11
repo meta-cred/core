@@ -5,13 +5,7 @@
     "target": "esnext",
     "incremental": true,
     "tsBuildInfoFile": ".next/.tsbuildinfo",
-    "jsx": "preserve",
-    "paths": {
-      "@meta-cred/utils/*": ["../../../packages/utils/src/*"],
-      "@meta-cred/utils": ["../../../packages/utils/src/index"],
-      "@meta-cred/ui/*": ["../../../packages/ui/src/*"],
-      "@meta-cred/ui": ["../../../packages/ui/src/index"]
-    }
+    "jsx": "preserve"
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules", ".next"]
