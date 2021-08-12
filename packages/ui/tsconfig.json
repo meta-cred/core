@@ -6,11 +6,7 @@
     "baseUrl": "src",
     "rootDir": "src",
     "tsBuildInfoFile": "dist/.tsbuildinfo",
-    "outDir": "dist",
-    "paths": {
-      "@meta-cred/utils/*": ["../utils/src/*"],
-      "@meta-cred/utils": ["../utils/src/index"]
-    }
+    "outDir": "dist"
   },
   "include": ["src"],
   "exclude": ["node_modules", "dist"]
