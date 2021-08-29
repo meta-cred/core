@@ -1,7 +1,8 @@
-import { requestSignature, verifySignature } from '@meta-cred/utils';
 import { providers } from 'ethers';
 import { Base64 } from 'js-base64';
 import { nanoid } from 'nanoid';
+
+import { requestSignature, verifySignature } from './signature';
 
 const tokenDuration = 1000 * 60 * 60 * 24 * 7; // 7 days
 
@@ -31,6 +32,7 @@ export async function createToken(
 
   const serializedClaim = JSON.stringify(claim);
   const proof = await requestSignature(provider, serializedClaim);
+  console.log({ signer, address });
 
   return Base64.encode(JSON.stringify([proof, serializedClaim]));
 }

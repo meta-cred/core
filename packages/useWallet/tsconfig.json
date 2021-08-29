@@ -7,6 +7,11 @@
     "tsBuildInfoFile": "dist/.tsbuildinfo",
     "outDir": "dist"
   },
+  "references": [
+    {
+      "path": "../utils"
+    }
+  ],
   "include": ["src"],
   "exclude": ["node_modules", "dist"]
 }

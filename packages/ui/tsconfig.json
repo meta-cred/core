@@ -7,6 +7,14 @@
     "tsBuildInfoFile": "dist/.tsbuildinfo",
     "outDir": "dist"
   },
+  "references": [
+    {
+      "path": "../utils"
+    },
+    {
+      "path": "../useWallet"
+    }
+  ],
   "include": ["src"],
   "exclude": ["node_modules", "dist"]
 }

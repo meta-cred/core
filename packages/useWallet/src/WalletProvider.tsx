@@ -9,30 +9,25 @@ import React, {
   useState,
 } from 'react';
 
-import { authenticateWallet, clearToken, getExistingAuth } from './authToken';
 import { useOnboard } from './useOnboard';
 
 export type IWalletContext = {
   provider: providers.Web3Provider | null;
   connectWallet: () => Promise<void>;
-  authenticateUser: () => Promise<void>;
   disconnect: () => void;
   isConnecting: boolean;
   isConnected: boolean;
   address: string | null;
-  authToken: string | null;
   ens: Ens | null;
 };
 
 export const WalletContext = createContext<IWalletContext>({
   provider: null,
   connectWallet: async () => {},
-  authenticateUser: async () => {},
   disconnect: () => undefined,
   isConnecting: false,
   isConnected: false,
   address: null,
-  authToken: null,
   ens: null,
 });
 
@@ -55,7 +50,6 @@ export const WalletProvider: React.FC<WalletProviderOptions> = ({
 }) => {
   const [ens, setEns] = useState<Ens>({});
   const [isConnecting, setIsConnecting] = useState<boolean>(false);
-  const [authToken, setAuthToken] = useState<string | null>(null);
 
   const networkName = CHAIN_NAMES[networkId as keyof typeof CHAIN_NAMES];
 
@@ -115,9 +109,7 @@ export const WalletProvider: React.FC<WalletProviderOptions> = ({
   }, [darkMode, onboard]);
 
   const disconnect = useCallback(() => {
-    clearToken();
     disconnectWallet();
-    setAuthToken(null);
     setIsConnecting(false);
   }, [disconnectWallet]);
 
@@ -134,34 +126,15 @@ export const WalletProvider: React.FC<WalletProviderOptions> = ({
     }
   }, [selectWallet, disconnect]);
 
-  const authenticateUser = useCallback(async () => {
-    if (!provider)
-      throw new Error('No Ethereum Provider, cannot authenticate.');
-
-    try {
-      let token: string | null = await getExistingAuth(provider);
-      if (!token) {
-        token = await authenticateWallet(provider);
-      }
-      setAuthToken(token);
-    } catch (e) {
-      alert(
-        `Unable to Authenticate: ${(e as Error)?.message || (e as string)}`,
-      );
-    }
-  }, [provider]);
-
   return (
     <WalletContext.Provider
       value={{
         provider,
         connectWallet,
-        authenticateUser,
         disconnect,
         isConnected: !!address,
         isConnecting,
         address,
-        authToken,
         ens,
       }}
     >

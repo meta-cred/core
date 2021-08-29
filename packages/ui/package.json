@@ -11,7 +11,7 @@
     "build": "tsup",
     "dev": "tsup --watch",
     "typecheck": "tsc --noEmit",
-    "clean": "rimraf --no-glob ./.dist"
+    "clean": "rimraf --no-glob ./dist"
   },
   "dependencies": {
     "@chakra-ui/icons": "1.0.14",

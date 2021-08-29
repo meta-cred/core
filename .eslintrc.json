@@ -20,6 +20,17 @@
     "ecmaVersion": 6,
     "project": ["packages/*/tsconfig.json", "apps/*/tsconfig.json"]
   },
+  "overrides": [
+    {
+      // assuming Next.js application
+      "files": "./apps/**/pages/**/*.{ts,tsx}",
+      "rules": {
+        "import/no-default-export": "off", // pages have to have a default export
+        "import/prefer-default-export": "error",
+        "@typescript-eslint/explicit-module-boundary-types": "off"
+      }
+    }
+  ],
   "rules": {
     "react/jsx-key": ["error"],
     "react/jsx-uses-react": "off",
