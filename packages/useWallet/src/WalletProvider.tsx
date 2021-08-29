@@ -1,20 +1,14 @@
 import { CHAIN_NAMES, ChainId } from '@meta-cred/utils';
 import { Ens } from 'bnc-onboard/dist/src/interfaces';
 import { providers } from 'ethers';
-import React, {
-  createContext,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
+import React, { createContext, useMemo } from 'react';
 
 import { useOnboard } from './useOnboard';
 
 export type IWalletContext = {
   provider: providers.Web3Provider | null;
   connectWallet: () => Promise<void>;
-  disconnect: () => void;
+  disconnectWallet: () => void;
   isConnecting: boolean;
   isConnected: boolean;
   address: string | null;
@@ -24,7 +18,7 @@ export type IWalletContext = {
 export const WalletContext = createContext<IWalletContext>({
   provider: null,
   connectWallet: async () => {},
-  disconnect: () => undefined,
+  disconnectWallet: () => undefined,
   isConnecting: false,
   isConnected: false,
   address: null,
@@ -48,9 +42,6 @@ export const WalletProvider: React.FC<WalletProviderOptions> = ({
   appName,
   darkMode,
 }) => {
-  const [ens, setEns] = useState<Ens>({});
-  const [isConnecting, setIsConnecting] = useState<boolean>(false);
-
   const networkName = CHAIN_NAMES[networkId as keyof typeof CHAIN_NAMES];
 
   const rpcUrl = `https://${networkName.toLowerCase()}.infura.io/v3/${infuraKey}`;
@@ -84,54 +75,34 @@ export const WalletProvider: React.FC<WalletProviderOptions> = ({
     [infuraKey, rpcUrl, appName],
   );
 
-  const { selectWallet, address, disconnectWallet, provider, onboard } =
-    useOnboard({
-      options: {
-        dappId: onboardDappId, // optional API key
-        hideBranding: true,
-        darkMode,
-        networkId, // Ethereum network ID
-        networkName: CHAIN_NAMES[networkId as keyof typeof CHAIN_NAMES],
-        walletSelect: {
-          wallets,
-          description: '',
-        },
-        subscriptions: {
-          ens: (ensData) => {
-            setEns(ensData);
-          },
-        },
+  const {
+    selectWallet,
+    address,
+    disconnectWallet,
+    provider,
+    isConnecting,
+    ens,
+  } = useOnboard({
+    options: {
+      dappId: onboardDappId, // optional API key
+      hideBranding: true,
+      darkMode,
+      networkId, // Ethereum network ID
+      networkName: CHAIN_NAMES[networkId as keyof typeof CHAIN_NAMES],
+      walletSelect: {
+        wallets,
+        description: '',
       },
-    });
-
-  useEffect(() => {
-    onboard?.config({ darkMode });
-  }, [darkMode, onboard]);
-
-  const disconnect = useCallback(() => {
-    disconnectWallet();
-    setIsConnecting(false);
-  }, [disconnectWallet]);
-
-  const connectWallet = useCallback(async () => {
-    setIsConnecting(true);
-    try {
-      // disconnect();
-      await selectWallet();
-      setIsConnecting(false);
-    } catch (error) {
-      console.log(error); // eslint-disable-line no-console
-      setIsConnecting(false);
-      disconnect();
-    }
-  }, [selectWallet, disconnect]);
+      subscriptions: {},
+    },
+  });
 
   return (
     <WalletContext.Provider
       value={{
         provider,
-        connectWallet,
-        disconnect,
+        connectWallet: selectWallet,
+        disconnectWallet,
         isConnected: !!address,
         isConnecting,
         address,

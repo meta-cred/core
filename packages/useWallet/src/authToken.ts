@@ -34,8 +34,6 @@ export async function authenticateWallet(
   ethersProvider: providers.Web3Provider,
 ): Promise<string> {
   const token = await did.createToken(ethersProvider);
-  console.log({ token });
-
   setTokenInStore(token);
   return token;
 }

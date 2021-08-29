@@ -10,7 +10,8 @@ export type Props = {
 export const ConnectWalletButton: React.FC<Props> = ({
   connectLabel = 'Connect Wallet',
 }) => {
-  const { connectWallet, address, ens, disconnect, isConnecting } = useWallet();
+  const { connectWallet, address, ens, disconnectWallet, isConnecting } =
+    useWallet();
 
   const displayName = ens?.name || shortenIfAddress(address);
 
@@ -19,7 +20,7 @@ export const ConnectWalletButton: React.FC<Props> = ({
       isLoading={isConnecting}
       onClick={() => {
         if (address) {
-          disconnect();
+          disconnectWallet();
         } else {
           connectWallet();
         }
