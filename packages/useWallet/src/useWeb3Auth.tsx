@@ -1,5 +1,5 @@
 import { providers } from 'ethers';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import { authenticateWallet, clearToken, getExistingAuth } from './authToken';
 
@@ -15,6 +15,18 @@ export const useWeb3Auth = (
 ): Web3Auth => {
   const [authToken, setAuthToken] = useState<string | null>(null);
   const [isLoggingIn, setIsLoggingIn] = useState(false);
+
+  // Rehydrate any existing auth tokens on mount
+  useEffect(() => {
+    (async () => {
+      if (!provider) return;
+
+      const token = await getExistingAuth(provider);
+      if (!token) return;
+
+      setAuthToken(token);
+    })();
+  }, [provider]);
 
   const login = useCallback(async () => {
     if (!provider)

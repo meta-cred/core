@@ -19,7 +19,7 @@ const Index: React.FC = () => {
 
   const { provider, isConnected: isWalletConnected } = useWallet();
 
-  const { login, authToken, isLoggingIn } = useWeb3Auth(provider);
+  const { login, logout, authToken, isLoggingIn } = useWeb3Auth(provider);
 
   return (
     <PageLayout>
@@ -27,8 +27,14 @@ const Index: React.FC = () => {
         <VStack spacing="6">
           <Heading>Welcome to MetaCred</Heading>
           {isWalletConnected ? (
-            <Button isLoading={isLoggingIn} onClick={() => login()}>
-              Login with Ethereum
+            <Button
+              isLoading={isLoggingIn}
+              onClick={() => {
+                if (authToken) logout();
+                else login();
+              }}
+            >
+              {authToken ? 'Logout' : ' Login with Ethereum'}
             </Button>
           ) : null}
           {authToken ? (

@@ -32,7 +32,6 @@ export async function createToken(
 
   const serializedClaim = JSON.stringify(claim);
   const proof = await requestSignature(provider, serializedClaim);
-  console.log({ signer, address });
 
   return Base64.encode(JSON.stringify([proof, serializedClaim]));
 }
@@ -48,7 +47,6 @@ export async function verifyToken(
     const address = claim.iss;
 
     const valid = await verifySignature(address, rawClaim, proof, provider);
-
     if (!valid) {
       throw new Error('invalid signature');
     }

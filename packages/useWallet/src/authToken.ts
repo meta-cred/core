@@ -18,7 +18,11 @@ export async function getExistingAuth(
   if (!token) return null;
 
   try {
-    await did.verifyToken(token, ethersProvider);
+    const claim = await did.verifyToken(token, ethersProvider);
+    const address = await ethersProvider.getSigner().getAddress();
+
+    if (claim?.iss !== address) throw new Error('User changed');
+
     return token;
   } catch (e) {
     clearToken();
