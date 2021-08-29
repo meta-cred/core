@@ -1,5 +1,6 @@
 import { Button, Code, Heading, Text, VStack } from '@chakra-ui/react';
-import { useCeramic } from '@meta-cred/utils/useCeramic';
+import { useWallet } from '@meta-cred/usewallet';
+import { useCeramic } from '@meta-cred/utils';
 import React from 'react';
 
 import { IdxUserCard } from '../components/IdxUserCard';
@@ -16,11 +17,30 @@ const Index: React.FC = () => {
     isConnecting,
   } = useCeramic();
 
+  const {
+    isConnected: isWalletConnected,
+    authToken,
+    authenticateUser,
+  } = useWallet();
+
   return (
     <PageLayout>
       <Container px="6">
         <VStack spacing="6">
           <Heading>Welcome to MetaCred</Heading>
+          {isWalletConnected ? (
+            <Button onClick={() => authenticateUser()}>
+              Login with Ethereum
+            </Button>
+          ) : null}
+          {authToken ? (
+            <>
+              <Text>JWT Token</Text>
+              <Code textAlign="center" maxW="xs">
+                {authToken}
+              </Code>{' '}
+            </>
+          ) : null}
           {isAvailable ? (
             <Button
               colorScheme={isConnected ? 'red' : undefined}

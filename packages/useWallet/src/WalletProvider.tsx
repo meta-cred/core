@@ -1,10 +1,16 @@
+import { CHAIN_NAMES, ChainId } from '@meta-cred/utils';
 import { Ens } from 'bnc-onboard/dist/src/interfaces';
 import { providers } from 'ethers';
-import React, { createContext, useCallback, useMemo, useState } from 'react';
-import { useOnboard } from 'use-onboard';
+import React, {
+  createContext,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 
 import { authenticateWallet, clearToken, getExistingAuth } from './authToken';
-import { CHAIN_NAMES, ChainId } from './constants';
+import { useOnboard } from './useOnboard';
 
 export type IWalletContext = {
   provider: providers.Web3Provider | null;
@@ -84,30 +90,29 @@ export const WalletProvider: React.FC<WalletProviderOptions> = ({
     [infuraKey, rpcUrl, appName],
   );
 
-  const {
-    selectWallet,
-    address,
-    isWalletSelected,
-    disconnectWallet,
-    provider,
-  } = useOnboard({
-    options: {
-      dappId: onboardDappId, // optional API key
-      hideBranding: true,
-      darkMode,
-      networkId, // Ethereum network ID
-      networkName: CHAIN_NAMES[networkId as keyof typeof CHAIN_NAMES],
-      walletSelect: {
-        wallets,
-        description: '',
-      },
-      subscriptions: {
-        ens: (ensData) => {
-          setEns(ensData);
+  const { selectWallet, address, disconnectWallet, provider, onboard } =
+    useOnboard({
+      options: {
+        dappId: onboardDappId, // optional API key
+        hideBranding: true,
+        darkMode,
+        networkId, // Ethereum network ID
+        networkName: CHAIN_NAMES[networkId as keyof typeof CHAIN_NAMES],
+        walletSelect: {
+          wallets,
+          description: '',
+        },
+        subscriptions: {
+          ens: (ensData) => {
+            setEns(ensData);
+          },
         },
       },
-    },
-  });
+    });
+
+  useEffect(() => {
+    onboard?.config({ darkMode });
+  }, [darkMode, onboard]);
 
   const disconnect = useCallback(() => {
     clearToken();
@@ -119,7 +124,7 @@ export const WalletProvider: React.FC<WalletProviderOptions> = ({
   const connectWallet = useCallback(async () => {
     setIsConnecting(true);
     try {
-      disconnect();
+      // disconnect();
       await selectWallet();
       setIsConnecting(false);
     } catch (error) {
@@ -130,11 +135,20 @@ export const WalletProvider: React.FC<WalletProviderOptions> = ({
   }, [selectWallet, disconnect]);
 
   const authenticateUser = useCallback(async () => {
-    let token: string | null = await getExistingAuth(provider);
-    if (!token) {
-      token = await authenticateWallet(provider);
+    if (!provider)
+      throw new Error('No Ethereum Provider, cannot authenticate.');
+
+    try {
+      let token: string | null = await getExistingAuth(provider);
+      if (!token) {
+        token = await authenticateWallet(provider);
+      }
+      setAuthToken(token);
+    } catch (e) {
+      alert(
+        `Unable to Authenticate: ${(e as Error)?.message || (e as string)}`,
+      );
     }
-    setAuthToken(token);
   }, [provider]);
 
   return (
@@ -144,7 +158,7 @@ export const WalletProvider: React.FC<WalletProviderOptions> = ({
         connectWallet,
         authenticateUser,
         disconnect,
-        isConnected: isWalletSelected,
+        isConnected: !!address,
         isConnecting,
         address,
         authToken,

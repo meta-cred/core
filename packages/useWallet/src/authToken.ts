@@ -1,9 +1,10 @@
 import { providers } from 'ethers';
 
-import * as did from './did';
 import * as store from './storage';
+import * as did from './web3JWT';
 
-const STORAGE_KEY = process.env.AUTH_TOKEN_STORAGE_KEY || 'metacred-auth-token';
+const STORAGE_KEY =
+  process.env.AUTH_TOKEN_STORAGE_KEY || 'use-wallet-auth-token';
 
 export const getTokenFromStore = (): string | null => store.get(STORAGE_KEY);
 export const setTokenInStore = (token: string): void =>

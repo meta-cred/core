@@ -1,5 +1,5 @@
 {
-  "name": "@meta-cred/ui",
+  "name": "@meta-cred/usewallet",
   "version": "0.1.0",
   "type": "module",
   "source": "src/index.ts",
@@ -14,18 +14,14 @@
     "clean": "rimraf --no-glob ./.dist"
   },
   "dependencies": {
-    "@chakra-ui/icons": "1.0.14",
-    "@chakra-ui/react": "1.6.5",
-    "@chakra-ui/theme-tools": "1.1.8",
-    "@emotion/react": "11.4.0",
-    "@emotion/styled": "11.3.0",
-    "@meta-cred/usewallet": "workspace:*",
     "@meta-cred/utils": "workspace:*",
-    "framer-motion": "4.1.17",
-    "react": "17.0.2"
-  },
-  "peerDependencies": {
-    "next": "*"
+    "@types/react": "17.0.15",
+    "@walletconnect/web3-provider": "1.6.5",
+    "bnc-onboard": "1.34.1",
+    "dids": "2.4.0",
+    "ethers": "5.4.1",
+    "js-base64": "3.6.1",
+    "nanoid": "3.1.23"
   },
   "devDependencies": {
     "tsup": "4.13.1",

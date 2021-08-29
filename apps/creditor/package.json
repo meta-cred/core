@@ -20,6 +20,7 @@
     "@emotion/react": "11.4.0",
     "@emotion/styled": "11.3.0",
     "@meta-cred/ui": "workspace:*",
+    "@meta-cred/usewallet": "workspace:*",
     "@meta-cred/utils": "workspace:*",
     "ethers": "5.4.1",
     "framer-motion": "4.1.17",
