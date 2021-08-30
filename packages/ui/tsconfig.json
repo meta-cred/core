@@ -10,9 +10,6 @@
   "references": [
     {
       "path": "../utils"
-    },
-    {
-      "path": "../useWallet"
     }
   ],
   "include": ["src"],

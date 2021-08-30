@@ -1,9 +1,10 @@
 import { Heading } from '@chakra-ui/react';
-import { ConnectWalletButton } from '@meta-cred/ui/ConnectWalletButton';
 import { DarkModeSwitch } from '@meta-cred/ui/DarkModeSwitch';
 import { NavBar } from '@meta-cred/ui/NavBar';
 import { NavItem } from '@meta-cred/ui/NavItem';
 import React from 'react';
+
+import { ConnectWalletButton } from '../components/ConnectWalletButton';
 
 const LINKS = [
   { label: 'Home', href: '/' },

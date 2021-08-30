@@ -5,18 +5,26 @@ export const theme = extendTheme({
   colors: {
     black: '#16161D',
   },
+  radii: {
+    md: '0.425rem',
+    lg: '0.8rem',
+    xl: '1rem',
+    '2xl': '1.5rem',
+    '3xl': '2rem',
+  },
   styles: {
     global: {
       '.bn-onboard-custom.bn-onboard-modal': {
         zIndex: 99,
+        backdropFilter: 'blur(6px)',
       },
       '.bn-onboard-custom.bn-onboard-modal-content': {
-        top: '-4rem',
         marginX: '4',
         maxWidth: 'md',
+        shadow: 'lg',
       },
       '.bn-onboard-custom.bn-onboard-modal-content.bn-onboard-dark-mode': {
-        backgroundColor: 'gray.800',
+        backgroundColor: 'gray.700',
       },
       '.bn-onboard-custom.bn-onboard-modal-content-header-icon': {
         display: 'none',
