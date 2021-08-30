@@ -12,21 +12,20 @@ export type Web3Auth = {
 
 export const useWeb3Auth = (
   provider: providers.Web3Provider | null,
+  address: string | null,
 ): Web3Auth => {
   const [authToken, setAuthToken] = useState<string | null>(null);
   const [isLoggingIn, setIsLoggingIn] = useState(false);
 
-  // Rehydrate any existing auth tokens on mount
+  // Rehydrate any existing auth tokens on mount or wallet change
   useEffect(() => {
     (async () => {
       if (!provider) return;
 
       const token = await getExistingAuth(provider);
-      if (!token) return;
-
       setAuthToken(token);
     })();
-  }, [provider]);
+  }, [provider, address]);
 
   const login = useCallback(async () => {
     if (!provider)

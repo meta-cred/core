@@ -1,5 +1,7 @@
 {
   "root": true,
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint", "simple-import-sort"],
   "extends": [
     "plugin:@next/next/recommended",
     "airbnb-typescript",
@@ -9,11 +11,15 @@
     "plugin:@typescript-eslint/recommended-requiring-type-checking",
     "prettier"
   ],
-  "plugins": ["simple-import-sort"],
   "settings": {
+    "import/parsers": {
+      "@typescript-eslint/parser": [".ts", ".tsx"]
+    },
     "import/extensions": [".js", ".jsx", ".ts", ".tsx"],
     "import/resolver": {
-      "typescript": {}
+      "typescript": {
+        "project": ["packages/*/tsconfig.json", "apps/*/tsconfig.json"]
+      }
     }
   },
   "parserOptions": {

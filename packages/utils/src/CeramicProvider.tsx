@@ -44,12 +44,20 @@ export const CeramicProvider: React.FC<CeramicProviderProps> = ({
   provider,
   address,
 }) => {
-  const [threeIdConnect, setThreeIdConnect] = useState<ThreeIdConnect>();
-  const [ceramic, setCeramic] = useState<Ceramic>();
+  const [threeIdConnect, setThreeIdConnect] = useState<ThreeIdConnect>(
+    new ThreeIdConnect(),
+  );
+  const [ceramic, setCeramic] = useState<Ceramic>(new Ceramic(ceramicUrl));
   const [did, setDid] = useState<DID>();
   const [jws, setJws] = useState<DagJWS>();
   const [idx, setIdx] = useState<IDX>();
   const [isConnecting, setIsConnecting] = useState(false);
+
+  // Reset 3ID Connect every time address changes
+  useEffect(() => {
+    setThreeIdConnect(new ThreeIdConnect());
+    setCeramic(new Ceramic(ceramicUrl));
+  }, [address, ceramicUrl]);
 
   const connect3ID = useCallback(async () => {
     if (!provider || !address) {
@@ -57,43 +65,39 @@ export const CeramicProvider: React.FC<CeramicProviderProps> = ({
     }
 
     try {
-      const newThreeIdConnect = new ThreeIdConnect();
-      setThreeIdConnect(newThreeIdConnect);
-
       setIsConnecting(true);
 
       const authProvider = new EthereumAuthProvider(provider, address);
-      await newThreeIdConnect.connect(authProvider);
+      await threeIdConnect.connect(authProvider);
 
-      const ceramicClient = new Ceramic(ceramicUrl);
       const newDid = new DID({
-        provider: newThreeIdConnect.getDidProvider(),
-        resolver: ThreeIdResolver.getResolver(ceramicClient),
+        provider: threeIdConnect.getDidProvider(),
+        resolver: ThreeIdResolver.getResolver(ceramic),
       });
       await newDid.authenticate();
 
       const dagJws = await newDid.createJWS({ hello: 'world' });
-      await ceramicClient.setDID(newDid);
-      const idxClient = new IDX({ ceramic: ceramicClient });
+      await ceramic.setDID(newDid);
+      const idxClient = new IDX({ ceramic });
 
       setJws(dagJws);
-      setCeramic(ceramicClient);
+      setCeramic(ceramic);
       setDid(newDid);
       setIdx(idxClient);
-      setIsConnecting(false);
     } catch (e) {
-      setIsConnecting(false);
       throw new Error(`Unable to connect to Ceramic with 3ID: ${e as string}`);
+    } finally {
+      setIsConnecting(false);
     }
-  }, [address, ceramicUrl, provider]);
+  }, [address, provider, ceramic, threeIdConnect]);
 
   const disconnect = useCallback(() => {
     setJws(undefined);
-    setCeramic(undefined);
+    setCeramic(new Ceramic(ceramicUrl));
     setDid(undefined);
     setIdx(undefined);
-    setThreeIdConnect(undefined);
-  }, []);
+    setThreeIdConnect(new ThreeIdConnect());
+  }, [ceramicUrl]);
 
   useEffect(() => {
     if (!provider) disconnect();

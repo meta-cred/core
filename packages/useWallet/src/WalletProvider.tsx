@@ -1,5 +1,5 @@
 import { CHAIN_NAMES, ChainId } from '@meta-cred/utils';
-import { Ens } from 'bnc-onboard/dist/src/interfaces';
+import { Ens, Wallet } from 'bnc-onboard/dist/src/interfaces';
 import { providers } from 'ethers';
 import React, { createContext, useMemo } from 'react';
 
@@ -13,6 +13,7 @@ export type IWalletContext = {
   isConnected: boolean;
   address: string | null;
   ens: Ens | null;
+  wallet: Wallet | null;
 };
 
 export const WalletContext = createContext<IWalletContext>({
@@ -23,6 +24,7 @@ export const WalletContext = createContext<IWalletContext>({
   isConnected: false,
   address: null,
   ens: null,
+  wallet: null,
 });
 
 interface WalletProviderOptions {
@@ -82,6 +84,7 @@ export const WalletProvider: React.FC<WalletProviderOptions> = ({
     provider,
     isConnecting,
     ens,
+    wallet,
   } = useOnboard({
     options: {
       dappId: onboardDappId, // optional API key
@@ -107,6 +110,7 @@ export const WalletProvider: React.FC<WalletProviderOptions> = ({
         isConnecting,
         address,
         ens,
+        wallet,
       }}
     >
       {children}

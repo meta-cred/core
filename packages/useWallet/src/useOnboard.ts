@@ -46,8 +46,6 @@ export const useOnboard = (
         subscriptions: {
           ...options?.subscriptions,
           wallet: (selectedWallet) => {
-            console.log({ selectedWallet });
-
             options?.subscriptions?.wallet?.(selectedWallet);
 
             if (selectedWallet.provider && selectedWallet.name) {
