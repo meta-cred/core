@@ -47,7 +47,6 @@ export async function verifyToken(
     const address = claim.iss;
 
     const valid = await verifySignature(address, rawClaim, proof, provider);
-
     if (!valid) {
       throw new Error('invalid signature');
     }

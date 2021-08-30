@@ -1,5 +1,6 @@
 import { Button } from '@chakra-ui/react';
-import { shortenIfAddress, useWallet } from '@meta-cred/utils';
+import { useWallet } from '@meta-cred/usewallet';
+import { shortenIfAddress } from '@meta-cred/utils';
 import React from 'react';
 
 export type Props = {
@@ -9,15 +10,17 @@ export type Props = {
 export const ConnectWalletButton: React.FC<Props> = ({
   connectLabel = 'Connect Wallet',
 }) => {
-  const { connectWallet, address, ens, disconnect } = useWallet();
+  const { connectWallet, address, ens, disconnectWallet, isConnecting } =
+    useWallet();
 
   const displayName = ens?.name || shortenIfAddress(address);
 
   return (
     <Button
+      isLoading={isConnecting}
       onClick={() => {
         if (address) {
-          disconnect();
+          disconnectWallet();
         } else {
           connectWallet();
         }

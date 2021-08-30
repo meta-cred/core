@@ -11,7 +11,7 @@
     "build": "tsup",
     "dev": "tsup --watch",
     "typecheck": "tsc --noEmit",
-    "clean": "rimraf --no-glob ./.dist"
+    "clean": "rimraf --no-glob ./dist"
   },
   "dependencies": {
     "@3id/connect": "0.1.6",
@@ -20,7 +20,8 @@
     "@ceramicstudio/idx": "0.12.1",
     "@ceramicstudio/idx-constants": "1.0.0",
     "@types/react": "17.0.15",
-    "bnc-onboard": "1.33.0",
+    "@walletconnect/web3-provider": "1.6.5",
+    "bnc-onboard": "1.34.1",
     "dids": "2.4.0",
     "ethers": "5.4.1",
     "hoist-non-react-statics": "3.3.2",

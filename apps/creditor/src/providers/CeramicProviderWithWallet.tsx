@@ -1,4 +1,4 @@
-import { useWallet } from '@meta-cred/utils';
+import { useWallet } from '@meta-cred/usewallet';
 import { CeramicProvider } from '@meta-cred/utils/CeramicProvider';
 import React from 'react';
 

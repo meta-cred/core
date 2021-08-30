@@ -3,11 +3,18 @@
   "compilerOptions": {
     "jsx": "preserve",
     "module": "esnext",
-    "baseUrl": "src",
     "rootDir": "src",
     "tsBuildInfoFile": "dist/.tsbuildinfo",
     "outDir": "dist"
   },
+  "references": [
+    {
+      "path": "../utils"
+    },
+    {
+      "path": "../useWallet"
+    }
+  ],
   "include": ["src"],
   "exclude": ["node_modules", "dist"]
 }

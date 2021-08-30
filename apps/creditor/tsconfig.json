@@ -7,6 +7,17 @@
     "tsBuildInfoFile": ".next/.tsbuildinfo",
     "jsx": "preserve"
   },
+  "references": [
+    {
+      "path": "../../packages/utils"
+    },
+    {
+      "path": "../../packages/ui"
+    },
+    {
+      "path": "../../packages/useWallet"
+    }
+  ],
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules", ".next"]
 }

@@ -48,16 +48,18 @@ export const theme = extendTheme({
           background: 'blackAlpha.200',
           boxShadow: 'none',
         },
-        '.bn-onboard-dark-mode-background-hover': {
-          ':hover': {
-            background: 'whiteAlpha.100',
-          },
-        },
       },
       'button.bn-onboard-custom.bn-onboard-icon-button.bn-onboard-dark-mode-background-hover':
         {
           ':hover': {
             background: 'whiteAlpha.100',
+          },
+        },
+      'button.bn-onboard-custom.bn-onboard-icon-button.bn-onboard-dark-mode-background-hover.bn-onboard-selected-wallet':
+        {
+          background: 'whiteAlpha.100',
+          ':hover': {
+            background: 'whiteAlpha.200',
           },
         },
       'ul.bn-onboard-custom.bn-onboard-modal-select-wallets': {

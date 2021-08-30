@@ -1,14 +1,15 @@
+import { storage } from '@meta-cred/utils';
 import { providers } from 'ethers';
 
-import * as did from './did';
-import * as store from './storage';
+import * as did from './web3JWT';
 
-const STORAGE_KEY = process.env.AUTH_TOKEN_STORAGE_KEY || 'metacred-auth-token';
+const STORAGE_KEY =
+  process.env.AUTH_TOKEN_STORAGE_KEY || 'use-wallet-auth-token';
 
-export const getTokenFromStore = (): string | null => store.get(STORAGE_KEY);
+export const getTokenFromStore = (): string | null => storage.get(STORAGE_KEY);
 export const setTokenInStore = (token: string): void =>
-  store.set(STORAGE_KEY, token);
-export const clearToken = (): void => store.remove(STORAGE_KEY);
+  storage.set(STORAGE_KEY, token);
+export const clearToken = (): void => storage.remove(STORAGE_KEY);
 
 export async function getExistingAuth(
   ethersProvider: providers.Web3Provider,
@@ -17,7 +18,11 @@ export async function getExistingAuth(
   if (!token) return null;
 
   try {
-    await did.verifyToken(token, ethersProvider);
+    const claim = await did.verifyToken(token, ethersProvider);
+    const address = await ethersProvider.getSigner().getAddress();
+
+    if (claim?.iss !== address) throw new Error('User changed');
+
     return token;
   } catch (e) {
     clearToken();
