@@ -4,6 +4,7 @@ interface IConfig {
   infuraId: string;
   ipfsEndpoint: string;
   ceramicUrl: string;
+  graphqlEndpoint: string;
 }
 
 function parseEnv<T extends string | number>(
@@ -20,12 +21,19 @@ function parseEnv<T extends string | number>(
 }
 
 export const CONFIG: IConfig = {
-  chainId: parseEnv(process.env.CHAIN_ID, 1),
-  onboardDappId: parseEnv(process.env.ONBOARD_DAPP_ID, ''),
-  infuraId: parseEnv(process.env.INFURA_ID, 'a60f8c4d3d4a40a49c4568570a7546b7'),
-  ipfsEndpoint: parseEnv(process.env.IPFS_ENDPOINT, 'https://ipfs.infura.io'),
+  chainId: parseEnv(process.env.NEXT_PUBLIC_CHAIN_ID, 1),
+  onboardDappId: parseEnv(process.env.NEXT_PUBLIC_ONBOARD_DAPP_ID, ''),
+  infuraId: parseEnv(process.env.NEXT_PUBLIC_INFURA_ID),
+  ipfsEndpoint: parseEnv(
+    process.env.NEXT_PUBLIC_IPFS_ENDPOINT,
+    'https://ipfs.infura.io',
+  ),
   ceramicUrl: parseEnv(
-    process.env.CERAMIC_URL,
+    process.env.NEXT_PUBLIC_CERAMIC_URL,
     'https://gateway-clay.ceramic.network',
+  ),
+  graphqlEndpoint: parseEnv(
+    process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT,
+    'https://metacred.hasura.app/v1/graphql',
   ),
 };

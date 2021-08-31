@@ -15,11 +15,11 @@
     "baseUrl": ".",
     "jsx": "preserve",
     "paths": {
-      "@meta-cred/utils/*": ["../../../packages/utils/src/*"],
-      "@meta-cred/utils": ["../../../packages/utils/src/index"],
-      "@meta-cred/usewallet": ["../../../packages/useWallet/src/index"],
-      "@meta-cred/ui/*": ["../../../packages/ui/src/*"],
-      "@meta-cred/ui": ["../../../packages/ui/src/index"]
+      "@meta-cred/utils/*": ["../../packages/utils/src/*"],
+      "@meta-cred/utils": ["../../packages/utils/src/index"],
+      "@meta-cred/usewallet": ["../../packages/useWallet/src/index"],
+      "@meta-cred/ui/*": ["../../packages/ui/src/*"],
+      "@meta-cred/ui": ["../../packages/ui/src/index"]
     }
   },
   "include": ["apps/creditor/next-env.d.ts", "**/*.ts", "**/*.tsx"],

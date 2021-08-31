@@ -7,3 +7,5 @@ coverage
 dist
 
 tsup.config.ts
+
+*.generated.ts
