@@ -61,9 +61,11 @@ export const AccountModal: React.FC<Props> = ({
 
         <ModalFooter>
           <HStack justify="flex-end">
-            <Text fontSize="sm" color="gray.500">
-              Connected To {connectedWallet}
-            </Text>
+            {connectedWallet ? (
+              <Text fontSize="sm" color="gray.500">
+                Connected To {connectedWallet}
+              </Text>
+            ) : null}
             <Button
               size="sm"
               color="red.400"

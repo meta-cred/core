@@ -12,3 +12,4 @@ tsup.config.ts
 
 *.config.base.js
 *.config.js
+*.setup.js

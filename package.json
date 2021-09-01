@@ -10,8 +10,9 @@
     "app": "yarn workspaces foreach -pvi --include '*-app' run",
     "build": "yarn workspaces foreach -ptv run build",
     "build:packages": "yarn workspaces foreach -ptv --include '@meta-cred/*' run build",
-    "test": "yarn workspaces foreach -pvi run test",
     "typecheck": "yarn workspaces foreach -pv run typecheck",
+    "test": "jest",
+    "test:watch": "jest --watch",
     "lint": "eslint \"**/*.{ts,tsx,js,jsx}\"",
     "prepare": "husky install",
     "creditor": "yarn workspace creditor-app"
