@@ -6,6 +6,7 @@
     "dev": "next",
     "build": "next build",
     "start": "next start",
+    "generate": "gqless generate",
     "typecheck": "tsc",
     "test": "echo 'No Tests'",
     "clean": "rimraf --no-glob ./.next ./out ./coverage"
@@ -18,15 +19,21 @@
     "@chakra-ui/theme-tools": "1.1.8",
     "@emotion/react": "11.4.0",
     "@emotion/styled": "11.3.0",
+    "@gqless/react": "2.0.15",
     "@meta-cred/ui": "workspace:*",
     "@meta-cred/usewallet": "workspace:*",
     "@meta-cred/utils": "workspace:*",
     "ethers": "5.4.1",
     "framer-motion": "4.1.17",
+    "gqless": "2.0.14",
     "next": "11.0.1",
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-query": "3.19.4"
   },
-  "license": "GPL-3.0"
+  "license": "GPL-3.0",
+  "devDependencies": {
+    "@gqless/cli": "2.0.16",
+    "graphql": "15.5.2"
+  }
 }
