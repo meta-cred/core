@@ -5,7 +5,7 @@ import { formatDistanceFromNow } from '../dateHelpers';
 
 describe('dateHelpers', () => {
   beforeEach(() => {
-    advanceTo(new Date(2020, 0, 1, 11, 11, 11));
+    advanceTo(new Date(1577946800000));
   });
 
   describe('formatDistanceFromNow', () => {
@@ -16,11 +16,11 @@ describe('dateHelpers', () => {
     });
 
     it('should accept string and number dates', () => {
-      expect(formatDistanceFromNow('2020-01-01')).toMatchInlineSnapshot(
-        `"18 hours ago"`,
+      expect(formatDistanceFromNow(1577936800000)).toMatchInlineSnapshot(
+        `"3 hours ago"`,
       );
-      expect(formatDistanceFromNow(1577836800000)).toMatchInlineSnapshot(
-        `"18 hours ago"`,
+      expect(formatDistanceFromNow('2020-01-01')).toMatchInlineSnapshot(
+        `"1 day ago"`,
       );
     });
 
