@@ -3,7 +3,7 @@ import { ImageSources } from '@ceramicstudio/idx-constants';
 export const getIpfsUrl = (
   hash: string,
   ipfsEndpoint = 'https://ipfs.infura.io',
-): string => `${ipfsEndpoint}/ipfs/${hash.slice(7) || ''}`;
+): string => `${ipfsEndpoint}/ipfs/${hash.slice(7)}`;
 
 export const getIdxImageUrl = (
   image: ImageSources | undefined,

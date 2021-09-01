@@ -10,13 +10,14 @@
     "app": "yarn workspaces foreach -pvi --include '*-app' run",
     "build": "yarn workspaces foreach -ptv run build",
     "build:packages": "yarn workspaces foreach -ptv --include '@meta-cred/*' run build",
-    "test": "yarn workspaces foreach -pv run test",
+    "test": "yarn workspaces foreach -pvi run test",
     "typecheck": "yarn workspaces foreach -pv run typecheck",
     "lint": "eslint \"**/*.{ts,tsx,js,jsx}\"",
     "prepare": "husky install",
     "creditor": "yarn workspace creditor-app"
   },
   "devDependencies": {
+    "@types/jest": "27.0.1",
     "@types/node": "14.17.9",
     "@types/react": "17.0.15",
     "@types/react-dom": "17.0.9",
@@ -33,9 +34,12 @@
     "eslint-plugin-react-hooks": "4.2.0",
     "eslint-plugin-simple-import-sort": "7.0.0",
     "husky": "7.0.1",
+    "jest": "27.1.0",
     "lint-staged": "11.1.1",
     "prettier": "2.3.2",
     "rimraf": "3.0.2",
+    "ts-jest": "27.0.5",
+    "tsconfig-paths-jest": "0.0.1",
     "tsup": "4.13.1",
     "typescript": "4.3.5"
   },
