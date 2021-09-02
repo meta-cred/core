@@ -34,7 +34,11 @@
         "react/react-in-jsx-scope": "off",
         "import/no-default-export": "off", // pages have to have a default export
         "import/prefer-default-export": "error",
-        "@typescript-eslint/explicit-module-boundary-types": "off"
+        "@typescript-eslint/explicit-module-boundary-types": [
+          // So we can infer prop types
+          "warn",
+          { "allowedNames": ["getStaticProps"] }
+        ]
       }
     },
     {
