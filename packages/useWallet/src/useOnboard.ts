@@ -27,8 +27,11 @@ export const useOnboard = (
 ) => {
   const [isConnecting, setIsConnecting] = useState<boolean>(false);
   const [didInit, setDidInit] = useState(false);
-  const [onboard, setOnboard] = useState<API>();
+  const [onboard, setOnboard] = useState<API | null>(null);
   const [wallet, setWallet] = useState<Wallet | null>(null);
+  const [connectedNetworkId, setConnectedNetworkId] = useState<number | null>(
+    null,
+  );
   const [address, setAddress] = useState<string | null>(
     initialData?.address || '',
   );
@@ -43,6 +46,12 @@ export const useOnboard = (
       Onboard({
         ...options,
         networkId: options?.networkId || 1,
+        walletCheck: [
+          { checkName: 'derivationPath' },
+          { checkName: 'accounts' },
+          { checkName: 'connect' },
+          { checkName: 'network' },
+        ],
         subscriptions: {
           ...options?.subscriptions,
           wallet: (selectedWallet) => {
@@ -75,6 +84,10 @@ export const useOnboard = (
             options?.subscriptions?.ens?.(newEns);
             setEns(newEns);
           },
+          network: (networkId) => {
+            options?.subscriptions?.network?.(networkId);
+            setConnectedNetworkId(networkId);
+          },
         },
       }),
     );
@@ -92,6 +105,7 @@ export const useOnboard = (
       setProvider(null);
       setWallet(null);
       setIsConnecting(false);
+      setConnectedNetworkId(null);
       onboard.walletReset();
 
       window.localStorage.removeItem(SELECTED_WALLET_STORAGE_KEY);
@@ -149,5 +163,6 @@ export const useOnboard = (
     disconnectWallet,
     isConnecting,
     ens,
+    connectedNetworkId,
   };
 };

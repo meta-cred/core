@@ -1,5 +1,10 @@
 import { CHAIN_NAMES, ChainId } from '@meta-cred/utils';
-import { Ens, Wallet } from 'bnc-onboard/dist/src/interfaces';
+import {
+  API,
+  Ens,
+  Initialization,
+  Wallet,
+} from 'bnc-onboard/dist/src/interfaces';
 import { providers } from 'ethers';
 import React, { createContext, useMemo } from 'react';
 
@@ -14,6 +19,8 @@ export type IWalletContext = {
   address: string | null;
   ens: Ens | null;
   wallet: Wallet | null;
+  onboard: API | null;
+  connectedNetworkId: number | null;
 };
 
 export const WalletContext = createContext<IWalletContext>({
@@ -25,6 +32,8 @@ export const WalletContext = createContext<IWalletContext>({
   address: null,
   ens: null,
   wallet: null,
+  onboard: null,
+  connectedNetworkId: null,
 });
 
 interface WalletProviderOptions {
@@ -34,6 +43,8 @@ interface WalletProviderOptions {
   networkId: number;
   appName?: string;
   darkMode?: boolean;
+  rpcUrl?: string;
+  customOptions?: Initialization;
 }
 
 export const WalletProvider: React.FC<WalletProviderOptions> = ({
@@ -43,10 +54,14 @@ export const WalletProvider: React.FC<WalletProviderOptions> = ({
   infuraKey,
   appName,
   darkMode,
+  rpcUrl: propsRpcUrl,
+  customOptions,
 }) => {
   const networkName = CHAIN_NAMES[networkId as keyof typeof CHAIN_NAMES];
 
-  const rpcUrl = `https://${networkName.toLowerCase()}.infura.io/v3/${infuraKey}`;
+  const rpcUrl =
+    propsRpcUrl ||
+    `https://${networkName.toLowerCase()}.infura.io/v3/${infuraKey}`;
 
   const wallets = useMemo(
     () => [
@@ -78,6 +93,7 @@ export const WalletProvider: React.FC<WalletProviderOptions> = ({
   );
 
   const {
+    onboard,
     selectWallet,
     address,
     disconnectWallet,
@@ -85,6 +101,7 @@ export const WalletProvider: React.FC<WalletProviderOptions> = ({
     isConnecting,
     ens,
     wallet,
+    connectedNetworkId,
   } = useOnboard({
     options: {
       dappId: onboardDappId, // optional API key
@@ -96,13 +113,14 @@ export const WalletProvider: React.FC<WalletProviderOptions> = ({
         wallets,
         description: '',
       },
-      subscriptions: {},
+      ...customOptions,
     },
   });
 
   return (
     <WalletContext.Provider
       value={{
+        onboard,
         provider,
         connectWallet: selectWallet,
         disconnectWallet,
@@ -111,6 +129,7 @@ export const WalletProvider: React.FC<WalletProviderOptions> = ({
         address,
         ens,
         wallet,
+        connectedNetworkId,
       }}
     >
       {children}
