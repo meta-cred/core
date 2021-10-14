@@ -9,3 +9,7 @@ dist
 tsup.config.ts
 
 *.generated.ts
+
+*.config.base.js
+*.config.js
+*.setup.js

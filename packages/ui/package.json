@@ -27,6 +27,8 @@
     "next": "*"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "5.14.1",
+    "@testing-library/react": "12.0.0",
     "tsup": "4.13.1",
     "typescript": "4.3.5"
   }

@@ -4,8 +4,7 @@
     "target": "esnext",
     "incremental": true,
     "baseUrl": ".",
-    "tsBuildInfoFile": ".next/.tsbuildinfo",
-    "jsx": "preserve"
+    "tsBuildInfoFile": ".next/.tsbuildinfo"
   },
   "references": [
     {

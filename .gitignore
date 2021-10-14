@@ -6,11 +6,11 @@
 **/dist
 
 # testing
-/coverage
+**/coverage
 
 # next.js
-/.next/
-/out/
+**/.next/
+**/out/
 
 # production
 /build
@@ -47,6 +47,3 @@ package-lock.json
 
 # vim
 *.swp
-
-# next
-.next

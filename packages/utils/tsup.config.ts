@@ -1,10 +1,6 @@
 import type { Options } from 'tsup';
+import tsupBase from '../../tsup.config.base';
 
 export const tsup: Options = {
-  format: ['cjs', 'esm'],
-  sourcemap: true,
-  minify: true,
-  clean: true,
-  dts: { resolve: false },
-  entryPoints: ['src/*'],
+  ...(tsupBase as Options),
 };

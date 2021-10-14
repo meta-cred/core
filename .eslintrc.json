@@ -31,16 +31,26 @@
       // assuming Next.js application
       "files": "./apps/**/pages/**/*.{ts,tsx}",
       "rules": {
+        "react/react-in-jsx-scope": "off",
         "import/no-default-export": "off", // pages have to have a default export
         "import/prefer-default-export": "error",
-        "@typescript-eslint/explicit-module-boundary-types": "off"
+        "@typescript-eslint/explicit-module-boundary-types": [
+          // So we can infer prop types
+          "warn",
+          { "allowedNames": ["getStaticProps"] }
+        ]
+      }
+    },
+    {
+      // assuming Next.js application
+      "files": "./apps/*/src/**/*.{ts,tsx}",
+      "rules": {
+        "react/react-in-jsx-scope": "off"
       }
     }
   ],
   "rules": {
     "react/jsx-key": ["error"],
-    "react/jsx-uses-react": "off",
-    "react/react-in-jsx-scope": "off",
 
     "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/no-floating-promises": "off",

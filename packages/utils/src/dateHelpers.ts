@@ -1,4 +1,4 @@
-import { differenceInDays, format, formatDistance } from 'date-fns';
+import { differenceInDays, format, formatDistanceStrict } from 'date-fns';
 
 import { Maybe } from './typeUtils';
 
@@ -7,11 +7,11 @@ export const formatDistanceFromNow = (
 ): string => {
   if (!date) return '';
   const d = typeof date === 'string' ? new Date(date) : date;
-  const now = new Date();
+  const now = new Date(Date.now());
 
   const diff = Math.abs(differenceInDays(d, now));
 
-  if (diff > 7) return `on ${format(d, 'MMM d, y')}`;
+  if (diff >= 3) return `on ${format(d, 'MMM d, y')}`;
 
-  return formatDistance(d, now, { addSuffix: true });
+  return formatDistanceStrict(d, now, { addSuffix: true });
 };

@@ -8,6 +8,7 @@ import {
   Text,
   useColorModeValue,
 } from '@chakra-ui/react';
+import React from 'react';
 
 type Props = {
   image?: string;
