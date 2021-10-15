@@ -1,14 +1,14 @@
 {
   "root": true,
   "parser": "@typescript-eslint/parser",
-  "plugins": ["@typescript-eslint", "simple-import-sort"],
+  "plugins": ["@typescript-eslint", "simple-import-sort", "jest"],
   "extends": [
     "plugin:@next/next/recommended",
     "airbnb-typescript",
     "airbnb/hooks",
-    "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:@typescript-eslint/recommended-requiring-type-checking",
+    "plugin:jest/recommended",
     "prettier"
   ],
   "settings": {
@@ -37,7 +37,7 @@
         "@typescript-eslint/explicit-module-boundary-types": [
           // So we can infer prop types
           "warn",
-          { "allowedNames": ["getStaticProps"] }
+          { "allowedNames": ["getStaticProps", "getInitialProps", "render"] }
         ]
       }
     },
@@ -52,13 +52,15 @@
   "rules": {
     "react/jsx-key": ["error"],
 
+    // Allow most functions to rely on type inference. If the function is exported, then `@typescript-eslint/explicit-module-boundary-types` will ensure it's typed.
     "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/no-floating-promises": "off",
 
     // Doesnt work for FC: https://github.com/yannickcr/eslint-plugin-react/issues/2353
     "react/prop-types": "off",
+    "react/require-default-props": "off",
 
-    // Prefer non-default exports
+    // Prefer non-default exports https://basarat.gitbooks.io/typescript/docs/tips/defaultIsBad.html
     "import/no-default-export": "error",
     "import/prefer-default-export": "off",
 

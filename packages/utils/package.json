@@ -1,6 +1,6 @@
 {
   "name": "@meta-cred/utils",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "type": "module",
   "source": "src/index.ts",
   "main": "dist/index.cjs",
@@ -14,28 +14,26 @@
     "clean": "rimraf --no-glob ./dist",
     "test": "jest"
   },
+  "peerDependencies": {
+    "ethers": ">=5.4",
+    "react": ">=17"
+  },
   "dependencies": {
     "@3id/connect": "0.1.6",
     "@ceramicnetwork/3id-did-resolver": "1.2.7",
     "@ceramicnetwork/http-client": "1.0.7",
     "@ceramicstudio/idx": "0.12.1",
     "@ceramicstudio/idx-constants": "1.0.0",
-    "@types/react": "17.0.15",
-    "@walletconnect/web3-provider": "1.6.5",
-    "bnc-onboard": "1.34.1",
-    "date-fns": "^2.23.0",
+    "date-fns": "2.25.0",
     "dids": "2.4.0",
-    "ethers": "5.4.1",
-    "hoist-non-react-statics": "3.3.2",
-    "js-base64": "3.6.1",
-    "nanoid": "3.1.23",
-    "use-onboard": "0.2.6"
+    "hoist-non-react-statics": "3.3.2"
   },
   "devDependencies": {
     "@types/hoist-non-react-statics": "3.3.1",
-    "jest": "27.1.0",
+    "@types/react": "17.0.30",
+    "jest": "27.2.5",
     "jest-date-mock": "1.0.8",
-    "tsup": "4.13.1",
-    "typescript": "4.3.5"
+    "tsup": "5.4.0",
+    "typescript": "4.4.4"
   }
 }
