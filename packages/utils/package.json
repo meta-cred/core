@@ -25,15 +25,14 @@
     "@ceramicstudio/idx": "0.12.1",
     "@ceramicstudio/idx-constants": "1.0.0",
     "date-fns": "2.25.0",
-    "dids": "2.4.0",
-    "hoist-non-react-statics": "3.3.2"
+    "dids": "2.4.0"
   },
   "devDependencies": {
-    "@types/hoist-non-react-statics": "3.3.1",
+    "@datamodels/identity-profile-basic": "0.1.2",
     "@types/react": "17.0.30",
     "jest": "27.2.5",
     "jest-date-mock": "1.0.8",
-    "tsup": "5.4.0",
+    "tsup": "5.2.1",
     "typescript": "4.4.4"
   }
 }

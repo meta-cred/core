@@ -76,15 +76,10 @@ export const WalletProvider: React.FC<WalletProviderOptions> = ({
         preferred: true,
         rpcUrl,
       },
+      { walletName: 'frame', preferred: true },
       {
         walletName: 'ledger',
-        preferred: true,
         rpcUrl,
-      },
-      {
-        walletName: 'lattice',
-        rpcUrl,
-        appName,
       },
       { walletName: 'torus', appName, infuraKey },
       { walletName: 'status' },

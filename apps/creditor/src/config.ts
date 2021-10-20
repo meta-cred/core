@@ -4,6 +4,7 @@ interface IConfig {
   infuraId: string;
   ipfsEndpoint: string;
   ceramicUrl: string;
+  ceramicEndpoint: string;
   graphqlEndpoint: string;
 }
 
@@ -31,6 +32,10 @@ export const CONFIG: IConfig = {
   ceramicUrl: parseEnv(
     process.env.NEXT_PUBLIC_CERAMIC_URL,
     'https://gateway-clay.ceramic.network',
+  ),
+  ceramicEndpoint: parseEnv(
+    process.env.NEXT_PUBLIC_CERAMIC_ENDPOINT,
+    'testnet-clay',
   ),
   graphqlEndpoint: parseEnv(
     process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT,

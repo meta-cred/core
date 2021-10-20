@@ -38,8 +38,10 @@ export const useWeb3Auth = (
         token = await authenticateWallet(provider);
       }
       setAuthToken(token);
-    } finally {
       setIsLoggingIn(false);
+    } catch (e) {
+      setIsLoggingIn(false);
+      throw e;
     }
   }, [provider]);
 

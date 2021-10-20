@@ -1,11 +1,12 @@
 import { CheckIcon, UnlockIcon } from '@chakra-ui/icons';
-import { Button, useDisclosure, VStack } from '@chakra-ui/react';
+import { Button, useDisclosure, useToast, VStack } from '@chakra-ui/react';
 import { AccountModal } from '@meta-cred/ui/AccountModal';
 import { useWallet, useWeb3Auth } from '@meta-cred/usewallet';
 import { shortenIfAddress, useCeramic } from '@meta-cred/utils';
 import React from 'react';
 
 import { ConnectCeramicButton } from './ConnectCeramicButton';
+import { SelfIdUserCard } from './SelfIdUserCard';
 
 export type Props = {
   connectLabel?: string;
@@ -17,6 +18,7 @@ export const ConnectWalletButton: React.FC<Props> = ({
   const { connectWallet, address, ens, wallet, provider, disconnectWallet } =
     useWallet();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const toast = useToast();
 
   const displayName = ens?.name || shortenIfAddress(address);
 
@@ -26,6 +28,20 @@ export const ConnectWalletButton: React.FC<Props> = ({
   );
   const { disconnect: disconnectCeramic } = useCeramic();
 
+  const onClickAuthenticate = async () => {
+    try {
+      if (authToken) logout();
+      else await login();
+    } catch (e) {
+      toast({
+        title: 'Error Authenticating',
+        description: e instanceof Error ? e.message : (e as string),
+        status: 'error',
+        isClosable: true,
+        duration: 3000,
+      });
+    }
+  };
   const disconnect = () => {
     disconnectWallet();
     logout();
@@ -58,14 +74,12 @@ export const ConnectWalletButton: React.FC<Props> = ({
             leftIcon={authToken ? <CheckIcon /> : <UnlockIcon />}
             variant="ghost"
             isLoading={isLoggingIn}
-            onClick={() => {
-              if (authToken) logout();
-              else login();
-            }}
+            onClick={onClickAuthenticate}
           >
             {authToken ? 'Authenticated' : 'Authenticate Wallet'}
           </Button>
           <ConnectCeramicButton size="sm" />
+          <SelfIdUserCard addressOrDid={address} />
         </VStack>
       </AccountModal>
     </>
