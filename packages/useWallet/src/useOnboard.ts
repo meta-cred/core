@@ -6,9 +6,97 @@ import {
   Wallet,
 } from 'bnc-onboard/dist/src/interfaces';
 import { ethers, providers } from 'ethers';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useReducer } from 'react';
 
 const SELECTED_WALLET_STORAGE_KEY = '__onboardSelectedWallet__';
+
+type OnboardState = {
+  isConnecting: boolean;
+  didInit: boolean;
+  onboard: API | null;
+  wallet: Wallet | null;
+  connectedNetworkId: number | null;
+  address: string | null;
+  balance: string;
+  ens: Ens;
+  provider: providers.Web3Provider | null;
+};
+
+type OnboardAction =
+  | {
+      type: 'wallet_connected';
+      wallet: Wallet;
+      provider: providers.Web3Provider;
+    }
+  | { type: 'set_is_connecting'; isConnecting: boolean }
+  | { type: 'set_onboard'; onboard: API }
+  | { type: 'disconnect' }
+  | {
+      type: 'update_fields';
+      payload: Partial<
+        Pick<
+          OnboardState,
+          | 'isConnecting'
+          | 'address'
+          | 'ens'
+          | 'balance'
+          | 'connectedNetworkId'
+          | 'didInit'
+        >
+      >;
+    };
+
+type InitialData = { address?: string; balance?: string };
+
+const getInitialState = (data?: InitialData): OnboardState => ({
+  isConnecting: false,
+  didInit: false,
+  onboard: null,
+  wallet: null,
+  connectedNetworkId: null,
+  address: data?.address || null,
+  balance: data?.balance || '0',
+  ens: {},
+  provider: null,
+});
+
+const onboardReducer = (
+  state: OnboardState,
+  action: OnboardAction,
+): OnboardState => {
+  switch (action.type) {
+    case 'set_is_connecting':
+      return {
+        ...state,
+        isConnecting: action.isConnecting,
+      };
+    case 'set_onboard':
+      return {
+        ...state,
+        onboard: action.onboard,
+      };
+    case 'wallet_connected':
+      return {
+        ...state,
+        wallet: action.wallet,
+        provider: action.provider,
+      };
+    case 'update_fields':
+      return {
+        ...state,
+        ...action.payload,
+      };
+    case 'disconnect':
+      return {
+        ...getInitialState(),
+        onboard: state.onboard,
+        didInit: state.didInit,
+      };
+    default:
+      throw new Error();
+  }
+};
+
 /**
  * A React Web3 wallet hook for [Onboard.js](https://blocknative.com/onboard) library.
  */
@@ -19,150 +107,170 @@ export const useOnboard = (
     initialData,
   }: {
     options?: Initialization & { networkId?: number };
-    initialData?: Partial<{ address: string; balance: string }>;
+    initialData?: InitialData;
   } = {
     options: { networkId: 1 },
     initialData: {},
   },
 ) => {
-  const [isConnecting, setIsConnecting] = useState<boolean>(false);
-  const [didInit, setDidInit] = useState(false);
-  const [onboard, setOnboard] = useState<API | null>(null);
-  const [wallet, setWallet] = useState<Wallet | null>(null);
-  const [connectedNetworkId, setConnectedNetworkId] = useState<number | null>(
-    null,
+  const [state, dispatch] = useReducer(
+    onboardReducer,
+    initialData,
+    getInitialState,
   );
-  const [address, setAddress] = useState<string | null>(
-    initialData?.address || '',
-  );
-  const [balance, setBalance] = useState<string | null>(
-    initialData?.balance || '0',
-  );
-  const [ens, setEns] = useState<Ens>({});
-  const [provider, setProvider] = useState<providers.Web3Provider | null>(null);
 
   useEffect(() => {
-    setOnboard(
-      Onboard({
-        ...options,
-        networkId: options?.networkId || 1,
-        walletCheck: [
-          { checkName: 'derivationPath' },
-          { checkName: 'accounts' },
-          { checkName: 'connect' },
-          { checkName: 'network' },
-        ],
-        subscriptions: {
-          ...options?.subscriptions,
-          wallet: (selectedWallet) => {
-            options?.subscriptions?.wallet?.(selectedWallet);
+    const onboard = Onboard({
+      ...options,
+      networkId: options?.networkId || 1,
+      walletCheck: [
+        { checkName: 'derivationPath' },
+        { checkName: 'accounts' },
+        { checkName: 'connect' },
+        { checkName: 'network' },
+      ],
+      subscriptions: {
+        ...options?.subscriptions,
+        wallet: (selectedWallet) => {
+          options?.subscriptions?.wallet?.(selectedWallet);
 
-            if (selectedWallet.provider && selectedWallet.name) {
-              setWallet(selectedWallet);
+          if (selectedWallet.provider && selectedWallet.name) {
+            const ethersProvider = new ethers.providers.Web3Provider(
+              selectedWallet.provider,
+            );
 
-              const ethersProvider = new ethers.providers.Web3Provider(
-                selectedWallet.provider,
-              );
-
-              window.localStorage.setItem(
-                SELECTED_WALLET_STORAGE_KEY,
-                selectedWallet.name,
-              );
-
-              setProvider(ethersProvider);
-            }
-          },
-          address: (newAddress) => {
-            options?.subscriptions?.address?.(newAddress);
-            if (newAddress) setAddress(newAddress);
-          },
-          balance: (newBalance) => {
-            options?.subscriptions?.balance?.(newBalance);
-            if (address) setBalance(newBalance);
-          },
-          ens: (newEns) => {
-            options?.subscriptions?.ens?.(newEns);
-            setEns(newEns);
-          },
-          network: (networkId) => {
-            options?.subscriptions?.network?.(networkId);
-            setConnectedNetworkId(networkId);
-          },
+            window.localStorage.setItem(
+              SELECTED_WALLET_STORAGE_KEY,
+              selectedWallet.name,
+            );
+            dispatch({
+              type: 'wallet_connected',
+              wallet: selectedWallet,
+              provider: ethersProvider,
+            });
+          }
         },
-      }),
-    );
+        address: (newAddress) => {
+          options?.subscriptions?.address?.(newAddress);
+          if (newAddress) {
+            dispatch({
+              type: 'update_fields',
+              payload: {
+                address: newAddress,
+              },
+            });
+          }
+        },
+        balance: (newBalance) => {
+          options?.subscriptions?.balance?.(newBalance);
+          if (state.address) {
+            dispatch({
+              type: 'update_fields',
+              payload: {
+                balance: newBalance,
+              },
+            });
+          }
+        },
+        ens: (newEns) => {
+          options?.subscriptions?.ens?.(newEns);
+          dispatch({
+            type: 'update_fields',
+            payload: {
+              ens: newEns,
+            },
+          });
+        },
+        network: (networkId) => {
+          options?.subscriptions?.network?.(networkId);
+          dispatch({
+            type: 'update_fields',
+            payload: {
+              connectedNetworkId: networkId,
+            },
+          });
+        },
+      },
+    });
+
+    dispatch({ type: 'set_onboard', onboard });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    onboard?.config({ darkMode: options?.darkMode });
-  }, [options?.darkMode, onboard]);
+    state.onboard?.config({ darkMode: options?.darkMode });
+  }, [options?.darkMode, state.onboard]);
 
   const disconnectWallet = useCallback(() => {
-    if (onboard) {
-      setBalance(null);
-      setAddress(null);
-      setProvider(null);
-      setWallet(null);
-      setIsConnecting(false);
-      setConnectedNetworkId(null);
-      onboard.walletReset();
-
+    if (state.onboard) {
+      dispatch({
+        type: 'disconnect',
+      });
+      state.onboard.walletReset();
       window.localStorage.removeItem(SELECTED_WALLET_STORAGE_KEY);
     }
-  }, [onboard]);
+  }, [state.onboard]);
 
   useEffect(() => {
     (async () => {
-      if (!onboard || didInit) return;
-      setDidInit(true);
+      if (!state.onboard || state.didInit) return;
+      dispatch({
+        type: 'update_fields',
+        payload: {
+          didInit: true,
+        },
+      });
 
       const previouslySelectedWallet = window.localStorage.getItem(
         SELECTED_WALLET_STORAGE_KEY,
       );
       if (!previouslySelectedWallet) return;
 
-      const didSelect = await onboard.walletSelect(previouslySelectedWallet);
+      const didSelect = await state.onboard.walletSelect(
+        previouslySelectedWallet,
+      );
       if (!didSelect) return;
 
       // WalletConnect doesn't auto reconnect unless onboard.walletCheck() is called
       if (previouslySelectedWallet === 'WalletConnect') {
-        const isReady = await onboard.walletCheck();
+        const isReady = await state.onboard.walletCheck();
         if (!isReady) disconnectWallet();
       }
     })();
-  }, [onboard, disconnectWallet, didInit]);
+  }, [state.onboard, state.didInit, disconnectWallet]);
 
   const selectWallet = useCallback(async () => {
-    if (!onboard) return;
-
-    setIsConnecting(true);
+    if (!state.onboard) return;
+    dispatch({
+      type: 'update_fields',
+      payload: {
+        isConnecting: true,
+      },
+    });
 
     try {
-      const didSelect = await onboard.walletSelect();
+      const didSelect = await state.onboard.walletSelect();
       if (!didSelect) return;
 
-      const isReady = await onboard.walletCheck();
+      const isReady = await state.onboard.walletCheck();
       if (!isReady) {
         disconnectWallet();
       }
     } catch (e) {
       disconnectWallet();
     } finally {
-      setIsConnecting(false);
+      dispatch({
+        type: 'update_fields',
+        payload: {
+          isConnecting: false,
+        },
+      });
     }
-  }, [onboard, disconnectWallet]);
+  }, [state.onboard, disconnectWallet]);
 
   return {
-    onboard,
-    wallet,
-    address,
     selectWallet,
-    balance,
-    provider,
     disconnectWallet,
-    isConnecting,
-    ens,
-    connectedNetworkId,
+    ...state,
   };
 };
