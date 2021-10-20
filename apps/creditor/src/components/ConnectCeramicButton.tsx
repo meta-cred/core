@@ -1,8 +1,8 @@
 import { ExternalLinkIcon, LinkIcon } from '@chakra-ui/icons';
 import { Avatar, Button, ButtonProps } from '@chakra-ui/react';
 import {
-  getIdxImageUrl,
-  getIdxProfileLink,
+  getSelfIdImageUrl,
+  getSelfIdProfileLink,
   useCeramic,
 } from '@meta-cred/utils';
 import React from 'react';
@@ -29,11 +29,15 @@ export const ConnectCeramicButton: React.FC<Props> = (props) => {
         rounded="full"
         pl={2}
         leftIcon={
-          <Avatar size="xs" src={getIdxImageUrl(data.image)} name={data.name} />
+          <Avatar
+            size="xs"
+            src={getSelfIdImageUrl(data.image)}
+            name={data.name}
+          />
         }
         rightIcon={<ExternalLinkIcon />}
         color="gray.500"
-        href={getIdxProfileLink(idx.id)}
+        href={getSelfIdProfileLink(idx.id)}
         {...props}
       >
         {data?.name || 'IDX Connected'}
@@ -53,7 +57,7 @@ export const ConnectCeramicButton: React.FC<Props> = (props) => {
       }}
       {...props}
     >
-      {isConnected ? `${data?.name || 'IDX Connected'}` : 'Connect IDX'}
+      {isConnected ? `${data?.name || 'SelfID Connected'}` : 'Connect SelfID'}
     </Button>
   );
 };

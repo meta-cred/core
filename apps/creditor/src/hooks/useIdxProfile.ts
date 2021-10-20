@@ -1,4 +1,4 @@
-import { BasicProfile } from '@ceramicstudio/idx-constants';
+import type { BasicProfile } from '@datamodels/identity-profile-basic';
 import { useCeramic } from '@meta-cred/utils/useCeramic';
 import { useQuery } from 'react-query';
 
