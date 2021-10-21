@@ -19,11 +19,6 @@
     "react": ">=17"
   },
   "dependencies": {
-    "@3id/connect": "0.1.6",
-    "@ceramicnetwork/3id-did-resolver": "1.2.7",
-    "@ceramicnetwork/http-client": "1.0.7",
-    "@ceramicstudio/idx": "0.12.1",
-    "@ceramicstudio/idx-constants": "1.0.0",
     "date-fns": "2.25.0",
     "dids": "2.4.0"
   },

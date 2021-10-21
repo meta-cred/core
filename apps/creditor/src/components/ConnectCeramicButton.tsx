@@ -1,27 +1,25 @@
 import { ExternalLinkIcon, LinkIcon } from '@chakra-ui/icons';
 import { Avatar, Button, ButtonProps } from '@chakra-ui/react';
-import {
-  getSelfIdImageUrl,
-  getSelfIdProfileLink,
-  useCeramic,
-} from '@meta-cred/utils';
+import { useWallet } from '@meta-cred/usewallet';
+import { getSelfIdImageUrl, getSelfIdProfileLink } from '@meta-cred/utils';
 import React from 'react';
 
-import { useIdxProfile } from '../hooks/useIdxProfile';
+import { useSelfIdProfile } from '../hooks/useSelfIdProfile';
+import { useSelfId } from '../providers/SelfIdProvider';
 
 export type Props = ButtonProps & {
   connectLabel?: string;
 };
 
 export const ConnectCeramicButton: React.FC<Props> = (props) => {
-  const { idx, connect3ID, isAvailable, isConnected, isConnecting } =
-    useCeramic();
+  const { mySelfId, isConnecting, connect } = useSelfId();
+  const { address } = useWallet();
 
-  const { isLoading, data } = useIdxProfile();
+  const { data } = useSelfIdProfile(address);
 
-  if (!isAvailable) return null;
+  if (!address) return null;
 
-  if (isConnected && data && idx) {
+  if (mySelfId && data) {
     return (
       <Button
         as="a"
@@ -37,10 +35,10 @@ export const ConnectCeramicButton: React.FC<Props> = (props) => {
         }
         rightIcon={<ExternalLinkIcon />}
         color="gray.500"
-        href={getSelfIdProfileLink(idx.id)}
+        href={getSelfIdProfileLink(mySelfId.id)}
         {...props}
       >
-        {data?.name || 'IDX Connected'}
+        {data?.name || 'SelfID Connected'}
       </Button>
     );
   }
@@ -48,16 +46,16 @@ export const ConnectCeramicButton: React.FC<Props> = (props) => {
   return (
     <Button
       leftIcon={<LinkIcon />}
-      rightIcon={isConnected ? <ExternalLinkIcon /> : undefined}
+      rightIcon={mySelfId ? <ExternalLinkIcon /> : undefined}
       color="gray.500"
-      isLoading={isConnecting || isLoading}
+      isLoading={isConnecting}
       loadingText="Connecting"
       onClick={() => {
-        if (!isConnected && !isConnecting) connect3ID();
+        if (!mySelfId && !isConnecting) connect();
       }}
       {...props}
     >
-      {isConnected ? `${data?.name || 'SelfID Connected'}` : 'Connect SelfID'}
+      {mySelfId ? `${data?.name || 'SelfID Connected'}` : 'Connect SelfID'}
     </Button>
   );
 };

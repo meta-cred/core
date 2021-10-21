@@ -5,4 +5,5 @@ export * from './numbers';
 export * from './selfIdHelpers';
 export * as storage from './storage';
 export * from './typeUtils';
-export { useCeramic } from './useCeramic';
+export * from './useLocalStorage';
+export * from './usePrevious';

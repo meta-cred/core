@@ -4,6 +4,7 @@ module.exports = {
   globalSetup: '../../../global.setup.js',
   testRegex: '(/__tests__/.*.(test|spec)).(jsx?|tsx?)$',
   collectCoverage: true,
+  coverageDirectory: './coverage',
   coveragePathIgnorePatterns: ['(tests/.*.mock).(jsx?|tsx?)$'],
   verbose: true,
   clearMocks: true,

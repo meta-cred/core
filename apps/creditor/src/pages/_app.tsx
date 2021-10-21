@@ -6,7 +6,6 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 
 import { SEO } from '../components/SEO';
 import { SEO_TITLE } from '../constants';
-import { CeramicProviderWithWallet } from '../providers/CeramicProviderWithWallet';
 import { SelfIdProvider } from '../providers/SelfIdProvider';
 import { ThemedWalletProvider } from '../providers/ThemedWalletProvider';
 import { theme } from '../theme';
@@ -23,11 +22,9 @@ const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => (
     <SEO />
     <QueryClientProvider client={queryClient}>
       <ThemedWalletProvider>
-        <CeramicProviderWithWallet>
-          <SelfIdProvider>
-            <Component {...pageProps} />
-          </SelfIdProvider>
-        </CeramicProviderWithWallet>
+        <SelfIdProvider>
+          <Component {...pageProps} />
+        </SelfIdProvider>
       </ThemedWalletProvider>
     </QueryClientProvider>
   </ChakraProvider>
