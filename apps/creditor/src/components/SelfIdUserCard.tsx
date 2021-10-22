@@ -5,11 +5,11 @@ import React from 'react';
 
 import { useSelfIdProfile } from '../hooks/useSelfIdProfile';
 
-export type IdxUserCardProps = {
+export type SelfIdUserCardProps = {
   addressOrDid: string | null;
 };
 
-export const SelfIdUserCard: React.FC<IdxUserCardProps> = ({
+export const SelfIdUserCard: React.FC<SelfIdUserCardProps> = ({
   addressOrDid,
 }) => {
   const { isLoading, error, data } = useSelfIdProfile(addressOrDid);

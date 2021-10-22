@@ -5,7 +5,7 @@ import { useSelfId } from 'src/providers/SelfIdProvider';
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const useSelfIdProfile = (addressOrDID: string | null) => {
-  const { core } = useSelfId();
+  const { core, mySelfId } = useSelfId();
 
   const id =
     addressOrDID && utils.isAddress(addressOrDID)
@@ -16,6 +16,9 @@ export const useSelfIdProfile = (addressOrDID: string | null) => {
     ['selfIdProfile', id],
     async () => {
       if (!id) return null;
+      if (mySelfId) {
+        return mySelfId.get('basicProfile');
+      }
       return core.get<'basicProfile'>('basicProfile', id);
     },
     { enabled: Boolean(id) },

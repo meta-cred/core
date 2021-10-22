@@ -2,11 +2,11 @@ import { CheckIcon, UnlockIcon } from '@chakra-ui/icons';
 import { Button, useDisclosure, useToast, VStack } from '@chakra-ui/react';
 import { AccountModal } from '@meta-cred/ui/AccountModal';
 import { useWallet, useWeb3Auth } from '@meta-cred/usewallet';
-import { shortenIfAddress, useCeramic } from '@meta-cred/utils';
+import { shortenIfAddress } from '@meta-cred/utils';
 import React from 'react';
 
+import { useSelfId } from '../providers/SelfIdProvider';
 import { ConnectCeramicButton } from './ConnectCeramicButton';
-import { SelfIdUserCard } from './SelfIdUserCard';
 
 export type Props = {
   connectLabel?: string;
@@ -26,7 +26,7 @@ export const ConnectWalletButton: React.FC<Props> = ({
     provider,
     address,
   );
-  const { disconnect: disconnectCeramic } = useCeramic();
+  const { disconnect: disconnectSelfId } = useSelfId();
 
   const onClickAuthenticate = async () => {
     try {
@@ -45,7 +45,7 @@ export const ConnectWalletButton: React.FC<Props> = ({
   const disconnect = () => {
     disconnectWallet();
     logout();
-    disconnectCeramic();
+    disconnectSelfId();
     connectWallet();
   };
 
@@ -79,7 +79,6 @@ export const ConnectWalletButton: React.FC<Props> = ({
             {authToken ? 'Authenticated' : 'Authenticate Wallet'}
           </Button>
           <ConnectCeramicButton size="sm" />
-          <SelfIdUserCard addressOrDid={address} />
         </VStack>
       </AccountModal>
     </>
