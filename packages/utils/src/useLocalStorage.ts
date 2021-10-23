@@ -2,8 +2,10 @@ import { useCallback, useState } from 'react';
 
 import * as storage from './storage';
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export function useLocalStorage<T>(key: string, initialValue: T) {
+export function useLocalStorage<T>(
+  key: string,
+  initialValue: T,
+): readonly [T, (value: T) => void, () => void] {
   // Pass initial state function to useState so logic is only executed once
   const [storedValue, setStoredValue] = useState<T>(() => {
     try {
