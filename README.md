@@ -5,12 +5,14 @@ Packages and apps for MetaCred using yarn v2 workspaces
 Stack:
 
 - TypeScript
+- [Hasura](https://hasura.io)
+- Postgres
 - NextJS
-- ChakraUI
+- [ChakraUI](https://chakra-ui.com/)
 - ESLint
 - Prettier
 - lint-staged + husky (lint + typecheck on push, format code on commit, etc)
-- tsup
+- [tsup](https://tsup.egoist.sh/) (wrapper around esbuild)
 
 ### Running locally
 

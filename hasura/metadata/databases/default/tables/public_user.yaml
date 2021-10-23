@@ -1,0 +1,30 @@
+table:
+  name: user
+  schema: public
+select_permissions:
+- permission:
+    columns:
+    - did
+    - eth_address
+    - name
+    - created_at
+    filter: {}
+  role: anonymous
+- permission:
+    columns:
+    - did
+    - eth_address
+    - name
+    - created_at
+    filter: {}
+  role: user
+update_permissions:
+- permission:
+    check: null
+    columns:
+    - eth_address
+    - name
+    filter:
+      did:
+        _eq: X-Hasura-User-Id
+  role: user
