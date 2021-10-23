@@ -11,7 +11,7 @@ import React, {
 } from 'react';
 
 import { CONFIG } from '../config';
-import { getSelfIdCore } from '../services/selfid';
+import { getSelfIdCore } from '../utils/selfid';
 
 export type ISelfIdContext = {
   core: Core;
