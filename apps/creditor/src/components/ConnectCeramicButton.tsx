@@ -1,5 +1,5 @@
 import { ExternalLinkIcon, LinkIcon } from '@chakra-ui/icons';
-import { Avatar, Button, ButtonProps } from '@chakra-ui/react';
+import { Avatar, Button, ButtonProps, useToast } from '@chakra-ui/react';
 import { useWallet } from '@meta-cred/usewallet';
 import { getSelfIdImageUrl, getSelfIdProfileLink } from '@meta-cred/utils';
 import React from 'react';
@@ -14,8 +14,25 @@ export type Props = ButtonProps & {
 export const ConnectCeramicButton: React.FC<Props> = (props) => {
   const { mySelfId, isConnecting, connect } = useSelfId();
   const { address } = useWallet();
+  const toast = useToast();
 
   const { data } = useSelfIdProfile(address);
+
+  const handleConnect = async () => {
+    if (mySelfId || isConnecting) return;
+
+    try {
+      await connect();
+    } catch (e) {
+      toast({
+        title: 'Error Connecting to SelfID',
+        description: e instanceof Error ? e.message : (e as string),
+        status: 'error',
+        isClosable: true,
+        duration: 3000,
+      });
+    }
+  };
 
   if (!address) return null;
 
@@ -50,9 +67,7 @@ export const ConnectCeramicButton: React.FC<Props> = (props) => {
       color="gray.500"
       isLoading={isConnecting}
       loadingText="Connecting"
-      onClick={() => {
-        if (!mySelfId && !isConnecting) connect();
-      }}
+      onClick={handleConnect}
       {...props}
     >
       {mySelfId ? `${data?.name || 'SelfID Connected'}` : 'Connect SelfID'}

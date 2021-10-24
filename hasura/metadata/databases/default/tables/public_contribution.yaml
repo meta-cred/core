@@ -1,0 +1,94 @@
+table:
+  name: contribution
+  schema: public
+object_relationships:
+- name: author
+  using:
+    manual_configuration:
+      column_mapping:
+        author_id: user_id
+        dao_id: dao_id
+      insertion_order: null
+      remote_table:
+        name: dao_member
+        schema: public
+- name: dao
+  using:
+    foreign_key_constraint_on: dao_id
+array_relationships:
+- name: contributors
+  using:
+    foreign_key_constraint_on:
+      column: contribution_id
+      table:
+        name: user_contribution
+        schema: public
+- name: ratings
+  using:
+    foreign_key_constraint_on:
+      column: contribution_id
+      table:
+        name: contribution_rating
+        schema: public
+insert_permissions:
+- permission:
+    backend_only: false
+    check:
+      dao:
+        members:
+          user_id:
+            _eq: X-Hasura-User-Id
+    columns:
+    - dao_id
+    - description
+    - occured
+    - title
+    set:
+      author_id: x-hasura-User-Id
+  role: user
+select_permissions:
+- permission:
+    columns:
+    - author_id
+    - created_at
+    - dao_id
+    - description
+    - id
+    - occured
+    - title
+    - updated_at
+    filter: {}
+  role: anonymous
+- permission:
+    columns:
+    - author_id
+    - created_at
+    - dao_id
+    - description
+    - id
+    - occured
+    - title
+    - updated_at
+    filter: {}
+  role: user
+update_permissions:
+- permission:
+    check: null
+    columns:
+    - description
+    - occured
+    - title
+    filter:
+      _or:
+      - author_id:
+          _eq: X-Hasura-User-Id
+      - contributors:
+          user_id:
+            _eq: X-Hasura-User-Id
+  role: user
+delete_permissions:
+- permission:
+    filter:
+      author_id:
+        _eq: X-Hasura-User-Id
+  role: user

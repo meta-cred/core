@@ -1,0 +1,18 @@
+table:
+  name: skill
+  schema: public
+select_permissions:
+- permission:
+    columns:
+    - description
+    - name
+    - id
+    filter: {}
+  role: anonymous
+- permission:
+    columns:
+    - id
+    - name
+    - description
+    filter: {}
+  role: user

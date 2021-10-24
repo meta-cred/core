@@ -1,0 +1,45 @@
+table:
+  name: user
+  schema: public
+array_relationships:
+- name: contributed
+  using:
+    foreign_key_constraint_on:
+      column: user_id
+      table:
+        name: user_contribution
+        schema: public
+- name: dao_memberships
+  using:
+    foreign_key_constraint_on:
+      column: user_id
+      table:
+        name: dao_member
+        schema: public
+select_permissions:
+- permission:
+    columns:
+    - did
+    - eth_address
+    - name
+    - created_at
+    filter: {}
+  role: anonymous
+- permission:
+    columns:
+    - did
+    - eth_address
+    - name
+    - created_at
+    filter: {}
+  role: user
+update_permissions:
+- permission:
+    check: null
+    columns:
+    - eth_address
+    - name
+    filter:
+      did:
+        _eq: X-Hasura-User-Id
+  role: user

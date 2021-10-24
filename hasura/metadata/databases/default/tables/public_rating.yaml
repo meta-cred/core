@@ -1,0 +1,16 @@
+table:
+  name: rating
+  schema: public
+select_permissions:
+- permission:
+    columns:
+    - description
+    - label
+    filter: {}
+  role: anonymous
+- permission:
+    columns:
+    - label
+    - description
+    filter: {}
+  role: user
