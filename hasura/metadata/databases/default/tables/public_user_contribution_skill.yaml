@@ -1,5 +1,5 @@
 table:
-  name: contributor_skill
+  name: user_contribution_skill
   schema: public
 object_relationships:
 - name: contributor

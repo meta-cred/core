@@ -21,7 +21,7 @@ array_relationships:
     foreign_key_constraint_on:
       column: contribution_id
       table:
-        name: contributor
+        name: user_contribution
         schema: public
 - name: ratings
   using:

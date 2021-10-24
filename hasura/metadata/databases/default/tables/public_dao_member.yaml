@@ -5,6 +5,9 @@ object_relationships:
 - name: dao
   using:
     foreign_key_constraint_on: dao_id
+- name: user
+  using:
+    foreign_key_constraint_on: user_id
 array_relationships:
 - name: contributions
   using:
@@ -35,6 +38,7 @@ insert_permissions:
 select_permissions:
 - permission:
     columns:
+    - can_rate
     - created_at
     - dao_id
     - is_admin
@@ -43,6 +47,7 @@ select_permissions:
   role: anonymous
 - permission:
     columns:
+    - can_rate
     - created_at
     - dao_id
     - is_admin
@@ -60,6 +65,7 @@ update_permissions:
           - user_id:
               _eq: X-Hasura-User-Id
     columns:
+    - can_rate
     - is_admin
     filter:
       dao:

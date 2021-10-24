@@ -1,0 +1,68 @@
+table:
+  name: user_contribution
+  schema: public
+object_relationships:
+- name: contribution
+  using:
+    foreign_key_constraint_on: contribution_id
+- name: user
+  using:
+    foreign_key_constraint_on: user_id
+array_relationships:
+- name: skills
+  using:
+    manual_configuration:
+      column_mapping:
+        contribution_id: contribution_id
+        user_id: user_id
+      insertion_order: null
+      remote_table:
+        name: user_contribution_skill
+        schema: public
+insert_permissions:
+- permission:
+    backend_only: false
+    check:
+      contribution:
+        author_id:
+          _eq: X-Hasura-User-Id
+    columns:
+    - contribution_id
+    - contribution_share
+    - user_id
+  role: user
+select_permissions:
+- permission:
+    columns:
+    - contribution_id
+    - contribution_share
+    - user_id
+    filter: {}
+  role: anonymous
+- permission:
+    columns:
+    - contribution_id
+    - contribution_share
+    - user_id
+    filter: {}
+  role: user
+update_permissions:
+- permission:
+    check:
+      contribution:
+        author_id:
+          _eq: X-Hasura-User-Id
+    columns:
+    - contribution_share
+    filter:
+      contribution:
+        author_id:
+          _eq: X-Hasura-User-Id
+  role: user
+delete_permissions:
+- permission:
+    filter:
+      contribution:
+        author_id:
+          _eq: X-Hasura-User-Id
+  role: user
