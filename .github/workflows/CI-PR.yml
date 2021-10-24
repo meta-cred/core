@@ -1,4 +1,4 @@
-name: MetaCred CI
+name: Typecheck, Lint and Test
 
 on:
   pull_request:
@@ -25,7 +25,7 @@ jobs:
 
       - uses: actions/cache@v2
         with:
-          path: '**/node_modules'
+          path: '.yarn/cache'
           key: nodeModules-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
 
       - name: Yarn install
@@ -61,7 +61,7 @@ jobs:
 
       - uses: actions/cache@v2
         with:
-          path: '**/node_modules'
+          path: '.yarn/cache'
           key: nodeModules-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
 
       - name: Install packages
