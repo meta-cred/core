@@ -11,10 +11,12 @@ import React, {
 } from 'react';
 
 import { CONFIG } from '../config';
+import { useCeramicDID } from '../hooks/useCeramicDID';
 import { getSelfIdCore } from '../utils/selfid';
 
 export type ISelfIdContext = {
   core: Core;
+  myDID: string | null | undefined;
   mySelfId: SelfID | null;
   isConnecting: boolean;
   connect: () => Promise<void>;
@@ -23,6 +25,7 @@ export type ISelfIdContext = {
 
 export const SelfIdContext = createContext<ISelfIdContext>({
   core: new Core({ ceramic: CONFIG.ceramicEndpoint }),
+  myDID: null,
   mySelfId: null,
   isConnecting: false,
   connect: () => Promise.resolve(),
@@ -45,6 +48,8 @@ export const SelfIdProvider: React.FC<SelfIdProviderProps> = ({ children }) => {
     useLocalStorage<string | null>(STORAGE_KEY, null);
 
   const core = getSelfIdCore();
+
+  const { data: myDID } = useCeramicDID(address);
 
   const connect = useCallback(async () => {
     if (!provider || !address) {
@@ -102,6 +107,7 @@ export const SelfIdProvider: React.FC<SelfIdProviderProps> = ({ children }) => {
     <SelfIdContext.Provider
       value={{
         core,
+        myDID,
         mySelfId,
         isConnecting,
         connect,

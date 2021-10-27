@@ -22,7 +22,8 @@
     "@meta-cred/utils": "workspace:*",
     "bnc-onboard": "1.34.2",
     "js-base64": "3.7.2",
-    "nanoid": "3.1.30"
+    "nanoid": "3.1.30",
+    "zustand": "3.6.0"
   },
   "devDependencies": {
     "@types/react": "17.0.30",

@@ -1,25 +1,36 @@
 /**
- * GQLESS: You can safely modify this file and Query Fetcher based on your needs
+ * GQTY: You can safely modify this file and Query Fetcher based on your needs
  */
 
-import { createReactClient } from '@gqless/react';
-import { createClient, QueryFetcher } from 'gqless';
+import { createReactClient } from '@gqty/react';
+import { getTokenFromStore, useAuthStore } from '@meta-cred/usewallet';
+import type { QueryFetcher } from 'gqty';
+import { createClient } from 'gqty';
 import type { ExecutionResult } from 'graphql';
 
 import { CONFIG } from '../config';
-import {
+import type {
   GeneratedSchema,
-  generatedSchema,
-  scalarsEnumsHash,
   SchemaObjectTypes,
   SchemaObjectTypesNames,
 } from './schema.generated';
+import { generatedSchema, scalarsEnumsHash } from './schema.generated';
 
 const queryFetcher: QueryFetcher = async (query, variables) => {
+  const authToken = useAuthStore.getState().authToken || getTokenFromStore();
+
+  const isServer = typeof window === 'undefined';
+
   const response = await fetch(CONFIG.graphqlEndpoint, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
+      ...(authToken && !isServer
+        ? { authorization: `Bearer ${authToken}` }
+        : null),
+      ...(isServer
+        ? { 'X-Hasura-Admin-Secret': CONFIG.graphqlAdminSecret }
+        : null),
     },
     body: JSON.stringify({
       query,
@@ -41,8 +52,15 @@ export const client = createClient<
   queryFetcher,
 });
 
-export const { query, mutation, mutate, subscription, resolved, refetch } =
-  client;
+export const {
+  query,
+  mutation,
+  mutate,
+  subscription,
+  resolved,
+  refetch,
+  track,
+} = client;
 
 export const {
   graphql,

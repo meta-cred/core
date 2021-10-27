@@ -6,7 +6,7 @@
     "dev": "next",
     "build": "next build",
     "start": "next start",
-    "generate": "gqless generate",
+    "generate": "gqty generate",
     "typecheck": "tsc",
     "test": "echo 'No Tests'",
     "clean": "rimraf --no-glob ./.next ./out ./coverage"
@@ -18,27 +18,29 @@
     "@chakra-ui/theme-tools": "1.2.2",
     "@emotion/react": "11.4.1",
     "@emotion/styled": "11.3.0",
-    "@gqless/react": "2.0.15",
+    "@gqty/react": "2.0.0",
     "@meta-cred/ui": "workspace:*",
     "@meta-cred/usewallet": "workspace:*",
     "@meta-cred/utils": "workspace:*",
     "@self.id/core": "0.1.0",
-    "@self.id/web": "^0.1.0",
+    "@self.id/web": "0.1.0",
     "ethers": "5.4.7",
     "framer-motion": "4.1.17",
-    "gqless": "2.0.14",
+    "gqty": "2.0.3",
     "near-api-js": "0.42.0",
     "next": "11.1.2",
+    "next-connect": "0.11.0",
     "react": "17.0.2",
     "react-dom": "17.0.2",
-    "react-query": "3.26.0"
+    "react-query": "3.26.0",
+    "zustand": "3.6.0"
   },
   "license": "GPL-3.0",
   "devDependencies": {
     "@datamodels/identity-accounts-web": "0.1.2",
     "@datamodels/identity-profile-basic": "0.1.2",
-    "@glazed/types": "^0.1.3",
-    "@gqless/cli": "2.0.16",
+    "@glazed/types": "0.1.3",
+    "@gqty/cli": "2.1.2",
     "graphql": "15.6.1"
   }
 }
