@@ -5,7 +5,7 @@ import { ChainId } from './constants';
 export const addressToCaip10String = (
   address: string,
   chainId: number = ChainId.Mainnet,
-): string => `${address}@eip155:${chainId}`;
+): string => `${address.toLowerCase()}@eip155:${chainId}`;
 
 export const getIpfsUrl = (
   hash: string,

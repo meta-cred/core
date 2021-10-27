@@ -14,6 +14,9 @@ type Claim = {
   tid: string;
 };
 
+const MESSAGE =
+  'Please sign this message with your wallet to authenticate.\n\n';
+
 export async function createToken(
   provider: providers.Web3Provider,
 ): Promise<string> {
@@ -23,7 +26,7 @@ export async function createToken(
   const iat = +new Date();
 
   const claim = {
-    iat: +new Date(),
+    iat,
     exp: iat + tokenDuration,
     iss: address,
     aud: 'meta-cred',
@@ -31,9 +34,10 @@ export async function createToken(
   };
 
   const serializedClaim = JSON.stringify(claim);
-  const proof = await requestSignature(provider, serializedClaim);
+  const signInMessage = `${MESSAGE}${serializedClaim}`;
+  const proof = await requestSignature(provider, signInMessage);
 
-  return Base64.encode(JSON.stringify([proof, serializedClaim]));
+  return Base64.encode(JSON.stringify([proof, signInMessage]));
 }
 
 export async function verifyToken(
@@ -43,7 +47,8 @@ export async function verifyToken(
   try {
     const rawToken = Base64.decode(token);
     const [proof, rawClaim] = JSON.parse(rawToken) as [string, string];
-    const claim = JSON.parse(rawClaim) as Claim;
+
+    const claim = JSON.parse(rawClaim.replace(MESSAGE, '')) as Claim;
     const address = claim.iss;
 
     const valid = await verifySignature(address, rawClaim, proof, provider);

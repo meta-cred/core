@@ -12,65 +12,38 @@ export type Props = ButtonProps & {
 };
 
 export const ConnectCeramicButton: React.FC<Props> = (props) => {
-  const { mySelfId, isConnecting, connect } = useSelfId();
+  const { mySelfId, isConnecting, myDID } = useSelfId();
   const { address } = useWallet();
-  const toast = useToast();
 
-  const { data } = useSelfIdProfile(address);
+  const { data } = useSelfIdProfile(mySelfId?.id || address);
 
-  const handleConnect = async () => {
-    if (mySelfId || isConnecting) return;
+  if (!address || !myDID) return null;
 
-    try {
-      await connect();
-    } catch (e) {
-      toast({
-        title: 'Error Connecting to SelfID',
-        description: e instanceof Error ? e.message : (e as string),
-        status: 'error',
-        isClosable: true,
-        duration: 3000,
-      });
-    }
-  };
+  const hasProfile = data?.image || data?.name;
 
-  if (!address) return null;
-
-  if (mySelfId && data) {
-    return (
-      <Button
-        as="a"
-        target="_blank"
-        rounded="full"
-        pl={2}
-        leftIcon={
+  return (
+    <Button
+      leftIcon={
+        hasProfile ? (
           <Avatar
             size="xs"
             src={getSelfIdImageUrl(data.image)}
             name={data.name}
           />
-        }
-        rightIcon={<ExternalLinkIcon />}
-        color="gray.500"
-        href={getSelfIdProfileLink(mySelfId.id)}
-        {...props}
-      >
-        {data?.name || 'SelfID Connected'}
-      </Button>
-    );
-  }
-
-  return (
-    <Button
-      leftIcon={<LinkIcon />}
-      rightIcon={mySelfId ? <ExternalLinkIcon /> : undefined}
+        ) : undefined
+      }
+      pl={hasProfile ? '2' : undefined}
+      rightIcon={<ExternalLinkIcon />}
       color="gray.500"
       isLoading={isConnecting}
       loadingText="Connecting"
-      onClick={handleConnect}
+      as="a"
+      target="_blank"
+      rounded="full"
+      href={getSelfIdProfileLink(myDID)}
       {...props}
     >
-      {mySelfId ? `${data?.name || 'SelfID Connected'}` : 'Connect SelfID'}
+      {`${data?.name || 'Your Profile'}`}
     </Button>
   );
 };

@@ -6,6 +6,7 @@ interface IConfig {
   ceramicUrl: string;
   ceramicEndpoint: string;
   graphqlEndpoint: string;
+  graphqlAdminSecret: string;
 }
 
 function parseEnv<T extends string | number>(
@@ -41,4 +42,5 @@ export const CONFIG: IConfig = {
     process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT,
     'https://metacred.hasura.app/v1/graphql',
   ),
+  graphqlAdminSecret: parseEnv(process.env.GRAPHQL_ADMIN_SECRET, ''),
 };

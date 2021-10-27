@@ -15,7 +15,11 @@
     "test:watch": "jest --watch",
     "lint": "eslint \"**/*.{ts,tsx,js,jsx}\"",
     "prepare": "husky install",
-    "creditor": "yarn workspace creditor-app"
+    "creditor": "yarn workspace creditor-app",
+    "console": "hasura --project ./hasura console"
+  },
+  "resolutions": {
+    "@graphql-tools/utils": "^8.5.0"
   },
   "devDependencies": {
     "@types/jest": "27.0.2",
