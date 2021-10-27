@@ -32,15 +32,13 @@ const getOrCreateUser = async (ethAddress: string) => {
       limit: 1,
       where: { eth_address: { _eq: ethAddress.toLowerCase() } },
     });
-    return existingUser.did && existingUser.eth_address
-      ? {
-          did: existingUser.did,
-          eth_address: existingUser.eth_address,
-        }
-      : null;
+    return {
+      did: existingUser?.did,
+      eth_address: existingUser?.eth_address,
+    };
   });
 
-  if (!user) {
+  if (!user.did) {
     // Create user since it doesn't exist yet
     const caip10Address = addressToCaip10String(ethAddress);
 
@@ -53,16 +51,14 @@ const getOrCreateUser = async (ethAddress: string) => {
         object: { did, eth_address: ethAddress.toLowerCase() },
       });
 
-      return createdUser?.did && createdUser?.eth_address
-        ? {
-            did: createdUser.did,
-            eth_address: createdUser.eth_address,
-          }
-        : null;
+      return {
+        did: createdUser?.did,
+        eth_address: createdUser?.eth_address,
+      };
     });
   }
 
-  if (!user) {
+  if (!user.did) {
     throw new Error('Unable to get or create user');
   }
 
