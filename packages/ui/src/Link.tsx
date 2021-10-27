@@ -6,26 +6,29 @@ export type Props = Omit<
   React.ComponentProps<typeof ChakraLink>,
   keyof NextLinkProps
 > &
-  NextLinkProps;
+  NextLinkProps & {
+    LinkComponent?: typeof ChakraLink;
+  };
 
 export const Link: React.FC<Props> = ({
   href,
   isExternal,
   children,
   as,
+  LinkComponent = ChakraLink,
   ...props
 }) => {
   if (isExternal && typeof href === 'string') {
     return (
-      <ChakraLink isExternal href={href} {...props}>
+      <LinkComponent isExternal href={href} {...props}>
         {children}
-      </ChakraLink>
+      </LinkComponent>
     );
   }
 
   return (
     <NextLink href={href} as={as} passHref>
-      <ChakraLink {...props}>{children}</ChakraLink>
+      <LinkComponent {...props}>{children}</LinkComponent>
     </NextLink>
   );
 };
