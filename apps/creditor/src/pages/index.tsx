@@ -1,4 +1,4 @@
-import { Heading, Stack } from '@chakra-ui/react';
+import { Stack } from '@chakra-ui/react';
 import React from 'react';
 
 import { DaoCard } from '../components/DaoCard';
@@ -16,8 +16,8 @@ const Index: React.FC = () => {
 
   return (
     <PageLayout>
-      <Container px="6">
-        <Stack spacing="6" py="8" maxW="2xl" w="100%">
+      <Container>
+        <Stack spacing="6" py="8" w="100%">
           {daos.map((d) => (
             <DaoCard key={d.id || 0} name={d.name} isLoading={!d.id} />
           ))}
