@@ -1,10 +1,13 @@
+import { CeramicNetwork } from '@self.id/core/src/types';
+import { ConnectNetwork } from '@self.id/web/src/client';
+
 interface IConfig {
   chainId: number;
   onboardDappId: string;
   infuraId: string;
   ipfsEndpoint: string;
-  ceramicUrl: string;
-  ceramicEndpoint: string;
+  ceramicGateway: CeramicNetwork;
+  ceramicEndpoint: ConnectNetwork;
   graphqlEndpoint: string;
   graphqlAdminSecret: string;
 }
@@ -30,13 +33,13 @@ export const CONFIG: IConfig = {
     process.env.NEXT_PUBLIC_IPFS_ENDPOINT,
     'https://ipfs.infura.io',
   ),
-  ceramicUrl: parseEnv(
-    process.env.NEXT_PUBLIC_CERAMIC_URL,
-    'https://gateway-clay.ceramic.network',
+  ceramicGateway: parseEnv<CeramicNetwork>(
+    process.env.NEXT_PUBLIC_CERAMIC_GATEWAY,
+    'mainnet-gateway',
   ),
-  ceramicEndpoint: parseEnv(
+  ceramicEndpoint: parseEnv<ConnectNetwork>(
     process.env.NEXT_PUBLIC_CERAMIC_ENDPOINT,
-    'testnet-clay',
+    'mainnet',
   ),
   graphqlEndpoint: parseEnv(
     process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT,

@@ -8,6 +8,6 @@ export const getSelfIdCore = (): Core => {
   if (selfId) {
     return selfId;
   }
-  selfId = new Core({ ceramic: CONFIG.ceramicEndpoint });
+  selfId = new Core({ ceramic: CONFIG.ceramicGateway });
   return selfId;
 };

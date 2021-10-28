@@ -1,4 +1,4 @@
-import { Heading, Skeleton, Stack } from '@chakra-ui/react';
+import { Stack } from '@chakra-ui/react';
 import { shortenIfAddress } from '@meta-cred/utils';
 import React from 'react';
 

@@ -2,7 +2,11 @@ import { CheckIcon, UnlockIcon } from '@chakra-ui/icons';
 import { Button, useDisclosure, useToast, VStack } from '@chakra-ui/react';
 import { AccountModal } from '@meta-cred/ui/AccountModal';
 import { useAuthStore, useWallet } from '@meta-cred/usewallet';
-import { addressToCaip10String, shortenIfAddress } from '@meta-cred/utils';
+import {
+  addressToCaip10String,
+  getErrorMessage,
+  shortenIfAddress,
+} from '@meta-cred/utils';
 import React, { useCallback, useEffect, useState } from 'react';
 
 import { useSelfId } from '../providers/SelfIdProvider';
@@ -36,8 +40,7 @@ export const ConnectWalletButton: React.FC<Props> = ({
     } catch (e) {
       toast({
         title: 'Error Connecting to SelfID',
-        description:
-          'message' in (e as Error) ? (e as Error).message : undefined,
+        description: getErrorMessage(e),
         status: 'error',
         isClosable: true,
         duration: 3000,
@@ -61,7 +64,9 @@ export const ConnectWalletButton: React.FC<Props> = ({
       try {
         await core.getAccountDID(addressToCaip10String(address));
       } catch (e) {
-        await connectSelfId();
+        if (getErrorMessage(e)?.includes('No DID found')) {
+          await connectSelfId();
+        }
       }
 
       if (!authToken) {
@@ -70,8 +75,7 @@ export const ConnectWalletButton: React.FC<Props> = ({
     } catch (e) {
       toast({
         title: 'Error Authenticating',
-        description:
-          'message' in (e as Error) ? (e as Error).message : undefined,
+        description: getErrorMessage(e),
         status: 'error',
         isClosable: true,
         duration: 3000,

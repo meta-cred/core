@@ -1,6 +1,5 @@
 import { useWallet } from '@meta-cred/usewallet';
 import { useLocalStorage, usePrevious } from '@meta-cred/utils';
-import { Core } from '@self.id/core';
 import { EthereumAuthProvider, SelfID } from '@self.id/web';
 import React, {
   createContext,
@@ -12,10 +11,8 @@ import React, {
 
 import { CONFIG } from '../config';
 import { useCeramicDID } from '../hooks/useCeramicDID';
-import { getSelfIdCore } from '../utils/selfid';
 
 export type ISelfIdContext = {
-  core: Core;
   myDID: string | null | undefined;
   mySelfId: SelfID | null;
   isConnecting: boolean;
@@ -24,7 +21,6 @@ export type ISelfIdContext = {
 };
 
 export const SelfIdContext = createContext<ISelfIdContext>({
-  core: new Core({ ceramic: CONFIG.ceramicEndpoint }),
   myDID: null,
   mySelfId: null,
   isConnecting: false,
@@ -47,8 +43,6 @@ export const SelfIdProvider: React.FC<SelfIdProviderProps> = ({ children }) => {
   const [connectedAddress, setConnectedAddress, removeConnectedAddress] =
     useLocalStorage<string | null>(STORAGE_KEY, null);
 
-  const core = getSelfIdCore();
-
   const { data: myDID } = useCeramicDID(address);
 
   const connect = useCallback(async () => {
@@ -59,8 +53,8 @@ export const SelfIdProvider: React.FC<SelfIdProviderProps> = ({ children }) => {
       setIsConnecting(true);
       const self = await SelfID.authenticate({
         authProvider: new EthereumAuthProvider(provider.provider, address),
-        ceramic: CONFIG.ceramicEndpoint,
-        connectNetwork: 'testnet-clay',
+        ceramic: CONFIG.ceramicGateway,
+        connectNetwork: CONFIG.ceramicEndpoint,
       });
       setMySelfId(self);
       setConnectedAddress(address);
@@ -106,7 +100,6 @@ export const SelfIdProvider: React.FC<SelfIdProviderProps> = ({ children }) => {
   return (
     <SelfIdContext.Provider
       value={{
-        core,
         myDID,
         mySelfId,
         isConnecting,

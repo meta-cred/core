@@ -1,5 +1,5 @@
-import { ExternalLinkIcon, LinkIcon } from '@chakra-ui/icons';
-import { Avatar, Button, ButtonProps, useToast } from '@chakra-ui/react';
+import { ExternalLinkIcon } from '@chakra-ui/icons';
+import { Avatar, Button, ButtonProps } from '@chakra-ui/react';
 import { useWallet } from '@meta-cred/usewallet';
 import { getSelfIdImageUrl, getSelfIdProfileLink } from '@meta-cred/utils';
 import React from 'react';
@@ -12,7 +12,7 @@ export type Props = ButtonProps & {
 };
 
 export const ConnectCeramicButton: React.FC<Props> = (props) => {
-  const { mySelfId, isConnecting, myDID } = useSelfId();
+  const { mySelfId, myDID } = useSelfId();
   const { address } = useWallet();
 
   const { data } = useSelfIdProfile(mySelfId?.id || address);
@@ -35,8 +35,6 @@ export const ConnectCeramicButton: React.FC<Props> = (props) => {
       pl={hasProfile ? '2' : undefined}
       rightIcon={<ExternalLinkIcon />}
       color="gray.500"
-      isLoading={isConnecting}
-      loadingText="Connecting"
       as="a"
       target="_blank"
       rounded="full"
