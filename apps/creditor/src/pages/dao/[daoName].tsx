@@ -13,10 +13,10 @@ const DaoPage: React.FC = () => {
 
   return (
     <PageLayout>
-      <Container px="6">
+      <Container>
         <SafeSuspense
           fallback={
-            <Stack spacing="6" py="8" maxW="2xl" w="100%">
+            <Stack spacing="6" py="8" w="100%">
               <Skeleton h={6} />
               <Skeleton h={6} />
               <Skeleton h={6} />

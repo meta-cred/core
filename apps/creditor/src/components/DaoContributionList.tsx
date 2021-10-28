@@ -12,11 +12,20 @@ export type DaoContributionListProps = {
 export const DaoContributionList: React.FC<DaoContributionListProps> = ({
   daoName,
 }) => {
-  const query = useQuery({
+  const q = useQuery({
     suspense: true,
+    prepare({ prepass, query }) {
+      prepass(
+        query.dao,
+        'id',
+        'name',
+        'contributions.id',
+        'contributions.title',
+      );
+    },
   });
 
-  const [dao] = query.dao({
+  const [dao] = q.dao({
     limit: 1,
     where: { name: { _ilike: daoName } },
   });
@@ -27,20 +36,23 @@ export const DaoContributionList: React.FC<DaoContributionListProps> = ({
   });
 
   return (
-    <Stack spacing="6" py="8" maxW="2xl" w="100%">
-      <Heading>{dao.name} Contributions</Heading>
-      {contributions.map((c) => (
-        <ContributionCard
-          key={c.id || 0}
-          title={c.title}
-          description={c.description}
-          author={
-            c.author?.user.name || shortenIfAddress(c.author?.user.eth_address)
-          }
-          createdAt={c.created_at}
-          isLoading={!c.id}
-        />
-      ))}
-    </Stack>
+    <>
+      <Heading mt={8}>{dao.name} Contributions</Heading>
+      <Stack my={8} w="100%">
+        {contributions.map((c) => (
+          <ContributionCard
+            key={c.id || 0}
+            title={c.title}
+            description={c.description}
+            author={
+              c.author?.user.name ||
+              shortenIfAddress(c.author?.user.eth_address)
+            }
+            createdAt={c.created_at}
+            isLoading={!c.id}
+          />
+        ))}
+      </Stack>
+    </>
   );
 };
