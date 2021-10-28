@@ -2,10 +2,11 @@ import { CheckIcon, UnlockIcon } from '@chakra-ui/icons';
 import { Button, useDisclosure, useToast, VStack } from '@chakra-ui/react';
 import { AccountModal } from '@meta-cred/ui/AccountModal';
 import { useAuthStore, useWallet } from '@meta-cred/usewallet';
-import { shortenIfAddress } from '@meta-cred/utils';
-import React, { useEffect } from 'react';
+import { addressToCaip10String, shortenIfAddress } from '@meta-cred/utils';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import { useSelfId } from '../providers/SelfIdProvider';
+import { getSelfIdCore } from '../utils/selfid';
 import { ConnectCeramicButton } from './ConnectCeramicButton';
 
 export type Props = {
@@ -22,11 +23,12 @@ export const ConnectWalletButton: React.FC<Props> = ({
 
   const displayName = ens?.name || shortenIfAddress(address);
 
-  const { login, logout, authToken, isLoggingIn, checkAuth } = useAuthStore();
+  const { login, logout, authToken, isLoggingIn, checkAuth, didRehydrate } =
+    useAuthStore();
 
   const selfId = useSelfId();
 
-  const connectSelfId = async () => {
+  const connectSelfId = useCallback(async () => {
     if (selfId.mySelfId || selfId.isConnecting) return;
 
     try {
@@ -41,23 +43,24 @@ export const ConnectWalletButton: React.FC<Props> = ({
         duration: 3000,
       });
     }
-  };
+  }, [selfId, toast]);
 
   // Rehydrate any existing auth tokens on mount or wallet change
   useEffect(() => {
-    (async () => {
-      if (!provider) return;
+    if (!provider) return;
 
-      await checkAuth(provider);
-    })();
+    checkAuth(provider);
   }, [checkAuth, provider, address]);
 
-  const onClickAuthenticate = async () => {
+  const onClickAuthenticate = useCallback(async () => {
     try {
-      if (!provider) throw new Error('No Ethereum Provider Detected');
+      if (!provider || !address)
+        throw new Error('No Ethereum Provider Detected');
+      const core = getSelfIdCore();
 
-      // user hasn't created a DID yet
-      if (!selfId.myDID) {
+      try {
+        await core.getAccountDID(addressToCaip10String(address));
+      } catch (e) {
         await connectSelfId();
       }
 
@@ -74,25 +77,48 @@ export const ConnectWalletButton: React.FC<Props> = ({
         duration: 3000,
       });
     }
-  };
+  }, [address, authToken, connectSelfId, login, provider, toast]);
+
+  const [didPrompt, setDidPrompt] = useState(false);
+
+  // Prompt user to authenticate if they haven't yet
+  useEffect(() => {
+    (async () => {
+      if (didPrompt || !address || authToken || !didRehydrate) return;
+
+      setDidPrompt(true);
+      onOpen();
+      await onClickAuthenticate();
+    })();
+  }, [
+    onOpen,
+    didPrompt,
+    didRehydrate,
+    authToken,
+    address,
+    onClickAuthenticate,
+  ]);
 
   const disconnect = () => {
     disconnectWallet();
     logout();
     selfId.disconnect();
     connectWallet();
+    setDidPrompt(false);
+  };
+
+  const connect = async () => {
+    if (address) {
+      onOpen();
+      return;
+    }
+
+    await connectWallet();
   };
 
   return (
     <>
-      <Button
-        onClick={() => {
-          if (address) onOpen();
-          else connectWallet();
-        }}
-      >
-        {address ? displayName : connectLabel}
-      </Button>
+      <Button onClick={connect}>{address ? displayName : connectLabel}</Button>
       <AccountModal
         onClose={onClose}
         connectedWallet={wallet?.name}
@@ -109,7 +135,7 @@ export const ConnectWalletButton: React.FC<Props> = ({
             variant="ghost"
             isLoading={isLoggingIn || selfId.isConnecting}
             loadingText={
-              selfId.isConnecting ? 'Connecting SelfID' : 'Authenticating'
+              selfId.isConnecting ? 'Connecting DID' : 'Authenticating'
             }
             onClick={onClickAuthenticate}
           >

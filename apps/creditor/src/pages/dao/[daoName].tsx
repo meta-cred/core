@@ -1,3 +1,4 @@
+import { Heading, Skeleton } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -19,6 +20,9 @@ const DaoPage: React.FC = () => {
   return (
     <PageLayout>
       <Container>
+        <Skeleton mt={8} isLoaded={Boolean(dao.name)}>
+          <Heading>{dao.name} Contributions</Heading>
+        </Skeleton>
         <DaoContributionList dao={dao} />
       </Container>
     </PageLayout>

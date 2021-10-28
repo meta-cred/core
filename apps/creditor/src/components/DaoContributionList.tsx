@@ -18,25 +18,19 @@ export const DaoContributionList: React.FC<DaoContributionListProps> = ({
   });
 
   return (
-    <>
-      <Skeleton mt={8} isLoaded={!!dao.id}>
-        <Heading>{dao.name} Contributions</Heading>
-      </Skeleton>
-      <Stack my={8} w="100%">
-        {contributions.map((c) => (
-          <ContributionCard
-            key={c.id || 0}
-            title={c.title}
-            description={c.description}
-            author={
-              c.author?.user.name ||
-              shortenIfAddress(c.author?.user.eth_address)
-            }
-            createdAt={c.created_at}
-            isLoaded={!!c.id}
-          />
-        ))}
-      </Stack>
-    </>
+    <Stack my={8} w="100%">
+      {contributions.map((c) => (
+        <ContributionCard
+          key={c.id || 0}
+          title={c.title}
+          description={c.description}
+          author={
+            c.author?.user.name || shortenIfAddress(c.author?.user.eth_address)
+          }
+          createdAt={c.created_at}
+          isLoaded={!!c.id}
+        />
+      ))}
+    </Stack>
   );
 };
