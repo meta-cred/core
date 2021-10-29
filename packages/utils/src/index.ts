@@ -1,6 +1,7 @@
 export * from './address';
 export * from './constants';
 export * from './dateHelpers';
+export * from './errorHelpers';
 export * from './numbers';
 export * from './selfIdHelpers';
 export * as storage from './storage';

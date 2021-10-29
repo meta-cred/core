@@ -9,14 +9,16 @@ export type Web3Auth = {
   checkAuth: (provider: providers.Web3Provider) => Promise<void>;
   authToken: string | null;
   isLoggingIn: boolean;
+  didRehydrate: boolean;
 };
 
 export const useAuthStore = create<Web3Auth>((set) => ({
   authToken: null,
   isLoggingIn: false,
+  didRehydrate: false,
   checkAuth: async (provider: providers.Web3Provider) => {
     const authToken = await getExistingAuth(provider);
-    set({ authToken });
+    set({ authToken, didRehydrate: true });
   },
   login: async (provider: providers.Web3Provider) => {
     set({ isLoggingIn: true });

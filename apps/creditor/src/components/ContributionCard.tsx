@@ -18,7 +18,7 @@ type Props = {
   createdAt: Maybe<Date | number | string>;
   category?: Maybe<string>;
   description: Maybe<string>;
-  isLoading?: boolean;
+  isLoaded?: boolean;
 };
 
 export const ContributionCard: React.FC<Props> = ({
@@ -27,47 +27,45 @@ export const ContributionCard: React.FC<Props> = ({
   createdAt,
   category,
   description,
-  isLoading,
+  isLoaded,
 }) => (
-  <Box p={6} borderWidth={1} rounded="lg">
-    <Stack>
-      <Skeleton isLoaded={!isLoading} h={6}>
-        <Heading size="md" fontWeight="semibold">
-          {isLoading ? 'Title Is Loading' : title}
-        </Heading>
-      </Skeleton>
+  <Box as={Stack} p={6} borderWidth={1} rounded="lg">
+    <Skeleton isLoaded={isLoaded} h={6}>
+      <Heading size="md" fontWeight="semibold">
+        {title || '<title>'}
+      </Heading>
+    </Skeleton>
 
-      <SkeletonText isLoaded={!isLoading} noOfLines={1}>
-        <HStack>
-          <Text
-            fontSize="sm"
-            fontWeight="medium"
-            color={useColorModeValue('gray.700', 'gray.300')}
-          >
-            {author}
-          </Text>
-          <Text
-            fontSize="sm"
-            color={useColorModeValue('blackAlpha.600', 'whiteAlpha.600')}
-          >
-            tracked {formatDistanceFromNow(createdAt)}
-          </Text>
-        </HStack>
-        {category ? (
-          <Tag borderRadius="full" my={2}>
-            {category}
-          </Tag>
-        ) : null}
-      </SkeletonText>
-
-      <SkeletonText isLoaded={!isLoading} noOfLines={3} spacing={4}>
+    <SkeletonText isLoaded={isLoaded} noOfLines={1}>
+      <HStack>
         <Text
-          color={useColorModeValue('blackAlpha.700', 'whiteAlpha.700')}
           fontSize="sm"
+          fontWeight="medium"
+          color={useColorModeValue('gray.700', 'gray.300')}
         >
-          {description}
+          {author}
         </Text>
-      </SkeletonText>
-    </Stack>
+        <Text
+          fontSize="sm"
+          color={useColorModeValue('blackAlpha.600', 'whiteAlpha.600')}
+        >
+          tracked {formatDistanceFromNow(createdAt)}
+        </Text>
+      </HStack>
+      {category ? (
+        <Tag borderRadius="full" my={2}>
+          {category}
+        </Tag>
+      ) : null}
+    </SkeletonText>
+
+    <SkeletonText isLoaded={isLoaded} noOfLines={3} spacing={4}>
+      <Text
+        color={useColorModeValue('blackAlpha.700', 'whiteAlpha.700')}
+        fontSize="sm"
+      >
+        {description}
+      </Text>
+    </SkeletonText>
   </Box>
 );
