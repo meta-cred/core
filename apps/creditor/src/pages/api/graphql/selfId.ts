@@ -5,7 +5,10 @@ import { EZSchema, ezSchema, gql } from '@graphql-ez/plugin-schema';
 import axios from 'axios';
 
 import { CONFIG } from '@/config';
-import { SelfIdApiResult } from '@/pages/api/selfId/[address]';
+import {
+  SelfIdAccountsResult,
+  SelfIdProfileResult,
+} from '@/pages/api/selfId/[...address]';
 
 const SELFID_API_BASE_URL = CONFIG.appUrl.includes('localhost')
   ? `http://${CONFIG.appUrl}`
@@ -60,12 +63,13 @@ const schema: EZSchema = {
         { address }: { address: string },
       ): Promise<BasicProfile | null> => {
         try {
-          const { data } = await axios.get<SelfIdApiResult>(
-            `${SELFID_API_BASE_URL}/api/selfId/${address}`,
+          const { data } = await axios.get<SelfIdProfileResult>(
+            `${SELFID_API_BASE_URL}/api/selfId/${address}/profile`,
           );
 
-          return data.profile;
+          return data;
         } catch (e) {
+          console.log(e);
           return null;
         }
       },
@@ -74,12 +78,12 @@ const schema: EZSchema = {
         { address }: { address: string },
       ): Promise<Account[] | null> => {
         try {
-          const { data } = await axios.get<SelfIdApiResult>(
-            `${CONFIG.appUrl}/api/selfId/${address}`,
+          const { data } = await axios.get<SelfIdAccountsResult>(
+            `${SELFID_API_BASE_URL}/api/selfId/${address}/accounts`,
           );
 
           return (
-            data?.accounts?.map((a) => ({
+            data?.map((a) => ({
               ...a,
               attestations: a.attestations?.map((att) => ({
                 didJwtVc: att['did-jwt-vc'],
@@ -87,6 +91,7 @@ const schema: EZSchema = {
             })) || null
           );
         } catch (e) {
+          console.log(e);
           return null;
         }
       },
