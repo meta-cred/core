@@ -27,6 +27,7 @@
     "@self.id/3box-legacy": "^0.1.0",
     "@self.id/core": "0.1.0",
     "@self.id/web": "0.1.0",
+    "axios": "^0.24.0",
     "ethers": "5.4.7",
     "framer-motion": "4.1.17",
     "gqty": "2.1.0",

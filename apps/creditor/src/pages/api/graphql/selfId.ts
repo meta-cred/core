@@ -2,12 +2,14 @@ import type { Account } from '@datamodels/identity-accounts-web';
 import type { BasicProfile } from '@datamodels/identity-profile-basic';
 import { CreateApp } from '@graphql-ez/nextjs';
 import { EZSchema, ezSchema, gql } from '@graphql-ez/plugin-schema';
-import { formatCeramicId } from '@meta-cred/utils';
-import { getLegacy3BoxProfileAsBasicProfile } from '@self.id/3box-legacy';
+import axios from 'axios';
 
-import { getSelfIdCore } from '@/utils/selfid';
+import { CONFIG } from '@/config';
+import { SelfIdApiResult } from '@/pages/api/selfId/[address]';
 
-const core = getSelfIdCore();
+const SELFID_API_BASE_URL = CONFIG.appUrl.includes('localhost')
+  ? `http://${CONFIG.appUrl}`
+  : `https://${CONFIG.appUrl}`;
 
 const schema: EZSchema = {
   typeDefs: gql`
@@ -55,32 +57,29 @@ const schema: EZSchema = {
     Query: {
       selfIdProfile: async (
         root,
-        { address },
+        { address }: { address: string },
       ): Promise<BasicProfile | null> => {
-        const id = formatCeramicId(address);
-        if (!id) return null;
-
         try {
-          return await core.get<'basicProfile'>('basicProfile', id);
-        } catch (e) {
-          console.log(
-            `Unable to fetch basicProfile from SelfID for DID: ${id}. Falling back to 3Box Legacy`,
+          const { data } = await axios.get<SelfIdApiResult>(
+            `${SELFID_API_BASE_URL}/api/selfId/${address}`,
           );
-        }
-        try {
-          return await getLegacy3BoxProfileAsBasicProfile(address);
+
+          return data.profile;
         } catch (e) {
           return null;
         }
       },
-      selfIdAccounts: async (root, { address }): Promise<Account[] | null> => {
-        const id = formatCeramicId(address);
-        if (!id) return null;
-
+      selfIdAccounts: async (
+        root,
+        { address }: { address: string },
+      ): Promise<Account[] | null> => {
         try {
-          const accounts = await core.get<'alsoKnownAs'>('alsoKnownAs', id);
+          const { data } = await axios.get<SelfIdApiResult>(
+            `${CONFIG.appUrl}/api/selfId/${address}`,
+          );
+
           return (
-            accounts?.accounts.map((a) => ({
+            data?.accounts?.map((a) => ({
               ...a,
               attestations: a.attestations?.map((att) => ({
                 didJwtVc: att['did-jwt-vc'],
@@ -88,7 +87,6 @@ const schema: EZSchema = {
             })) || null
           );
         } catch (e) {
-          console.log(`Unable to fetch accounts from SelfID for DID: ${id}`);
           return null;
         }
       },

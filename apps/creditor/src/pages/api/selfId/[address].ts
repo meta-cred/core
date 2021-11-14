@@ -1,21 +1,22 @@
 import type { Account } from '@datamodels/identity-accounts-web';
 import type { BasicProfile } from '@datamodels/identity-profile-basic';
 import { formatCeramicId } from '@meta-cred/utils';
+import { getLegacy3BoxProfileAsBasicProfile } from '@self.id/3box-legacy';
 import type { NextApiHandler } from 'next';
 
 import { getSelfIdCore } from '@/utils/selfid';
 
 const core = getSelfIdCore();
 
-type ReturnType = {
+export type SelfIdApiResult = {
   accounts: Account[] | null;
   profile: BasicProfile | null;
 };
 
-const handler: NextApiHandler<ReturnType> = async (req, res) => {
-  const { address } = req.query;
+const handler: NextApiHandler<SelfIdApiResult> = async (req, res) => {
+  const address = req.query.address as string;
 
-  const id = formatCeramicId(address as string);
+  const id = formatCeramicId(address);
   if (!id) {
     res.status(404);
     return;
@@ -29,14 +30,23 @@ const handler: NextApiHandler<ReturnType> = async (req, res) => {
       accounts = accountsRes.accounts;
     }
   } catch (e) {
-    console.log(`Unable to fetch accounts from SelfID for DID: ${id}`);
+    console.log(`Unable to fetch accounts from SelfID for address: ${address}`);
   }
 
   let profile: BasicProfile | null = null;
   try {
     profile = await core.get<'basicProfile'>('basicProfile', id);
   } catch (e) {
-    console.log(`Unable to fetch basic profile from SelfID for DID: ${id}`);
+    console.log(
+      `Unable to fetch basic profile from SelfID for address: ${address}`,
+    );
+  }
+  if (!profile) {
+    try {
+      profile = await getLegacy3BoxProfileAsBasicProfile(address);
+    } catch (e) {
+      console.log(`Unable to fetch legacy 3box for address: ${address}`);
+    }
   }
 
   if (!accounts && !profile) {
@@ -44,7 +54,7 @@ const handler: NextApiHandler<ReturnType> = async (req, res) => {
     return;
   }
 
-  res.setHeader('Cache-Control', 's-maxage=1, stale-while-revalidate');
+  res.setHeader('Cache-Control', 's-maxage=30, stale-while-revalidate');
   res.status(200).json({ accounts, profile });
 };
 
