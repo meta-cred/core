@@ -5,6 +5,7 @@
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
+    "strictNullChecks": true,
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
     "esModuleInterop": true,
@@ -19,7 +20,8 @@
       "@meta-cred/utils": ["../../packages/utils/src/index"],
       "@meta-cred/usewallet": ["../../packages/useWallet/src/index"],
       "@meta-cred/ui/*": ["../../packages/ui/src/*"],
-      "@meta-cred/ui": ["../../packages/ui/src/index"]
+      "@meta-cred/ui": ["../../packages/ui/src/index"],
+      "@/*": ["./src/*"]
     }
   },
   "include": ["apps/creditor/next-env.d.ts", "**/*.ts", "**/*.tsx"],

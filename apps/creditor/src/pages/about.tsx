@@ -1,8 +1,8 @@
 import { Heading } from '@chakra-ui/react';
 import React from 'react';
 
-import { Container } from '../layout/Container';
-import { PageLayout } from '../layout/PageLayout';
+import { Container } from '@/layout/Container';
+import { PageLayout } from '@/layout/PageLayout';
 
 const About: React.FC = () => (
   <PageLayout>

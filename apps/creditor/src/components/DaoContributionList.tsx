@@ -2,7 +2,8 @@ import { Stack } from '@chakra-ui/react';
 import { shortenIfAddress } from '@meta-cred/utils';
 import React from 'react';
 
-import { dao as Dao, order_by } from '../gqty';
+import { dao as Dao, order_by } from '@/gqty';
+
 import { ContributionCard } from './ContributionCard';
 
 export type DaoContributionListProps = {

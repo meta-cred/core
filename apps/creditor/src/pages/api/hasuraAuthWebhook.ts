@@ -4,9 +4,9 @@ import { ethers } from 'ethers';
 import { NextApiRequest, NextApiResponse } from 'next';
 import nc from 'next-connect';
 
-import { CONFIG } from '../../config';
-import { mutation, query, resolved } from '../../gqty';
-import { getSelfIdCore } from '../../utils/selfid';
+import { CONFIG } from '@/config';
+import { mutation, query, resolved } from '@/gqty';
+import { getSelfIdCore } from '@/utils/selfid';
 
 const unauthorizedVariables = {
   'X-Hasura-Role': 'anonymous',

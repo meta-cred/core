@@ -25,6 +25,8 @@ services:
     environment:
       ## Actions endpoint
       NEXTJS_SERVER_URL: http://host.docker.internal:3000
+      ## Remote Schema endpoint
+      SELFID_REMOTE_SCHEMA_URL: http://host.docker.internal:3000/api/graphql/selfId
       ## postgres database to store Hasura metadata
       HASURA_GRAPHQL_METADATA_DATABASE_URL: postgres://postgres:postgrespassword@postgres:5432/postgres
       ## this env var can be used to add the above postgres database to Hasura as a data source.

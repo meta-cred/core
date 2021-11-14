@@ -16,6 +16,25 @@ array_relationships:
       table:
         name: dao_member
         schema: public
+remote_relationships:
+- definition:
+    hasura_fields:
+    - eth_address
+    remote_field:
+      selfIdAccounts:
+        arguments:
+          address: $eth_address
+    remote_schema: selfId
+  name: accounts
+- definition:
+    hasura_fields:
+    - eth_address
+    remote_field:
+      selfIdProfile:
+        arguments:
+          address: $eth_address
+    remote_schema: selfId
+  name: profile
 select_permissions:
 - permission:
     columns:

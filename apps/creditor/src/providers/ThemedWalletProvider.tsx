@@ -2,7 +2,7 @@ import { useColorModeValue } from '@chakra-ui/react';
 import { WalletProvider } from '@meta-cred/usewallet';
 import React from 'react';
 
-import { CONFIG } from '../config';
+import { CONFIG } from '@/config';
 
 export const ThemedWalletProvider: React.FC = ({ children }) => {
   const isDark = useColorModeValue(false, true);

@@ -8,7 +8,8 @@ import type { QueryFetcher } from 'gqty';
 import { createClient } from 'gqty';
 import type { ExecutionResult } from 'graphql';
 
-import { CONFIG } from '../config';
+import { CONFIG } from '@/config';
+
 import type {
   GeneratedSchema,
   SchemaObjectTypes,
@@ -82,6 +83,7 @@ export const {
 
     // Set this flag based on your needs
     staleWhileRevalidate: false,
+    transactionFetchPolicy: 'cache-and-network',
   },
 });
 

@@ -2,10 +2,10 @@ import { Heading, Skeleton } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import { DaoContributionList } from '../../components/DaoContributionList';
-import { useQuery } from '../../gqty';
-import { Container } from '../../layout/Container';
-import { PageLayout } from '../../layout/PageLayout';
+import { DaoContributionList } from '@/components/DaoContributionList';
+import { useQuery } from '@/gqty';
+import { Container } from '@/layout/Container';
+import { PageLayout } from '@/layout/PageLayout';
 
 const DaoPage: React.FC = () => {
   const router = useRouter();

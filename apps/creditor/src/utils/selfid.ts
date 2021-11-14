@@ -1,6 +1,6 @@
 import { Core } from '@self.id/core';
 
-import { CONFIG } from '../config';
+import { CONFIG } from '@/config';
 
 let selfId: Core;
 

@@ -4,8 +4,8 @@ import { useWallet } from '@meta-cred/usewallet';
 import { getSelfIdImageUrl, getSelfIdProfileLink } from '@meta-cred/utils';
 import React from 'react';
 
-import { useSelfIdProfile } from '../hooks/useSelfIdProfile';
-import { useSelfId } from '../providers/SelfIdProvider';
+import { useSelfIdProfile } from '@/hooks/useSelfIdProfile';
+import { useSelfId } from '@/providers/SelfIdProvider';
 
 export type Props = ButtonProps & {
   connectLabel?: string;
