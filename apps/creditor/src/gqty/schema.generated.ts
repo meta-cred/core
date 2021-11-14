@@ -580,6 +580,44 @@ export interface date_comparison_exp {
   _nin?: Maybe<Array<Scalars['date']>>;
 }
 
+/** Boolean expression to filter rows from the table "me". All fields are combined with a logical 'AND'. */
+export interface me_bool_exp {
+  _and?: Maybe<Array<me_bool_exp>>;
+  _not?: Maybe<me_bool_exp>;
+  _or?: Maybe<Array<me_bool_exp>>;
+  did?: Maybe<String_comparison_exp>;
+  eth_address?: Maybe<String_comparison_exp>;
+  user?: Maybe<user_bool_exp>;
+}
+
+/** input type for inserting data into table "me" */
+export interface me_insert_input {
+  did?: Maybe<Scalars['String']>;
+  eth_address?: Maybe<Scalars['String']>;
+  user?: Maybe<user_obj_rel_insert_input>;
+}
+
+/** Ordering options when selecting data from "me". */
+export interface me_order_by {
+  did?: Maybe<order_by>;
+  eth_address?: Maybe<order_by>;
+  user?: Maybe<user_order_by>;
+}
+
+/** select columns of table "me" */
+export enum me_select_column {
+  /** column name */
+  did = 'did',
+  /** column name */
+  eth_address = 'eth_address',
+}
+
+/** input type for updating data in table "me" */
+export interface me_set_input {
+  did?: Maybe<Scalars['String']>;
+  eth_address?: Maybe<Scalars['String']>;
+}
+
 /** Boolean expression to compare columns of type "numeric". All fields are combined with logical 'AND'. */
 export interface numeric_comparison_exp {
   _eq?: Maybe<Scalars['numeric']>;
@@ -1176,6 +1214,7 @@ export const scalarsEnumsHash: import('gqty').ScalarsEnumsHash = {
   dao_select_column: true,
   dao_update_column: true,
   date: true,
+  me_select_column: true,
   numeric: true,
   order_by: true,
   rating_constraint: true,
@@ -1198,6 +1237,10 @@ export const scalarsEnumsHash: import('gqty').ScalarsEnumsHash = {
   uuid: true,
 };
 export const generatedSchema = {
+  Attestation: {
+    __typename: { __type: 'String!' },
+    didJwtVc: { __type: 'String' },
+  },
   Boolean_comparison_exp: {
     _eq: { __type: 'Boolean' },
     _gt: { __type: 'Boolean' },
@@ -1208,6 +1251,29 @@ export const generatedSchema = {
     _lte: { __type: 'Boolean' },
     _neq: { __type: 'Boolean' },
     _nin: { __type: '[Boolean!]' },
+  },
+  ImageMetadata: {
+    __typename: { __type: 'String!' },
+    height: { __type: 'Int!' },
+    mimeType: { __type: 'String!' },
+    size: { __type: 'Int' },
+    src: { __type: 'String!' },
+    width: { __type: 'Int!' },
+  },
+  ImageSources: {
+    __typename: { __type: 'String!' },
+    original: { __type: 'ImageMetadata!' },
+  },
+  SelfIdProfile: {
+    __typename: { __type: 'String!' },
+    affiliations: { __type: '[String]' },
+    background: { __type: 'ImageSources' },
+    description: { __type: 'String' },
+    emoji: { __type: 'String' },
+    homeLocation: { __type: 'String' },
+    image: { __type: 'ImageSources' },
+    name: { __type: 'String' },
+    url: { __type: 'String' },
   },
   String_comparison_exp: {
     _eq: { __type: 'String' },
@@ -1229,6 +1295,14 @@ export const generatedSchema = {
     _nsimilar: { __type: 'String' },
     _regex: { __type: 'String' },
     _similar: { __type: 'String' },
+  },
+  VerifiedAccount: {
+    __typename: { __type: 'String!' },
+    attestations: { __type: '[Attestation]!' },
+    claim: { __type: 'String' },
+    host: { __type: 'String' },
+    id: { __type: 'String!' },
+    protocol: { __type: 'String!' },
   },
   contribution: {
     __typename: { __type: 'String!' },
@@ -1788,6 +1862,63 @@ export const generatedSchema = {
     _neq: { __type: 'date' },
     _nin: { __type: '[date!]' },
   },
+  me: {
+    __typename: { __type: 'String!' },
+    did: { __type: 'String' },
+    eth_address: { __type: 'String' },
+    user: { __type: 'user' },
+  },
+  me_aggregate: {
+    __typename: { __type: 'String!' },
+    aggregate: { __type: 'me_aggregate_fields' },
+    nodes: { __type: '[me!]!' },
+  },
+  me_aggregate_fields: {
+    __typename: { __type: 'String!' },
+    count: {
+      __type: 'Int!',
+      __args: { columns: '[me_select_column!]', distinct: 'Boolean' },
+    },
+    max: { __type: 'me_max_fields' },
+    min: { __type: 'me_min_fields' },
+  },
+  me_bool_exp: {
+    _and: { __type: '[me_bool_exp!]' },
+    _not: { __type: 'me_bool_exp' },
+    _or: { __type: '[me_bool_exp!]' },
+    did: { __type: 'String_comparison_exp' },
+    eth_address: { __type: 'String_comparison_exp' },
+    user: { __type: 'user_bool_exp' },
+  },
+  me_insert_input: {
+    did: { __type: 'String' },
+    eth_address: { __type: 'String' },
+    user: { __type: 'user_obj_rel_insert_input' },
+  },
+  me_max_fields: {
+    __typename: { __type: 'String!' },
+    did: { __type: 'String' },
+    eth_address: { __type: 'String' },
+  },
+  me_min_fields: {
+    __typename: { __type: 'String!' },
+    did: { __type: 'String' },
+    eth_address: { __type: 'String' },
+  },
+  me_mutation_response: {
+    __typename: { __type: 'String!' },
+    affected_rows: { __type: 'Int!' },
+    returning: { __type: '[me!]!' },
+  },
+  me_order_by: {
+    did: { __type: 'order_by' },
+    eth_address: { __type: 'order_by' },
+    user: { __type: 'user_order_by' },
+  },
+  me_set_input: {
+    did: { __type: 'String' },
+    eth_address: { __type: 'String' },
+  },
   mutation: {
     __typename: { __type: 'String!' },
     delete_contribution: {
@@ -1818,6 +1949,10 @@ export const generatedSchema = {
     delete_dao_member_by_pk: {
       __type: 'dao_member',
       __args: { dao_id: 'uuid!', user_id: 'String!' },
+    },
+    delete_me: {
+      __type: 'me_mutation_response',
+      __args: { where: 'me_bool_exp!' },
     },
     delete_rating: {
       __type: 'rating_mutation_response',
@@ -1907,6 +2042,11 @@ export const generatedSchema = {
       __type: 'dao',
       __args: { object: 'dao_insert_input!', on_conflict: 'dao_on_conflict' },
     },
+    insert_me: {
+      __type: 'me_mutation_response',
+      __args: { objects: '[me_insert_input!]!' },
+    },
+    insert_me_one: { __type: 'me', __args: { object: 'me_insert_input!' } },
     insert_rating: {
       __type: 'rating_mutation_response',
       __args: {
@@ -2020,6 +2160,10 @@ export const generatedSchema = {
         _set: 'dao_member_set_input',
         pk_columns: 'dao_member_pk_columns_input!',
       },
+    },
+    update_me: {
+      __type: 'me_mutation_response',
+      __args: { _set: 'me_set_input', where: 'me_bool_exp!' },
     },
     update_rating: {
       __type: 'rating_mutation_response',
@@ -2185,6 +2329,26 @@ export const generatedSchema = {
       __type: 'dao_member',
       __args: { dao_id: 'uuid!', user_id: 'String!' },
     },
+    me: {
+      __type: '[me!]!',
+      __args: {
+        distinct_on: '[me_select_column!]',
+        limit: 'Int',
+        offset: 'Int',
+        order_by: '[me_order_by!]',
+        where: 'me_bool_exp',
+      },
+    },
+    me_aggregate: {
+      __type: 'me_aggregate!',
+      __args: {
+        distinct_on: '[me_select_column!]',
+        limit: 'Int',
+        offset: 'Int',
+        order_by: '[me_order_by!]',
+        where: 'me_bool_exp',
+      },
+    },
     rating: {
       __type: '[rating!]!',
       __args: {
@@ -2206,6 +2370,11 @@ export const generatedSchema = {
       },
     },
     rating_by_pk: { __type: 'rating', __args: { label: 'String!' } },
+    selfIdAccounts: {
+      __type: '[VerifiedAccount]',
+      __args: { address: 'String!' },
+    },
+    selfIdProfile: { __type: 'SelfIdProfile', __args: { address: 'String!' } },
     skill: {
       __type: '[skill!]!',
       __args: {
@@ -2526,6 +2695,26 @@ export const generatedSchema = {
       __type: 'dao_member',
       __args: { dao_id: 'uuid!', user_id: 'String!' },
     },
+    me: {
+      __type: '[me!]!',
+      __args: {
+        distinct_on: '[me_select_column!]',
+        limit: 'Int',
+        offset: 'Int',
+        order_by: '[me_order_by!]',
+        where: 'me_bool_exp',
+      },
+    },
+    me_aggregate: {
+      __type: 'me_aggregate!',
+      __args: {
+        distinct_on: '[me_select_column!]',
+        limit: 'Int',
+        offset: 'Int',
+        order_by: '[me_order_by!]',
+        where: 'me_bool_exp',
+      },
+    },
     rating: {
       __type: '[rating!]!',
       __args: {
@@ -2666,6 +2855,7 @@ export const generatedSchema = {
   },
   user: {
     __typename: { __type: 'String!' },
+    accounts: { __type: '[VerifiedAccount]' },
     contributed: {
       __type: '[user_contribution!]!',
       __args: {
@@ -2710,6 +2900,7 @@ export const generatedSchema = {
     did: { __type: 'String!' },
     eth_address: { __type: 'String!' },
     name: { __type: 'String' },
+    profile: { __type: 'SelfIdProfile' },
   },
   user_aggregate: {
     __typename: { __type: 'String!' },
@@ -3098,6 +3289,46 @@ export const generatedSchema = {
     _nin: { __type: '[uuid!]' },
   },
 } as const;
+
+export interface Attestation {
+  __typename?: 'Attestation';
+  didJwtVc?: Maybe<ScalarsEnums['String']>;
+}
+
+export interface ImageMetadata {
+  __typename?: 'ImageMetadata';
+  height: ScalarsEnums['Int'];
+  mimeType: ScalarsEnums['String'];
+  size?: Maybe<ScalarsEnums['Int']>;
+  src: ScalarsEnums['String'];
+  width: ScalarsEnums['Int'];
+}
+
+export interface ImageSources {
+  __typename?: 'ImageSources';
+  original: ImageMetadata;
+}
+
+export interface SelfIdProfile {
+  __typename?: 'SelfIdProfile';
+  affiliations?: Maybe<Array<Maybe<ScalarsEnums['String']>>>;
+  background?: Maybe<ImageSources>;
+  description?: Maybe<ScalarsEnums['String']>;
+  emoji?: Maybe<ScalarsEnums['String']>;
+  homeLocation?: Maybe<ScalarsEnums['String']>;
+  image?: Maybe<ImageSources>;
+  name?: Maybe<ScalarsEnums['String']>;
+  url?: Maybe<ScalarsEnums['String']>;
+}
+
+export interface VerifiedAccount {
+  __typename?: 'VerifiedAccount';
+  attestations: Array<Maybe<Attestation>>;
+  claim?: Maybe<ScalarsEnums['String']>;
+  host?: Maybe<ScalarsEnums['String']>;
+  id: ScalarsEnums['String'];
+  protocol: ScalarsEnums['String'];
+}
 
 /**
  * A contribution made in a DAO
@@ -3677,6 +3908,74 @@ export interface dao_mutation_response {
   returning: Array<dao>;
 }
 
+/**
+ * columns and relationships of "me"
+ */
+export interface me {
+  __typename?: 'me';
+  did?: Maybe<ScalarsEnums['String']>;
+  eth_address?: Maybe<ScalarsEnums['String']>;
+  /**
+   * An object relationship
+   */
+  user?: Maybe<user>;
+}
+
+/**
+ * aggregated selection of "me"
+ */
+export interface me_aggregate {
+  __typename?: 'me_aggregate';
+  aggregate?: Maybe<me_aggregate_fields>;
+  nodes: Array<me>;
+}
+
+/**
+ * aggregate fields of "me"
+ */
+export interface me_aggregate_fields {
+  __typename?: 'me_aggregate_fields';
+  count: (args?: {
+    columns?: Maybe<Array<me_select_column>>;
+    distinct?: Maybe<Scalars['Boolean']>;
+  }) => ScalarsEnums['Int'];
+  max?: Maybe<me_max_fields>;
+  min?: Maybe<me_min_fields>;
+}
+
+/**
+ * aggregate max on columns
+ */
+export interface me_max_fields {
+  __typename?: 'me_max_fields';
+  did?: Maybe<ScalarsEnums['String']>;
+  eth_address?: Maybe<ScalarsEnums['String']>;
+}
+
+/**
+ * aggregate min on columns
+ */
+export interface me_min_fields {
+  __typename?: 'me_min_fields';
+  did?: Maybe<ScalarsEnums['String']>;
+  eth_address?: Maybe<ScalarsEnums['String']>;
+}
+
+/**
+ * response of any mutation on the table "me"
+ */
+export interface me_mutation_response {
+  __typename?: 'me_mutation_response';
+  /**
+   * number of rows affected by the mutation
+   */
+  affected_rows: ScalarsEnums['Int'];
+  /**
+   * data from the rows affected by the mutation
+   */
+  returning: Array<me>;
+}
+
 export interface Mutation {
   __typename?: 'Mutation';
   delete_contribution: (args: {
@@ -3701,6 +4000,7 @@ export interface Mutation {
     dao_id: Scalars['uuid'];
     user_id: Scalars['String'];
   }) => Maybe<dao_member>;
+  delete_me: (args: { where: me_bool_exp }) => Maybe<me_mutation_response>;
   delete_rating: (args: {
     where: rating_bool_exp;
   }) => Maybe<rating_mutation_response>;
@@ -3760,6 +4060,10 @@ export interface Mutation {
     object: dao_insert_input;
     on_conflict?: Maybe<dao_on_conflict>;
   }) => Maybe<dao>;
+  insert_me: (args: {
+    objects: Array<me_insert_input>;
+  }) => Maybe<me_mutation_response>;
+  insert_me_one: (args: { object: me_insert_input }) => Maybe<me>;
   insert_rating: (args: {
     objects: Array<rating_insert_input>;
     on_conflict?: Maybe<rating_on_conflict>;
@@ -3832,6 +4136,10 @@ export interface Mutation {
     _set?: Maybe<dao_member_set_input>;
     pk_columns: dao_member_pk_columns_input;
   }) => Maybe<dao_member>;
+  update_me: (args: {
+    _set?: Maybe<me_set_input>;
+    where: me_bool_exp;
+  }) => Maybe<me_mutation_response>;
   update_rating: (args: {
     _set?: Maybe<rating_set_input>;
     where: rating_bool_exp;
@@ -3944,6 +4252,20 @@ export interface Query {
     dao_id: Scalars['uuid'];
     user_id: Scalars['String'];
   }) => Maybe<dao_member>;
+  me: (args?: {
+    distinct_on?: Maybe<Array<me_select_column>>;
+    limit?: Maybe<Scalars['Int']>;
+    offset?: Maybe<Scalars['Int']>;
+    order_by?: Maybe<Array<me_order_by>>;
+    where?: Maybe<me_bool_exp>;
+  }) => Array<me>;
+  me_aggregate: (args?: {
+    distinct_on?: Maybe<Array<me_select_column>>;
+    limit?: Maybe<Scalars['Int']>;
+    offset?: Maybe<Scalars['Int']>;
+    order_by?: Maybe<Array<me_order_by>>;
+    where?: Maybe<me_bool_exp>;
+  }) => me_aggregate;
   rating: (args?: {
     distinct_on?: Maybe<Array<rating_select_column>>;
     limit?: Maybe<Scalars['Int']>;
@@ -3959,6 +4281,10 @@ export interface Query {
     where?: Maybe<rating_bool_exp>;
   }) => rating_aggregate;
   rating_by_pk: (args: { label: Scalars['String'] }) => Maybe<rating>;
+  selfIdAccounts: (args: {
+    address: Scalars['String'];
+  }) => Maybe<Array<Maybe<VerifiedAccount>>>;
+  selfIdProfile: (args: { address: Scalars['String'] }) => Maybe<SelfIdProfile>;
   skill: (args?: {
     distinct_on?: Maybe<Array<skill_select_column>>;
     limit?: Maybe<Scalars['Int']>;
@@ -4227,6 +4553,20 @@ export interface Subscription {
     dao_id: Scalars['uuid'];
     user_id: Scalars['String'];
   }) => Maybe<dao_member>;
+  me: (args?: {
+    distinct_on?: Maybe<Array<me_select_column>>;
+    limit?: Maybe<Scalars['Int']>;
+    offset?: Maybe<Scalars['Int']>;
+    order_by?: Maybe<Array<me_order_by>>;
+    where?: Maybe<me_bool_exp>;
+  }) => Array<me>;
+  me_aggregate: (args?: {
+    distinct_on?: Maybe<Array<me_select_column>>;
+    limit?: Maybe<Scalars['Int']>;
+    offset?: Maybe<Scalars['Int']>;
+    order_by?: Maybe<Array<me_order_by>>;
+    where?: Maybe<me_bool_exp>;
+  }) => me_aggregate;
   rating: (args?: {
     distinct_on?: Maybe<Array<rating_select_column>>;
     limit?: Maybe<Scalars['Int']>;
@@ -4316,6 +4656,7 @@ export interface Subscription {
  */
 export interface user {
   __typename?: 'user';
+  accounts?: Maybe<Array<Maybe<VerifiedAccount>>>;
   /**
    * An array relationship
    */
@@ -4420,6 +4761,7 @@ export interface user {
   did: ScalarsEnums['String'];
   eth_address: ScalarsEnums['String'];
   name?: Maybe<ScalarsEnums['String']>;
+  profile?: Maybe<SelfIdProfile>;
 }
 
 /**
@@ -4760,9 +5102,14 @@ export interface user_mutation_response {
 }
 
 export interface SchemaObjectTypes {
+  Attestation: Attestation;
+  ImageMetadata: ImageMetadata;
+  ImageSources: ImageSources;
   Mutation: Mutation;
   Query: Query;
+  SelfIdProfile: SelfIdProfile;
   Subscription: Subscription;
+  VerifiedAccount: VerifiedAccount;
   contribution: contribution;
   contribution_aggregate: contribution_aggregate;
   contribution_aggregate_fields: contribution_aggregate_fields;
@@ -4787,6 +5134,12 @@ export interface SchemaObjectTypes {
   dao_member_mutation_response: dao_member_mutation_response;
   dao_min_fields: dao_min_fields;
   dao_mutation_response: dao_mutation_response;
+  me: me;
+  me_aggregate: me_aggregate;
+  me_aggregate_fields: me_aggregate_fields;
+  me_max_fields: me_max_fields;
+  me_min_fields: me_min_fields;
+  me_mutation_response: me_mutation_response;
   rating: rating;
   rating_aggregate: rating_aggregate;
   rating_aggregate_fields: rating_aggregate_fields;
@@ -4827,9 +5180,14 @@ export interface SchemaObjectTypes {
   user_mutation_response: user_mutation_response;
 }
 export type SchemaObjectTypesNames =
+  | 'Attestation'
+  | 'ImageMetadata'
+  | 'ImageSources'
   | 'Mutation'
   | 'Query'
+  | 'SelfIdProfile'
   | 'Subscription'
+  | 'VerifiedAccount'
   | 'contribution'
   | 'contribution_aggregate'
   | 'contribution_aggregate_fields'
@@ -4854,6 +5212,12 @@ export type SchemaObjectTypesNames =
   | 'dao_member_mutation_response'
   | 'dao_min_fields'
   | 'dao_mutation_response'
+  | 'me'
+  | 'me_aggregate'
+  | 'me_aggregate_fields'
+  | 'me_max_fields'
+  | 'me_min_fields'
+  | 'me_mutation_response'
   | 'rating'
   | 'rating_aggregate'
   | 'rating_aggregate_fields'
@@ -4920,6 +5284,7 @@ export interface ScalarsEnums extends MakeNullable<Scalars> {
   dao_member_update_column: dao_member_update_column | undefined;
   dao_select_column: dao_select_column | undefined;
   dao_update_column: dao_update_column | undefined;
+  me_select_column: me_select_column | undefined;
   order_by: order_by | undefined;
   rating_constraint: rating_constraint | undefined;
   rating_select_column: rating_select_column | undefined;

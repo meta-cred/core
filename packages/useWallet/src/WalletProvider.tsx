@@ -16,6 +16,7 @@ export type IWalletContext = {
   disconnectWallet: () => void;
   isConnecting: boolean;
   isConnected: boolean;
+  didInit: boolean;
   address: string | null;
   ens: Ens | null;
   wallet: Wallet | null;
@@ -34,6 +35,7 @@ export const WalletContext = createContext<IWalletContext>({
   wallet: null,
   onboard: null,
   connectedNetworkId: null,
+  didInit: false,
 });
 
 interface WalletProviderOptions {
@@ -97,6 +99,7 @@ export const WalletProvider: React.FC<WalletProviderOptions> = ({
     ens,
     wallet,
     connectedNetworkId,
+    didInit,
   } = useOnboard({
     options: {
       dappId: onboardDappId, // optional API key
@@ -125,6 +128,7 @@ export const WalletProvider: React.FC<WalletProviderOptions> = ({
         ens,
         wallet,
         connectedNetworkId,
+        didInit,
       }}
     >
       {children}

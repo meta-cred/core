@@ -8,7 +8,7 @@ import {
   SEO_OG_IMAGE,
   SEO_TITLE,
   SEO_TWITTER_IMAGE,
-} from '../constants';
+} from '@/constants';
 
 export type SEOProps = {
   title?: string;

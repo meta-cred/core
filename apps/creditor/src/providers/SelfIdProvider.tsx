@@ -9,8 +9,8 @@ import React, {
   useState,
 } from 'react';
 
-import { CONFIG } from '../config';
-import { useCeramicDID } from '../hooks/useCeramicDID';
+import { CONFIG } from '@/config';
+import { useCeramicDID } from '@/hooks/useCeramicDID';
 
 export type ISelfIdContext = {
   myDID: string | null | undefined;

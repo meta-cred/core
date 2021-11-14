@@ -31,17 +31,13 @@ type OnboardAction =
   | { type: 'set_is_connecting'; isConnecting: boolean }
   | { type: 'set_onboard'; onboard: API }
   | { type: 'disconnect' }
+  | { type: 'did_init' }
   | {
       type: 'update_fields';
       payload: Partial<
         Pick<
           OnboardState,
-          | 'isConnecting'
-          | 'address'
-          | 'ens'
-          | 'balance'
-          | 'connectedNetworkId'
-          | 'didInit'
+          'isConnecting' | 'address' | 'ens' | 'balance' | 'connectedNetworkId'
         >
       >;
     };
@@ -85,6 +81,11 @@ const onboardReducer = (
       return {
         ...state,
         ...action.payload,
+      };
+    case 'did_init':
+      return {
+        ...state,
+        didInit: true,
       };
     case 'disconnect':
       return {
@@ -214,28 +215,24 @@ export const useOnboard = (
   useEffect(() => {
     (async () => {
       if (!state.onboard || state.didInit) return;
-      dispatch({
-        type: 'update_fields',
-        payload: {
-          didInit: true,
-        },
-      });
 
       const previouslySelectedWallet = window.localStorage.getItem(
         SELECTED_WALLET_STORAGE_KEY,
       );
-      if (!previouslySelectedWallet) return;
 
-      const didSelect = await state.onboard.walletSelect(
-        previouslySelectedWallet,
-      );
-      if (!didSelect) return;
-
-      // WalletConnect doesn't auto reconnect unless onboard.walletCheck() is called
-      if (previouslySelectedWallet === 'WalletConnect') {
-        const isReady = await state.onboard.walletCheck();
-        if (!isReady) disconnectWallet();
+      if (previouslySelectedWallet) {
+        const didSelect = await state.onboard.walletSelect(
+          previouslySelectedWallet,
+        );
+        if (didSelect && previouslySelectedWallet === 'WalletConnect') {
+          const isReady = await state.onboard.walletCheck();
+          if (!isReady) disconnectWallet();
+        }
       }
+
+      dispatch({
+        type: 'did_init',
+      });
     })();
   }, [state.onboard, state.didInit, disconnectWallet]);
 

@@ -1,1 +1,5 @@
-[]
+- name: selfId
+  definition:
+    url_from_env: SELFID_REMOTE_SCHEMA_URL
+    timeout_seconds: 60
+  comment: Remote schema to fetch profile data from Self.ID

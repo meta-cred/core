@@ -9,8 +9,9 @@ import {
 } from '@meta-cred/utils';
 import React, { useCallback, useEffect, useState } from 'react';
 
-import { useSelfId } from '../providers/SelfIdProvider';
-import { getSelfIdCore } from '../utils/selfid';
+import { useSelfId } from '@/providers/SelfIdProvider';
+import { getSelfIdCore } from '@/utils/selfid';
+
 import { ConnectCeramicButton } from './ConnectCeramicButton';
 
 export type Props = {

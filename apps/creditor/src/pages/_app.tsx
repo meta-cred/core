@@ -4,11 +4,11 @@ import Head from 'next/head';
 import React from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 
-import { SEO } from '../components/SEO';
-import { SEO_TITLE } from '../constants';
-import { SelfIdProvider } from '../providers/SelfIdProvider';
-import { ThemedWalletProvider } from '../providers/ThemedWalletProvider';
-import { theme } from '../theme';
+import { SEO } from '@/components/SEO';
+import { SEO_TITLE } from '@/constants';
+import { SelfIdProvider } from '@/providers/SelfIdProvider';
+import { ThemedWalletProvider } from '@/providers/ThemedWalletProvider';
+import { theme } from '@/theme';
 
 const queryClient = new QueryClient();
 

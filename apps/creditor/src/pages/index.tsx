@@ -1,10 +1,10 @@
 import { Stack } from '@chakra-ui/react';
 import React from 'react';
 
-import { DaoCard } from '../components/DaoCard';
-import { order_by, useQuery } from '../gqty';
-import { Container } from '../layout/Container';
-import { PageLayout } from '../layout/PageLayout';
+import { DaoCard } from '@/components/DaoCard';
+import { order_by, useQuery } from '@/gqty';
+import { Container } from '@/layout/Container';
+import { PageLayout } from '@/layout/PageLayout';
 
 const Index: React.FC = () => {
   const query = useQuery();

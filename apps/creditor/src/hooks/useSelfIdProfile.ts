@@ -1,17 +1,13 @@
-import { addressToCaip10String } from '@meta-cred/utils';
-import { utils } from 'ethers';
+import { formatCeramicId } from '@meta-cred/utils';
 import { useQuery } from 'react-query';
 
-import { getSelfIdCore } from '../utils/selfid';
+import { getSelfIdCore } from '@/utils/selfid';
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const useSelfIdProfile = (addressOrDID: string | null) => {
   const core = getSelfIdCore();
 
-  const id =
-    addressOrDID && utils.isAddress(addressOrDID)
-      ? addressToCaip10String(addressOrDID)
-      : addressOrDID;
+  const id = formatCeramicId(addressOrDID);
 
   return useQuery(
     ['selfIdProfile', id],
