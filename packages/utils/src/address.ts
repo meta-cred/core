@@ -14,8 +14,8 @@ export function shortenAddress(address: string): string {
 }
 
 export function shortenIfAddress(address: string | null | undefined): string {
-  if (typeof address === 'string' && address.length > 0) {
+  if (typeof address === 'string' && utils.isAddress(address)) {
     return shortenAddress(address);
   }
-  return '';
+  return address || '';
 }

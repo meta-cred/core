@@ -44,7 +44,7 @@ export const NavBar: React.FC<Props> = ({ logo, right, children = [] }) => {
         align="center"
         css={bgCss}
       >
-        <HStack spacing={[3, 6]} alignItems="center">
+        <HStack spacing={{ base: 3, md: 6 }} alignItems="center">
           <IconButton
             size="md"
             icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
