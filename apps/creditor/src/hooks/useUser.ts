@@ -12,7 +12,7 @@ type UseUserOpts = {
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const useUser = ({ redirectTo, redirectIfFound }: UseUserOpts = {}) => {
-  const { didInit, provider } = useWallet();
+  const { didInit, provider, address } = useWallet();
   const { didRehydrate, authToken } = useAuthStore();
   const router = useRouter();
 
@@ -41,5 +41,5 @@ export const useUser = ({ redirectTo, redirectIfFound }: UseUserOpts = {}) => {
     }
   }, [isReady, router, isLoading, user, redirectIfFound, redirectTo]);
 
-  return { user: data, isLoading };
+  return { user: data, isLoading, address };
 };

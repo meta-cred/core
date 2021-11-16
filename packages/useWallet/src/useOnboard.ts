@@ -224,9 +224,10 @@ export const useOnboard = (
         const didSelect = await state.onboard.walletSelect(
           previouslySelectedWallet,
         );
-        if (didSelect && previouslySelectedWallet === 'WalletConnect') {
+        if (didSelect) {
           const isReady = await state.onboard.walletCheck();
-          if (!isReady) disconnectWallet();
+          if (!isReady && previouslySelectedWallet === 'WalletConnect')
+            disconnectWallet();
         }
       }
 

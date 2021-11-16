@@ -8,6 +8,7 @@ export type Props = Omit<
 > &
   NextLinkProps & {
     LinkComponent?: typeof ChakraLink;
+    noUnderline?: boolean;
   };
 
 export const Link: React.FC<Props> = ({
@@ -16,11 +17,19 @@ export const Link: React.FC<Props> = ({
   children,
   as,
   LinkComponent = ChakraLink,
+  noUnderline,
   ...props
 }) => {
   if (isExternal && typeof href === 'string') {
     return (
-      <LinkComponent isExternal href={href} {...props}>
+      <LinkComponent
+        isExternal
+        href={href}
+        _hover={{
+          textDecoration: noUnderline ? 'none' : 'underline',
+        }}
+        {...props}
+      >
         {children}
       </LinkComponent>
     );

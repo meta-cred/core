@@ -1,10 +1,8 @@
-import { ExternalLinkIcon } from '@chakra-ui/icons';
-import { Avatar, Button, ButtonProps } from '@chakra-ui/react';
+import { ButtonProps, MenuItem, Spinner } from '@chakra-ui/react';
 import { useWallet } from '@meta-cred/usewallet';
-import { getSelfIdImageUrl, getSelfIdProfileLink } from '@meta-cred/utils';
 import React from 'react';
+import { FiKey, FiLink2 } from 'react-icons/fi';
 
-import { useSelfIdProfile } from '@/hooks/useSelfIdProfile';
 import { useSelfId } from '@/providers/SelfIdProvider';
 
 export type Props = ButtonProps & {
@@ -12,36 +10,27 @@ export type Props = ButtonProps & {
 };
 
 export const ConnectCeramicButton: React.FC<Props> = (props) => {
-  const { mySelfId, myDID } = useSelfId();
+  const { mySelfId, myDID, connect, isConnecting } = useSelfId();
   const { address } = useWallet();
-
-  const { data } = useSelfIdProfile(mySelfId?.id || address);
 
   if (!address || !myDID) return null;
 
-  const hasProfile = data?.image || data?.name;
+  let icon = isConnecting ? <Spinner size="xs" thickness="1px" /> : <FiLink2 />;
+  let label = isConnecting ? 'Connecting DID' : 'Connect DID';
+  if (mySelfId) {
+    icon = <FiKey />;
+    label = 'DID Connected';
+  }
 
   return (
-    <Button
-      leftIcon={
-        hasProfile ? (
-          <Avatar
-            size="xs"
-            src={getSelfIdImageUrl(data.image)}
-            name={data.name}
-          />
-        ) : undefined
-      }
-      pl={hasProfile ? '2' : undefined}
-      rightIcon={<ExternalLinkIcon />}
-      color="gray.500"
-      as="a"
-      target="_blank"
-      rounded="full"
-      href={getSelfIdProfileLink(myDID)}
+    <MenuItem
+      closeOnSelect={false}
+      color="green.500"
+      icon={icon}
+      onClick={mySelfId ? undefined : connect}
       {...props}
     >
-      {`${data?.name || 'Your Profile'}`}
-    </Button>
+      {label}
+    </MenuItem>
   );
 };

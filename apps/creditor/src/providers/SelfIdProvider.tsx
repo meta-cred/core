@@ -40,8 +40,9 @@ export const SelfIdProvider: React.FC<SelfIdProviderProps> = ({ children }) => {
 
   const { provider, address } = useWallet();
 
-  const [connectedAddress, setConnectedAddress, removeConnectedAddress] =
-    useLocalStorage<string | null>(STORAGE_KEY, null);
+  const [connectedAddress, setConnectedAddress] = useLocalStorage<
+    string | null
+  >(STORAGE_KEY, null);
 
   const { data: myDID } = useCeramicDID(address);
 
@@ -67,8 +68,8 @@ export const SelfIdProvider: React.FC<SelfIdProviderProps> = ({ children }) => {
 
   const disconnect = useCallback(() => {
     setMySelfId(null);
-    removeConnectedAddress();
-  }, [removeConnectedAddress]);
+    setConnectedAddress(null);
+  }, [setConnectedAddress]);
 
   const prevAddress = usePrevious(address);
 
@@ -83,6 +84,7 @@ export const SelfIdProvider: React.FC<SelfIdProviderProps> = ({ children }) => {
   useEffect(() => {
     (async () => {
       const wasPreviouslyConnected = address && address === connectedAddress;
+
       if (!mySelfId && wasPreviouslyConnected) {
         try {
           await connect();
@@ -92,10 +94,6 @@ export const SelfIdProvider: React.FC<SelfIdProviderProps> = ({ children }) => {
       }
     })();
   }, [connect, address, connectedAddress, mySelfId]);
-
-  useEffect(() => {
-    if (!provider || !address) disconnect();
-  }, [disconnect, provider, address]);
 
   return (
     <SelfIdContext.Provider

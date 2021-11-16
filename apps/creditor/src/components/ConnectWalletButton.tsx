@@ -1,18 +1,19 @@
-import { CheckIcon, UnlockIcon } from '@chakra-ui/icons';
-import { Button, useDisclosure, useToast, VStack } from '@chakra-ui/react';
-import { AccountModal } from '@meta-cred/ui/AccountModal';
+import { Button, MenuItem, useToast } from '@chakra-ui/react';
 import { useAuthStore, useWallet } from '@meta-cred/usewallet';
 import {
   addressToCaip10String,
   getErrorMessage,
   shortenIfAddress,
 } from '@meta-cred/utils';
+import { useRouter } from 'next/router';
 import React, { useCallback, useEffect, useState } from 'react';
+import { FiUser } from 'react-icons/fi';
 
+import { AccountMenu } from '@/components/AccountMenu';
+import { ConnectCeramicButton } from '@/components/ConnectCeramicButton';
+import { useSelfIdProfile } from '@/hooks/useSelfIdProfile';
 import { useSelfId } from '@/providers/SelfIdProvider';
 import { getSelfIdCore } from '@/utils/selfid';
-
-import { ConnectCeramicButton } from './ConnectCeramicButton';
 
 export type Props = {
   connectLabel?: string;
@@ -23,15 +24,16 @@ export const ConnectWalletButton: React.FC<Props> = ({
 }) => {
   const { connectWallet, address, ens, wallet, provider, disconnectWallet } =
     useWallet();
-  const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
 
   const displayName = ens?.name || shortenIfAddress(address);
+  const router = useRouter();
 
   const { login, logout, authToken, isLoggingIn, checkAuth, didRehydrate } =
     useAuthStore();
 
   const selfId = useSelfId();
+  const { data: myProfile } = useSelfIdProfile(address);
 
   const connectSelfId = useCallback(async () => {
     if (selfId.mySelfId || selfId.isConnecting) return;
@@ -92,17 +94,9 @@ export const ConnectWalletButton: React.FC<Props> = ({
       if (didPrompt || !address || authToken || !didRehydrate) return;
 
       setDidPrompt(true);
-      onOpen();
       await onClickAuthenticate();
     })();
-  }, [
-    onOpen,
-    didPrompt,
-    didRehydrate,
-    authToken,
-    address,
-    onClickAuthenticate,
-  ]);
+  }, [didPrompt, didRehydrate, authToken, address, onClickAuthenticate]);
 
   const disconnect = () => {
     disconnectWallet();
@@ -113,42 +107,36 @@ export const ConnectWalletButton: React.FC<Props> = ({
   };
 
   const connect = async () => {
-    if (address) {
-      onOpen();
-      return;
-    }
-
     await connectWallet();
   };
+  const loadingText = selfId.isConnecting ? 'Connecting DID' : 'Authenticating';
+
+  if (address) {
+    return (
+      <AccountMenu
+        displayName={displayName}
+        address={address}
+        connectedWallet={wallet?.name}
+        onDisconnect={disconnect}
+        authenticated={Boolean(authToken)}
+        onAuthenticate={onClickAuthenticate}
+        profile={myProfile}
+        authLoadingText={
+          isLoggingIn || selfId.isConnecting ? loadingText : null
+        }
+        topItems={
+          <>
+            <MenuItem icon={<FiUser />} onClick={() => router.push('/profile')}>
+              Profile
+            </MenuItem>
+          </>
+        }
+        bottomItems={<ConnectCeramicButton size="sm" />}
+      />
+    );
+  }
 
   return (
-    <>
-      <Button onClick={connect}>{address ? displayName : connectLabel}</Button>
-      <AccountModal
-        onClose={onClose}
-        connectedWallet={wallet?.name}
-        isOpen={isOpen}
-        address={address}
-        displayName={displayName}
-        onDisconnect={disconnect}
-      >
-        <VStack align="flex-start">
-          <Button
-            size="sm"
-            colorScheme="green"
-            leftIcon={authToken ? <CheckIcon /> : <UnlockIcon />}
-            variant="ghost"
-            isLoading={isLoggingIn || selfId.isConnecting}
-            loadingText={
-              selfId.isConnecting ? 'Connecting DID' : 'Authenticating'
-            }
-            onClick={onClickAuthenticate}
-          >
-            {authToken ? 'Authenticated' : 'Authenticate Wallet'}
-          </Button>
-          <ConnectCeramicButton size="sm" />
-        </VStack>
-      </AccountModal>
-    </>
+    <Button onClick={connect}>{address ? displayName : connectLabel}</Button>
   );
 };
