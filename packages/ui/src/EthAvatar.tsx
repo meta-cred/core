@@ -3,7 +3,7 @@ import React from 'react';
 
 type Props = Omit<AvatarProps, 'src'> & {
   address?: string | null;
-  imageUrl?: string;
+  imageUrl?: string | null;
 };
 
 export const EthAvatar: React.FC<Props> = ({ imageUrl, address, ...props }) => (

@@ -1,23 +1,18 @@
-import { CloseIcon, HamburgerIcon } from '@chakra-ui/icons';
-import {
-  Box,
-  Flex,
-  HStack,
-  IconButton,
-  SlideFade,
-  Stack,
-  useColorModeValue,
-  useDisclosure,
-} from '@chakra-ui/react';
+import { Flex, useColorModeValue, useDisclosure } from '@chakra-ui/react';
 import React from 'react';
+
+import { MobileHamburgerMenu } from './MobileHamburgerMenu';
+import { NavItem, NavItemProps } from './NavItem';
+import { NavMenu } from './NavMenu';
 
 export type Props = {
   right?: React.ReactNode;
   logo?: React.ReactNode;
+  items: NavItemProps[];
 };
 
-export const NavBar: React.FC<Props> = ({ logo, right, children = [] }) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+export const NavBar: React.FC<Props> = ({ logo, right, items = [] }) => {
+  const { isOpen, onToggle } = useDisclosure();
 
   const bgColor = useColorModeValue(
     'rgba(255, 255, 255, 0.8)',
@@ -30,56 +25,56 @@ export const NavBar: React.FC<Props> = ({ logo, right, children = [] }) => {
   };
 
   return (
-    <Box>
+    <>
       <Flex
-        as="header"
-        pos="fixed"
-        top={0}
-        w="full"
-        minH={16}
-        px={4}
-        boxShadow="xs"
-        zIndex={9}
-        justify="space-between"
         align="center"
         css={bgCss}
+        px="6"
+        boxShadow={isOpen ? 'none' : 'xs'}
+        minH="16"
+        zIndex={9}
+        top={0}
+        w="full"
+        pos="fixed"
       >
-        <HStack spacing={{ base: 3, md: 6 }} alignItems="center">
-          <IconButton
-            size="md"
-            icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
-            aria-label="Open Menu"
-            variant="ghost"
-            display={{ md: 'none' }}
-            onClick={isOpen ? onClose : onOpen}
-          />
-          {logo}
-          <HStack as="nav" spacing={4} display={{ base: 'none', md: 'flex' }}>
-            {children}
-          </HStack>
-        </HStack>
-        <HStack align="center">{right}</HStack>
-      </Flex>
+        <Flex justify="space-between" align="center" w="full">
+          <MobileHamburgerMenu onClick={onToggle} isOpen={isOpen} />
 
-      <SlideFade in={isOpen} offsetY={-8}>
-        {isOpen ? (
-          <Box
-            p={4}
-            display={{ md: 'none' }}
-            top={16}
-            bottom={0}
-            zIndex={9}
-            pos="fixed"
-            w="full"
-            minH="calc(100vh - 4rem)"
-            css={bgCss}
+          {/* Desktop Logo placement */}
+          <Flex
+            display={{ base: 'none', md: 'block' }}
+            flexShrink={0}
+            h="5"
+            marginEnd="10"
           >
-            <Stack as="nav" spacing={4}>
-              {children}
-            </Stack>
-          </Box>
-        ) : null}
-      </SlideFade>
-    </Box>
+            {logo}
+          </Flex>
+
+          {/* Desktop Navigation Menu */}
+          <NavMenu.Desktop>
+            {items.map((i) => (
+              <NavItem.Desktop key={i.label} {...i} />
+            ))}
+          </NavMenu.Desktop>
+
+          {/* Mobile Logo placement */}
+          <Flex
+            flex={{ base: '1', md: '0' }}
+            display={{ md: 'none' }}
+            flexShrink={0}
+            h="5"
+          >
+            {logo}
+          </Flex>
+
+          {right}
+        </Flex>
+      </Flex>
+      <NavMenu.Mobile isOpen={isOpen} css={bgCss}>
+        {items.map((i) => (
+          <NavItem.Mobile key={i.label} {...i} />
+        ))}
+      </NavMenu.Mobile>
+    </>
   );
 };

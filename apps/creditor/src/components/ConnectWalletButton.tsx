@@ -1,15 +1,17 @@
 import { Button, MenuItem, useToast } from '@chakra-ui/react';
+import type { ImageSources } from '@datamodels/identity-profile-basic';
+import { AccountMenu } from '@meta-cred/ui/AccountMenu';
 import { useAuthStore, useWallet } from '@meta-cred/usewallet';
 import {
   addressToCaip10String,
   getErrorMessage,
-  shortenIfAddress,
+  getSelfIdImageUrl,
+  Maybe,
 } from '@meta-cred/utils';
 import { useRouter } from 'next/router';
 import React, { useCallback, useEffect, useState } from 'react';
 import { FiUser } from 'react-icons/fi';
 
-import { AccountMenu } from '@/components/AccountMenu';
 import { ConnectCeramicButton } from '@/components/ConnectCeramicButton';
 import { useSelfIdProfile } from '@/hooks/useSelfIdProfile';
 import { useSelfId } from '@/providers/SelfIdProvider';
@@ -26,7 +28,6 @@ export const ConnectWalletButton: React.FC<Props> = ({
     useWallet();
   const toast = useToast();
 
-  const displayName = ens?.name || shortenIfAddress(address);
   const router = useRouter();
 
   const { login, logout, authToken, isLoggingIn, checkAuth, didRehydrate } =
@@ -34,6 +35,9 @@ export const ConnectWalletButton: React.FC<Props> = ({
 
   const selfId = useSelfId();
   const { data: myProfile } = useSelfIdProfile(address);
+
+  const displayName = myProfile?.name || ens?.name;
+  const imageUrl = getSelfIdImageUrl(myProfile?.image as Maybe<ImageSources>);
 
   const connectSelfId = useCallback(async () => {
     if (selfId.mySelfId || selfId.isConnecting) return;
@@ -114,13 +118,13 @@ export const ConnectWalletButton: React.FC<Props> = ({
   if (address) {
     return (
       <AccountMenu
-        displayName={displayName}
         address={address}
+        displayName={displayName}
+        imageUrl={imageUrl}
         connectedWallet={wallet?.name}
         onDisconnect={disconnect}
         authenticated={Boolean(authToken)}
         onAuthenticate={onClickAuthenticate}
-        profile={myProfile}
         authLoadingText={
           isLoggingIn || selfId.isConnecting ? loadingText : null
         }

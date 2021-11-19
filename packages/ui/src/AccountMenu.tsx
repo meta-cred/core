@@ -8,16 +8,10 @@ import {
   MenuList,
   MenuProps,
   Spinner,
-  useBreakpointValue,
   useClipboard,
   useColorMode,
 } from '@chakra-ui/react';
-import type {
-  BasicProfile,
-  ImageSources,
-} from '@datamodels/identity-profile-basic';
-import { EthAvatar } from '@meta-cred/ui/EthAvatar';
-import { getSelfIdImageUrl, Maybe } from '@meta-cred/utils';
+import { shortenIfAddress } from '@meta-cred/utils';
 import React from 'react';
 import {
   FiCheck,
@@ -29,17 +23,18 @@ import {
   FiUnlock,
 } from 'react-icons/fi';
 
-import { ConnectCeramicButton } from '@/components/ConnectCeramicButton';
+import { AccountMenuHeader } from './AccountMenuHeader';
+import { EthAvatar } from './EthAvatar';
 
 export type Props = Omit<MenuProps, 'children'> & {
   address: string | null;
-  profile: BasicProfile | null | undefined;
   displayName?: string | null;
   connectedWallet?: string | null;
   onDisconnect: () => void;
   authenticated: boolean;
   onAuthenticate: () => void;
   authLoadingText?: string | null;
+  imageUrl?: string | null;
   bottomItems?: React.ReactNode;
   topItems?: React.ReactNode;
 };
@@ -52,7 +47,7 @@ export const AccountMenu: React.FC<Props> = ({
   authenticated,
   onAuthenticate,
   authLoadingText,
-  profile,
+  imageUrl,
   topItems,
   bottomItems,
   ...props
@@ -62,7 +57,7 @@ export const AccountMenu: React.FC<Props> = ({
   const { colorMode, toggleColorMode } = useColorMode();
   const isDark = colorMode === 'dark';
 
-  const buttonLabel = useBreakpointValue({ md: profile?.name || displayName });
+  const shortAddress = shortenIfAddress(address);
 
   return (
     <Menu {...props}>
@@ -76,16 +71,23 @@ export const AccountMenu: React.FC<Props> = ({
         leftIcon={
           <EthAvatar
             size="sm"
-            imageUrl={getSelfIdImageUrl(profile?.image as Maybe<ImageSources>)}
-            name={profile?.name}
+            imageUrl={imageUrl}
+            name={displayName || undefined}
             address={address}
-            mr={{ base: -2, md: 0 }}
+            mr={-2}
           />
         }
-      >
-        {buttonLabel}
-      </MenuButton>
+      />
       <MenuList>
+        {address && (
+          <AccountMenuHeader
+            address={address}
+            title={displayName || shortAddress}
+            imageUrl={imageUrl}
+            subtitle={displayName ? shortAddress : undefined}
+          />
+        )}
+
         {topItems}
         <MenuItem closeOnSelect={false} icon={<FiCopy />} onClick={onCopy}>
           {hasCopied ? 'Copied' : 'Copy Address'}
