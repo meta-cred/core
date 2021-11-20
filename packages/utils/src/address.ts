@@ -19,3 +19,8 @@ export function shortenIfAddress(address: string | null | undefined): string {
   }
   return address || '';
 }
+
+export const isAddressEqual = (
+  a: string | null | undefined,
+  b: string | null | undefined,
+): boolean => a?.toLowerCase() === b?.toLowerCase();

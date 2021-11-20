@@ -22,7 +22,7 @@ export type AccountButtonsProps = WrapProps & {
       }>
     | null
     | undefined;
-  address?: string | null;
+  ethAddress?: string | null;
 };
 
 const PROPS_MAP: Record<string, ButtonProps> = {
@@ -40,14 +40,14 @@ const PROPS_MAP: Record<string, ButtonProps> = {
 
 export const AccountButtons: React.FC<AccountButtonsProps> = ({
   accounts,
-  address,
+  ethAddress,
   ...props
 }) => {
-  const { hasCopied, onCopy } = useClipboard(address || '');
+  const { hasCopied, onCopy } = useClipboard(ethAddress || '');
 
   return (
     <Wrap {...props}>
-      {address ? (
+      {ethAddress ? (
         <WrapItem>
           <Tooltip
             label={hasCopied ? 'Copied!' : 'Copy to clipboard'}
@@ -60,7 +60,7 @@ export const AccountButtons: React.FC<AccountButtonsProps> = ({
               colorScheme="gray"
               leftIcon={<FaEthereum />}
             >
-              {shortenIfAddress(address)}
+              {shortenIfAddress(ethAddress)}
             </Button>
           </Tooltip>
         </WrapItem>

@@ -12,7 +12,7 @@ const LINKS = [
 ];
 
 export const PageLayout: React.FC = ({ children }) => {
-  const router = useRouter();
+  const router = useRouter() || {};
 
   return (
     <Flex direction="column" height="100vh">

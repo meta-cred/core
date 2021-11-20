@@ -9,10 +9,12 @@ export const addressToCaip10String = (
   chainId: number = ChainId.Mainnet,
 ): string => `${address.toLowerCase()}@eip155:${chainId}`;
 
-export const formatCeramicId = (addressOrDID: string | null): string | null =>
+export const formatCeramicId = (
+  addressOrDID: string | null | undefined,
+): string | null =>
   addressOrDID && utils.isAddress(addressOrDID)
     ? addressToCaip10String(addressOrDID)
-    : addressOrDID;
+    : addressOrDID || null;
 
 export const getIpfsUrl = (
   hash: string,

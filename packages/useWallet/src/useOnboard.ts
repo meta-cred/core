@@ -120,7 +120,12 @@ export const useOnboard = (
     getInitialState,
   );
 
+  const isSSR = typeof window === 'undefined';
+
   useEffect(() => {
+    if (isSSR) return;
+    console.log({ isSSR });
+
     const onboard = Onboard({
       ...options,
       networkId: options?.networkId || 1,
@@ -196,7 +201,7 @@ export const useOnboard = (
 
     dispatch({ type: 'set_onboard', onboard });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [isSSR]);
 
   useEffect(() => {
     state.onboard?.config({ darkMode: options?.darkMode });

@@ -31,7 +31,7 @@ export const SEO: React.FC<SEOProps> = ({
   ogUrl = PRODUCTION_URL,
   twitterImage = SEO_TWITTER_IMAGE,
 }) => {
-  const router = useRouter();
+  const router = useRouter() || {};
 
   return (
     <Head>
