@@ -37,7 +37,7 @@
         "@typescript-eslint/explicit-module-boundary-types": [
           // So we can infer prop types
           "warn",
-          { "allowedNames": ["getStaticProps", "getInitialProps", "render"] }
+          { "allowedNames": ["getStaticProps", "getStaticPaths", "render"] }
         ]
       }
     },

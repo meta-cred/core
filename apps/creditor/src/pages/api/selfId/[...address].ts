@@ -1,9 +1,11 @@
 import type { Account } from '@datamodels/identity-accounts-web';
 import type { BasicProfile } from '@datamodels/identity-profile-basic';
-import { formatCeramicId } from '@meta-cred/utils';
+import { formatCeramicId, resolveIfEnsName } from '@meta-cred/utils';
 import { getLegacy3BoxProfileAsBasicProfile } from '@self.id/3box-legacy';
+import { utils } from 'ethers';
 import type { NextApiHandler } from 'next';
 
+import { defaultMainnetProvider } from '@/utils/defaultProvider';
 import { getSelfIdCore } from '@/utils/selfid';
 
 const core = getSelfIdCore();
@@ -55,7 +57,16 @@ const handler: NextApiHandler<
 > = async (req, res) => {
   const [address, field] = req.query.address;
 
-  const id = formatCeramicId(address);
+  let resolvedAddress;
+
+  try {
+    resolvedAddress = await resolveIfEnsName(address, defaultMainnetProvider);
+  } catch (e) {
+    res.status(404);
+    return;
+  }
+
+  const id = formatCeramicId(resolvedAddress);
   if (!id) {
     res.status(404);
     return;

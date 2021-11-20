@@ -13,7 +13,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { FiUser } from 'react-icons/fi';
 
 import { ConnectCeramicButton } from '@/components/ConnectCeramicButton';
-import { useSelfIdProfile } from '@/hooks/useSelfIdProfile';
+import { useUser } from '@/hooks/useUser';
 import { useSelfId } from '@/providers/SelfIdProvider';
 import { getSelfIdCore } from '@/utils/selfid';
 
@@ -28,15 +28,17 @@ export const ConnectWalletButton: React.FC<Props> = ({
     useWallet();
   const toast = useToast();
 
-  const router = useRouter();
+  const router = useRouter() || {};
 
   const { login, logout, authToken, isLoggingIn, checkAuth, didRehydrate } =
     useAuthStore();
 
   const selfId = useSelfId();
-  const { data: myProfile } = useSelfIdProfile(address);
+  const { user } = useUser();
 
+  const myProfile = user?.profile;
   const displayName = myProfile?.name || ens?.name;
+
   const imageUrl = getSelfIdImageUrl(myProfile?.image as Maybe<ImageSources>);
 
   const connectSelfId = useCallback(async () => {
@@ -130,7 +132,10 @@ export const ConnectWalletButton: React.FC<Props> = ({
         }
         topItems={
           <>
-            <MenuItem icon={<FiUser />} onClick={() => router.push('/profile')}>
+            <MenuItem
+              icon={<FiUser />}
+              onClick={() => router.push(`/user/${ens?.name || address}`)}
+            >
               Profile
             </MenuItem>
           </>

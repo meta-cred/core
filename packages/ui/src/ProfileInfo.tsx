@@ -35,7 +35,7 @@ export const ProfileInfo: React.FC<Props> = ({
   accounts,
   ...props
 }) => (
-  <Box overflow="hidden" {...props}>
+  <Box {...props}>
     <Stack align="flex-start" mb={5} maxW="xl" spacing={6}>
       {isLoaded ? (
         <EthAvatar
@@ -57,7 +57,7 @@ export const ProfileInfo: React.FC<Props> = ({
       {accounts && isLoaded ? (
         <AccountButtons
           accounts={accounts}
-          address={address}
+          ethAddress={address}
           justify="center"
         />
       ) : null}
