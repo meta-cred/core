@@ -2,7 +2,6 @@ import type { Account } from '@datamodels/identity-accounts-web';
 import type { BasicProfile } from '@datamodels/identity-profile-basic';
 import { formatCeramicId, resolveIfEnsName } from '@meta-cred/utils';
 import { getLegacy3BoxProfileAsBasicProfile } from '@self.id/3box-legacy';
-import { utils } from 'ethers';
 import type { NextApiHandler } from 'next';
 
 import { defaultMainnetProvider } from '@/utils/defaultProvider';
@@ -29,19 +28,17 @@ const getAccounts = async (did: string): Promise<Account[] | null> => {
 
 const getProfile = async (
   did: string,
-  address: string,
+  address?: string | null,
 ): Promise<BasicProfile | null> => {
   let profile: BasicProfile | null = null;
 
   try {
     profile = await core.get<'basicProfile'>('basicProfile', did);
   } catch (e) {
-    console.log(
-      `Unable to fetch basic profile from SelfID for address: ${address}`,
-    );
+    console.log(`Unable to fetch basic profile from SelfID for did: ${did}`);
   }
 
-  if (!profile) {
+  if (!profile && address) {
     try {
       profile = await getLegacy3BoxProfileAsBasicProfile(address);
     } catch (e) {
@@ -80,7 +77,7 @@ const handler: NextApiHandler<
   }
 
   if (field === 'profile') {
-    const profile = await getProfile(id, address);
+    const profile = await getProfile(id, resolvedAddress);
     res.setHeader('Cache-Control', 's-maxage=30, stale-while-revalidate');
     res.status(200).json(profile);
     return;

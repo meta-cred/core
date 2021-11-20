@@ -1,4 +1,4 @@
-name: Typecheck, Lint and Test
+name: CI
 
 on:
   pull_request:
@@ -10,7 +10,7 @@ on:
 
 jobs:
   test:
-    name: Run Tests
+    name: Typecheck, Lint, Test
     runs-on: ubuntu-latest
 
     steps:
@@ -74,3 +74,4 @@ jobs:
         env:
           CI: true
           NEXT_PUBLIC_INFURA_ID: ${{ secrets.NEXT_PUBLIC_INFURA_ID }}
+          GRAPHQL_ADMIN_SECRET: ${{ secrets.GRAPHQL_ADMIN_SECRET }}
