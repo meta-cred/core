@@ -13,6 +13,18 @@ export const theme = extendTheme(
       '2xl': '1.5rem',
       '3xl': '2rem',
     },
+    fonts: {
+      heading:
+        'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
+      body: 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
+    },
+    styles: {
+      global: {
+        body: {
+          fontVariantLigatures: 'no-contextual',
+        },
+      },
+    },
   },
   withUseWalletStyles(),
 );

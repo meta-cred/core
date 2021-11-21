@@ -18,6 +18,7 @@
     "@chakra-ui/theme-tools": "1.2.2",
     "@emotion/react": "11.4.1",
     "@emotion/styled": "11.3.0",
+    "@fontsource/inter": "^4.5.1",
     "@gqty/react": "2.1.0",
     "@graphql-ez/nextjs": "^0.10.0",
     "@graphql-ez/plugin-schema": "^0.8.0",
