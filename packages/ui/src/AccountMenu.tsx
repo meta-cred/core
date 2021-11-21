@@ -2,11 +2,11 @@ import {
   Button,
   Menu,
   MenuButton,
+  MenuButtonProps,
   MenuDivider,
   MenuGroup,
   MenuItem,
   MenuList,
-  MenuProps,
   Spinner,
   useClipboard,
   useColorMode,
@@ -26,7 +26,7 @@ import {
 import { AccountMenuHeader } from './AccountMenuHeader';
 import { EthAvatar } from './EthAvatar';
 
-export type Props = Omit<MenuProps, 'children'> & {
+export type Props = Omit<MenuButtonProps, 'children'> & {
   address: string | null;
   displayName?: string | null;
   connectedWallet?: string | null;
@@ -60,7 +60,7 @@ export const AccountMenu: React.FC<Props> = ({
   const shortAddress = shortenIfAddress(address);
 
   return (
-    <Menu {...props}>
+    <Menu>
       <MenuButton
         as={Button}
         variant="ghost"
@@ -77,6 +77,7 @@ export const AccountMenu: React.FC<Props> = ({
             mr={-2}
           />
         }
+        {...props}
       />
       <MenuList>
         {address && (

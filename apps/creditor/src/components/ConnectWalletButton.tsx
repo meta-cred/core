@@ -120,6 +120,7 @@ export const ConnectWalletButton: React.FC<Props> = ({
   if (address) {
     return (
       <AccountMenu
+        mr={-4}
         address={address}
         displayName={displayName}
         imageUrl={imageUrl}
