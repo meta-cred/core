@@ -26,9 +26,7 @@ export const DaoContributionList: React.FC<DaoContributionListProps> = ({
           key={c.id || 0}
           title={c.title}
           description={c.description}
-          author={
-            c.author?.user.name || shortenIfAddress(c.author?.user.eth_address)
-          }
+          author={c.author?.user}
           createdAt={c.created_at}
           isLoaded={!!c.id}
         />

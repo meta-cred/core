@@ -1,23 +1,21 @@
 import { Box, HStack, Text } from '@chakra-ui/react';
 import React from 'react';
 
-import { EthAvatar } from './EthAvatar';
+import { EthAvatar, EthAvatarProps } from './EthAvatar';
 
 type Props = {
   title: string;
   subtitle?: string | null;
-  imageUrl?: string | null;
-  address: string;
+  avatarProps: EthAvatarProps;
 };
 
 export const AccountMenuHeader: React.FC<Props> = ({
   title,
   subtitle,
-  imageUrl,
-  address,
+  avatarProps,
 }) => (
   <HStack p="3">
-    <EthAvatar size="sm" imageUrl={imageUrl} name={title} address={address} />
+    <EthAvatar size="sm" name={title} {...avatarProps} />
     <Box lineHeight="1">
       <Text fontWeight="semibold" fontSize="sm">
         {title}

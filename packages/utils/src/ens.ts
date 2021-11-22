@@ -11,3 +11,12 @@ export const resolveIfEnsName = async (
 
   return provider.resolveName(ensName);
 };
+
+export const lookupEnsAddress = async (
+  ethAddress: string | null | undefined,
+  provider: BaseProvider,
+): Promise<string | null> => {
+  if (!ethAddress || !utils.isAddress(ethAddress)) return null;
+
+  return provider.lookupAddress(ethAddress);
+};

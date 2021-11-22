@@ -6,6 +6,7 @@ interface IConfig {
   chainId: number;
   onboardDappId: string;
   infuraId: string;
+  alchemyId: string;
   pocketId: string;
   ipfsEndpoint: string;
   ceramicGateway: CeramicNetwork;
@@ -32,6 +33,7 @@ export const CONFIG: IConfig = {
   chainId: parseEnv(process.env.NEXT_PUBLIC_CHAIN_ID, 1),
   onboardDappId: parseEnv(process.env.NEXT_PUBLIC_ONBOARD_DAPP_ID, ''),
   infuraId: parseEnv(process.env.NEXT_PUBLIC_INFURA_ID),
+  alchemyId: parseEnv(process.env.NEXT_PUBLIC_ALCHEMY_ID, ''),
   pocketId: parseEnv(process.env.NEXT_PUBLIC_POCKET_ID, ''),
   ipfsEndpoint: parseEnv(
     process.env.NEXT_PUBLIC_IPFS_ENDPOINT,

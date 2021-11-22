@@ -12,9 +12,13 @@ import {
 import { formatDistanceFromNow, Maybe } from '@meta-cred/utils';
 import React from 'react';
 
+import { UserAvatar } from '@/components/UserAvatar';
+import { user as UserType } from '@/gqty';
+import { getUserName } from '@/utils/userHelpers';
+
 export type Props = {
   title: Maybe<string>;
-  author: Maybe<string>;
+  author: Maybe<UserType>;
   createdAt: Maybe<Date | number | string>;
   category?: Maybe<string>;
   description: Maybe<string>;
@@ -44,12 +48,13 @@ export const ContributionCard: React.FC<Props> = ({
 
     <SkeletonText isLoaded={isLoaded} noOfLines={1}>
       <HStack>
+        <UserAvatar user={author} size="xs" />
         <Text
           fontSize="sm"
           fontWeight="medium"
           color={mode('gray.700', 'gray.300')}
         >
-          {author}
+          {getUserName(author)}
         </Text>
         <Text fontSize="sm" color={mode('blackAlpha.600', 'whiteAlpha.600')}>
           tracked {formatDistanceFromNow(createdAt)}

@@ -59,13 +59,13 @@ const handler: NextApiHandler<
   try {
     resolvedAddress = await resolveIfEnsName(address, defaultMainnetProvider);
   } catch (e) {
-    res.status(404);
+    res.status(404).end();
     return;
   }
 
   const id = formatCeramicId(resolvedAddress);
   if (!id) {
-    res.status(404);
+    res.status(404).end();
     return;
   }
 

@@ -1,10 +1,9 @@
 import { SimpleGrid, useColorModeValue as mode } from '@chakra-ui/react';
-import type { ImageSources } from '@datamodels/identity-profile-basic';
 import { ProfileInfo } from '@meta-cred/ui/ProfileInfo';
-import { getSelfIdImageUrl } from '@meta-cred/utils';
 import React from 'react';
 
-import { dao as Dao, Maybe } from '@/gqty';
+import { dao as Dao } from '@/gqty';
+import { getUserAvatarProps, getUserName } from '@/utils/userHelpers';
 
 export type DaoContributionListProps = {
   dao: Dao;
@@ -30,7 +29,6 @@ export const DaoMemberList: React.FC<DaoContributionListProps> = ({ dao }) => {
           <ProfileInfo
             borderWidth={1}
             rounded="lg"
-            avatarSize="lg"
             nameFontSize="lg"
             bioFontSize="sm"
             py={6}
@@ -39,17 +37,17 @@ export const DaoMemberList: React.FC<DaoContributionListProps> = ({ dao }) => {
             bg={cardBg}
             key={ethAddress}
             address={ethAddress}
+            avatarProps={{
+              ...getUserAvatarProps(member.user),
+              size: 'lg',
+            }}
             accounts={accounts?.map((a) => ({
               id: a?.id,
               host: a?.host,
               protocol: a?.protocol,
             }))}
-            name={profile?.name || ethAddress || 'No Name'}
+            name={getUserName(member.user)}
             bio={profile?.description || ''}
-            image={getSelfIdImageUrl(profile?.image as Maybe<ImageSources>)}
-            background={getSelfIdImageUrl(
-              profile?.background as Maybe<ImageSources>,
-            )}
             emoji={profile?.emoji || ''}
             isLoaded={Boolean(ethAddress)}
           />
