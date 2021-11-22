@@ -20,7 +20,7 @@ export const DaoContributionList: React.FC<DaoContributionListProps> = ({
   });
 
   return (
-    <Stack my={8} w="100%" {...props}>
+    <Stack my={8} w="100%" spacing={6} {...props}>
       {contributions.map((c) => (
         <ContributionCard
           key={c.id || 0}

@@ -12,6 +12,7 @@ import {
 import { formatDistanceFromNow, Maybe } from '@meta-cred/utils';
 import React from 'react';
 
+import { ContributionRatingButtons } from '@/components/ui/ContributionRatingButtons';
 import { UserAvatar } from '@/components/UserAvatar';
 import { user as UserType } from '@/gqty';
 import { getUserName } from '@/utils/userHelpers';
@@ -35,9 +36,11 @@ export const ContributionCard: React.FC<Props> = ({
 }) => (
   <Box
     as={Stack}
-    p={6}
-    borderWidth={1}
-    rounded="lg"
+    p={[3, 5]}
+    pb={3}
+    borderWidth={{ base: 0, md: 1 }}
+    rounded={{ base: 'none', md: 'lg' }}
+    shadow={{ base: 'xs', md: 'none' }}
     bg={mode('white', 'gray.700')}
   >
     <Skeleton isLoaded={isLoaded} h={6}>
@@ -49,16 +52,21 @@ export const ContributionCard: React.FC<Props> = ({
     <SkeletonText isLoaded={isLoaded} noOfLines={1}>
       <HStack>
         <UserAvatar user={author} size="xs" />
-        <Text
-          fontSize="sm"
-          fontWeight="medium"
-          color={mode('gray.700', 'gray.300')}
-        >
-          {getUserName(author)}
-        </Text>
-        <Text fontSize="sm" color={mode('blackAlpha.600', 'whiteAlpha.600')}>
-          tracked {formatDistanceFromNow(createdAt)}
-        </Text>
+        <Stack spacing={[0, 1]} direction={['column', 'row']} lineHeight="1">
+          <Text
+            fontSize={['xs', 'sm']}
+            fontWeight="medium"
+            color={mode('gray.700', 'gray.300')}
+          >
+            {getUserName(author)}
+          </Text>
+          <Text
+            fontSize={['xs', 'sm']}
+            color={mode('blackAlpha.600', 'whiteAlpha.600')}
+          >
+            tracked {formatDistanceFromNow(createdAt)}
+          </Text>
+        </Stack>
       </HStack>
       {category ? (
         <Tag borderRadius="full" my={2}>
@@ -72,5 +80,8 @@ export const ContributionCard: React.FC<Props> = ({
         {description}
       </Text>
     </SkeletonText>
+    <Skeleton isLoaded={isLoaded}>
+      <ContributionRatingButtons />
+    </Skeleton>
   </Box>
 );

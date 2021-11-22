@@ -1,4 +1,8 @@
-import { Button, useColorModeValue as mode } from '@chakra-ui/react';
+import {
+  Button,
+  useBreakpointValue,
+  useColorModeValue as mode,
+} from '@chakra-ui/react';
 import { NavBarSpacer } from '@meta-cred/ui/NavBarSpacer';
 import { useRouter } from 'next/router';
 import React, { useMemo } from 'react';
@@ -27,6 +31,8 @@ const DaoPage: React.FC = () => {
     [daoName],
   );
 
+  const buttonTitle = useBreakpointValue(['New', 'New Contribution']);
+
   return (
     <PageLayout bg={mode('gray.50', 'gray.800')} navItems={navItems}>
       <NavBarSpacer />
@@ -36,11 +42,11 @@ const DaoPage: React.FC = () => {
         isLoaded={Boolean(dao.name)}
         headerRight={
           <Button colorScheme="green" leftIcon={<HiPlus />} size="sm">
-            New Contribution
+            {buttonTitle}
           </Button>
         }
       />
-      <Container noNavPadding>
+      <Container noNavPadding px={{ base: 0, md: 4 }}>
         <DaoContributionList dao={dao} px={{ base: 0, md: 4 }} />
       </Container>
     </PageLayout>
