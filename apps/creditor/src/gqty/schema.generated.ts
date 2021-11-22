@@ -2329,6 +2329,7 @@ export const generatedSchema = {
       __type: 'dao_member',
       __args: { dao_id: 'uuid!', user_id: 'String!' },
     },
+    ensName: { __type: 'String', __args: { address: 'String!' } },
     me: {
       __type: '[me!]!',
       __args: {
@@ -2898,6 +2899,7 @@ export const generatedSchema = {
       },
     },
     did: { __type: 'String!' },
+    ensName: { __type: 'String' },
     eth_address: { __type: 'String!' },
     name: { __type: 'String' },
     profile: { __type: 'SelfIdProfile' },
@@ -4252,6 +4254,9 @@ export interface Query {
     dao_id: Scalars['uuid'];
     user_id: Scalars['String'];
   }) => Maybe<dao_member>;
+  ensName: (args: {
+    address: Scalars['String'];
+  }) => Maybe<ScalarsEnums['String']>;
   me: (args?: {
     distinct_on?: Maybe<Array<me_select_column>>;
     limit?: Maybe<Scalars['Int']>;
@@ -4759,6 +4764,7 @@ export interface user {
     where?: Maybe<dao_member_bool_exp>;
   }) => dao_member_aggregate;
   did: ScalarsEnums['String'];
+  ensName?: Maybe<ScalarsEnums['String']>;
   eth_address: ScalarsEnums['String'];
   name?: Maybe<ScalarsEnums['String']>;
   profile?: Maybe<SelfIdProfile>;

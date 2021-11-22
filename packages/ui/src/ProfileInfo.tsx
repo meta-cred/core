@@ -12,18 +12,16 @@ import {
 import React from 'react';
 
 import { AccountButtons, AccountButtonsProps } from './AccountButtons';
-import { EthAvatar, Props as AvatarProps } from './EthAvatar';
+import { EthAvatar, EthAvatarProps } from './EthAvatar';
 
 type Props = BoxProps & {
   address?: string | null;
-  image?: string;
-  background?: string;
   name: string;
   bio?: string;
   emoji?: string;
   isLoaded: boolean;
+  avatarProps: EthAvatarProps;
   accounts?: AccountButtonsProps['accounts'];
-  avatarSize?: AvatarProps['size'];
   nameFontSize?: BoxProps['fontSize'];
   bioFontSize?: BoxProps['fontSize'];
   spacing?: StackProps['spacing'];
@@ -31,14 +29,12 @@ type Props = BoxProps & {
 
 export const ProfileInfo: React.FC<Props> = ({
   address,
-  image,
-  background,
   name,
   bio,
   emoji,
   isLoaded,
   accounts,
-  avatarSize = '2xl',
+  avatarProps,
   nameFontSize = '2xl',
   bioFontSize = 'md',
   spacing = 6,
@@ -48,11 +44,11 @@ export const ProfileInfo: React.FC<Props> = ({
     <Stack align="flex-start" maxW="xl" spacing={spacing}>
       {isLoaded ? (
         <EthAvatar
-          size={avatarSize}
+          size="2xl"
           address={address}
-          imageUrl={image}
           name={name}
           showBorder
+          {...avatarProps}
         />
       ) : (
         <SkeletonCircle size="32" />

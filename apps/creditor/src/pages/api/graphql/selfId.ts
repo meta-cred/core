@@ -10,13 +10,14 @@ import {
   SelfIdProfileResult,
 } from '@/pages/api/selfId/[...address]';
 
-const SELFID_API_BASE_URL = CONFIG.appUrl.includes('localhost')
+const NEXTJS_API_BASE_URL = CONFIG.appUrl.includes('localhost')
   ? `http://${CONFIG.appUrl}`
   : `https://${CONFIG.appUrl}`;
 
 const schema: EZSchema = {
   typeDefs: gql`
     type Query {
+      ensName(address: String!): String
       selfIdProfile(address: String!): SelfIdProfile
       selfIdAccounts(address: String!): [VerifiedAccount]
     }
@@ -58,13 +59,28 @@ const schema: EZSchema = {
   `,
   resolvers: {
     Query: {
+      ensName: async (
+        root,
+        { address }: { address: string },
+      ): Promise<string | null> => {
+        try {
+          const { data } = await axios.get<string>(
+            `${NEXTJS_API_BASE_URL}/api/ensName/${address}`,
+          );
+
+          return data;
+        } catch (e) {
+          console.log(e);
+          return null;
+        }
+      },
       selfIdProfile: async (
         root,
         { address }: { address: string },
       ): Promise<BasicProfile | null> => {
         try {
           const { data } = await axios.get<SelfIdProfileResult>(
-            `${SELFID_API_BASE_URL}/api/selfId/${address}/profile`,
+            `${NEXTJS_API_BASE_URL}/api/selfId/${address}/profile`,
           );
 
           return data;
@@ -79,7 +95,7 @@ const schema: EZSchema = {
       ): Promise<Account[] | null> => {
         try {
           const { data } = await axios.get<SelfIdAccountsResult>(
-            `${SELFID_API_BASE_URL}/api/selfId/${address}/accounts`,
+            `${NEXTJS_API_BASE_URL}/api/selfId/${address}/accounts`,
           );
 
           return (

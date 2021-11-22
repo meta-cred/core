@@ -30,6 +30,15 @@ remote_relationships:
     hasura_fields:
     - eth_address
     remote_field:
+      ensName:
+        arguments:
+          address: $eth_address
+    remote_schema: selfId
+  name: ensName
+- definition:
+    hasura_fields:
+    - eth_address
+    remote_field:
       selfIdProfile:
         arguments:
           address: $eth_address

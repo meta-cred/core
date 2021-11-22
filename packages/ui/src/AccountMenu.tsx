@@ -24,7 +24,7 @@ import {
 } from 'react-icons/fi';
 
 import { AccountMenuHeader } from './AccountMenuHeader';
-import { EthAvatar } from './EthAvatar';
+import { EthAvatar, EthAvatarProps } from './EthAvatar';
 
 export type Props = Omit<MenuButtonProps, 'children'> & {
   address: string | null;
@@ -34,9 +34,9 @@ export type Props = Omit<MenuButtonProps, 'children'> & {
   authenticated: boolean;
   onAuthenticate: () => void;
   authLoadingText?: string | null;
-  imageUrl?: string | null;
   bottomItems?: React.ReactNode;
   topItems?: React.ReactNode;
+  avatarProps: EthAvatarProps;
 };
 
 export const AccountMenu: React.FC<Props> = ({
@@ -47,7 +47,7 @@ export const AccountMenu: React.FC<Props> = ({
   authenticated,
   onAuthenticate,
   authLoadingText,
-  imageUrl,
+  avatarProps,
   topItems,
   bottomItems,
   ...props
@@ -68,24 +68,15 @@ export const AccountMenu: React.FC<Props> = ({
         pr={3}
         rounded="full"
         rightIcon={<FiChevronDown />}
-        leftIcon={
-          <EthAvatar
-            size="sm"
-            imageUrl={imageUrl}
-            name={displayName || undefined}
-            address={address}
-            mr={-2}
-          />
-        }
+        leftIcon={<EthAvatar size="sm" mr={-2} {...avatarProps} />}
         {...props}
       />
       <MenuList>
         {address && (
           <AccountMenuHeader
-            address={address}
             title={displayName || shortAddress}
-            imageUrl={imageUrl}
             subtitle={displayName ? shortAddress : undefined}
+            avatarProps={avatarProps}
           />
         )}
 

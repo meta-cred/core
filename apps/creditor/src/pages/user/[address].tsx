@@ -64,7 +64,9 @@ const UserPage: React.FC<UserPageProps> = ({
           address={resolvedAddress || address}
           name={profile?.name || address || 'No Name'}
           bio={profile?.description || ''}
-          image={getSelfIdImageUrl(profile?.image as Maybe<ImageSources>)}
+          avatarProps={{
+            imageUrl: getSelfIdImageUrl(profile?.image as Maybe<ImageSources>),
+          }}
           background={getSelfIdImageUrl(
             profile?.background as Maybe<ImageSources>,
           )}
