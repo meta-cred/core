@@ -4,7 +4,7 @@ import React from 'react';
 
 import { dao as Dao, order_by } from '@/gqty';
 
-import { ContributionCard } from './ContributionCard';
+import { ContributionCard } from './ui/ContributionCard';
 
 export type DaoContributionListProps = {
   dao: Dao;
