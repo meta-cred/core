@@ -12,7 +12,7 @@ import {
 import { formatDistanceFromNow, Maybe } from '@meta-cred/utils';
 import React from 'react';
 
-type Props = {
+export type Props = {
   title: Maybe<string>;
   author: Maybe<string>;
   createdAt: Maybe<Date | number | string>;

@@ -43,6 +43,15 @@
     },
     {
       // assuming Next.js application
+      "files": "./apps/**/*.stories.{ts,tsx}",
+      "rules": {
+        "import/no-default-export": "off", // stories have to have a default export
+        "import/prefer-default-export": "error",
+        "@typescript-eslint/explicit-module-boundary-types": "off"
+      }
+    },
+    {
+      // assuming Next.js application
       "files": "./apps/*/src/**/*.{ts,tsx}",
       "rules": {
         "react/react-in-jsx-scope": "off"

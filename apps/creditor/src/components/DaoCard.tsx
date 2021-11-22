@@ -7,11 +7,10 @@ import {
   Skeleton,
 } from '@chakra-ui/react';
 import { Link } from '@meta-cred/ui/Link';
-import { Maybe } from '@meta-cred/utils';
 import React from 'react';
 
 type Props = {
-  name: Maybe<string>;
+  name: string | null | undefined;
   isLoading?: boolean;
 };
 
