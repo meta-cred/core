@@ -1,4 +1,4 @@
-import DAO from '../../pages/dao/[daoName]';
+import DAO from '../../pages/d/[daoName]';
 
 export default {
   title: 'Pages/DAO',
@@ -13,7 +13,7 @@ export const DAOPage = () => <DAO />;
 DAOPage.story = {
   parameters: {
     nextRouter: {
-      path: '/dao/[daoName]',
+      path: '/d/[daoName]',
       asPath: '/profile/metafactory',
       query: {
         id: 'metafactory',

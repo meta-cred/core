@@ -25,9 +25,7 @@ export const Link: React.FC<Props> = ({
       <LinkComponent
         isExternal
         href={href}
-        _hover={{
-          textDecoration: noUnderline ? 'none' : 'underline',
-        }}
+        {...(noUnderline ? { _hover: { textDecoration: 'none' } } : null)}
         {...props}
       >
         {children}
@@ -37,7 +35,12 @@ export const Link: React.FC<Props> = ({
 
   return (
     <NextLink href={href} as={as} passHref>
-      <LinkComponent {...props}>{children}</LinkComponent>
+      <LinkComponent
+        {...(noUnderline ? { _hover: { textDecoration: 'none' } } : null)}
+        {...props}
+      >
+        {children}
+      </LinkComponent>
     </NextLink>
   );
 };

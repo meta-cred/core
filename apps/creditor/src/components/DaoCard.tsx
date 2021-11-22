@@ -20,7 +20,7 @@ export const DaoCard: React.FC<Props> = ({ name, isLoading }) => (
       <Flex
         as={Link}
         LinkComponent={LinkOverlay}
-        href={name ? `/dao/${name.toLowerCase()}` : ''}
+        href={name ? `/d/${name.toLowerCase()}` : ''}
       >
         <Heading size="md" flex={1}>
           {isLoading ? 'DAO' : name}

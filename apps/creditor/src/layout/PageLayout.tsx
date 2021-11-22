@@ -1,4 +1,4 @@
-import { Flex, Heading } from '@chakra-ui/react';
+import { BackgroundProps, Flex, Heading } from '@chakra-ui/react';
 import { Link } from '@meta-cred/ui/Link';
 import { NavBar } from '@meta-cred/ui/NavBar';
 import { useRouter } from 'next/router';
@@ -11,11 +11,11 @@ const LINKS = [
   { label: 'About', href: '/about' },
 ];
 
-export const PageLayout: React.FC = ({ children }) => {
+export const PageLayout: React.FC<BackgroundProps> = ({ children, bg }) => {
   const router = useRouter() || {};
 
   return (
-    <Flex direction="column" height="100vh">
+    <Flex direction="column" height="100vh" bg={bg}>
       <NavBar
         logo={
           <Heading
