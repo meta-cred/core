@@ -6,22 +6,27 @@ import {
   SkeletonCircle,
   SkeletonText,
   Stack,
+  StackProps,
   Text,
 } from '@chakra-ui/react';
 import React from 'react';
 
 import { AccountButtons, AccountButtonsProps } from './AccountButtons';
-import { EthAvatar } from './EthAvatar';
+import { EthAvatar, Props as AvatarProps } from './EthAvatar';
 
 type Props = BoxProps & {
   address?: string | null;
   image?: string;
   background?: string;
   name: string;
-  description?: string;
+  bio?: string;
   emoji?: string;
   isLoaded: boolean;
   accounts?: AccountButtonsProps['accounts'];
+  avatarSize?: AvatarProps['size'];
+  nameFontSize?: BoxProps['fontSize'];
+  bioFontSize?: BoxProps['fontSize'];
+  spacing?: StackProps['spacing'];
 };
 
 export const ProfileInfo: React.FC<Props> = ({
@@ -29,17 +34,21 @@ export const ProfileInfo: React.FC<Props> = ({
   image,
   background,
   name,
-  description,
+  bio,
   emoji,
   isLoaded,
   accounts,
+  avatarSize = '2xl',
+  nameFontSize = '2xl',
+  bioFontSize = 'md',
+  spacing = 6,
   ...props
 }) => (
   <Box {...props}>
-    <Stack align="flex-start" mb={5} maxW="xl" spacing={6}>
+    <Stack align="flex-start" maxW="xl" spacing={spacing}>
       {isLoaded ? (
         <EthAvatar
-          size="2xl"
+          size={avatarSize}
           address={address}
           imageUrl={image}
           name={name}
@@ -49,21 +58,21 @@ export const ProfileInfo: React.FC<Props> = ({
         <SkeletonCircle size="32" />
       )}
       <Skeleton isLoaded={isLoaded}>
-        <Heading fontSize="2xl">
+        <Heading fontSize={nameFontSize}>
           {name} {emoji}
         </Heading>
       </Skeleton>
 
       {accounts && isLoaded ? (
-        <AccountButtons
-          accounts={accounts}
-          ethAddress={address}
-          justify="center"
-        />
+        <AccountButtons accounts={accounts} ethAddress={address} />
       ) : null}
 
       {isLoaded ? (
-        description && <Text color="gray.500">{description}</Text>
+        bio && (
+          <Text color="gray.500" fontSize={bioFontSize}>
+            {bio}
+          </Text>
+        )
       ) : (
         <SkeletonText alignSelf="stretch" noOfLines={4} />
       )}

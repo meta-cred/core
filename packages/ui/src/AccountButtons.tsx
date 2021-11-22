@@ -32,9 +32,7 @@ const PROPS_MAP: Record<string, ButtonProps> = {
   },
   'github.com': {
     leftIcon: <FaGithub />,
-    colorScheme: 'blackAlpha',
-    backgroundColor: 'black',
-    color: 'white',
+    colorScheme: 'gray',
   },
 };
 
@@ -59,6 +57,7 @@ export const AccountButtons: React.FC<AccountButtonsProps> = ({
               size="xs"
               colorScheme="gray"
               leftIcon={<FaEthereum />}
+              variant="ghost"
             >
               {shortenIfAddress(ethAddress)}
             </Button>
@@ -78,6 +77,7 @@ export const AccountButtons: React.FC<AccountButtonsProps> = ({
               size="xs"
               noUnderline
               {...extraProps}
+              variant="ghost"
             >
               {acc.id}
             </Button>

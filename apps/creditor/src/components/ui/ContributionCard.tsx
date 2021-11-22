@@ -7,7 +7,7 @@ import {
   Stack,
   Tag,
   Text,
-  useColorModeValue,
+  useColorModeValue as mode,
 } from '@chakra-ui/react';
 import { formatDistanceFromNow, Maybe } from '@meta-cred/utils';
 import React from 'react';
@@ -29,7 +29,13 @@ export const ContributionCard: React.FC<Props> = ({
   description,
   isLoaded,
 }) => (
-  <Box as={Stack} p={6} borderWidth={1} rounded="lg">
+  <Box
+    as={Stack}
+    p={6}
+    borderWidth={1}
+    rounded="lg"
+    bg={mode('white', 'gray.700')}
+  >
     <Skeleton isLoaded={isLoaded} h={6}>
       <Heading size="md" fontWeight="semibold">
         {title || '<title>'}
@@ -41,14 +47,11 @@ export const ContributionCard: React.FC<Props> = ({
         <Text
           fontSize="sm"
           fontWeight="medium"
-          color={useColorModeValue('gray.700', 'gray.300')}
+          color={mode('gray.700', 'gray.300')}
         >
           {author}
         </Text>
-        <Text
-          fontSize="sm"
-          color={useColorModeValue('blackAlpha.600', 'whiteAlpha.600')}
-        >
+        <Text fontSize="sm" color={mode('blackAlpha.600', 'whiteAlpha.600')}>
           tracked {formatDistanceFromNow(createdAt)}
         </Text>
       </HStack>
@@ -60,10 +63,7 @@ export const ContributionCard: React.FC<Props> = ({
     </SkeletonText>
 
     <SkeletonText isLoaded={isLoaded} noOfLines={3} spacing={4}>
-      <Text
-        color={useColorModeValue('blackAlpha.700', 'whiteAlpha.700')}
-        fontSize="sm"
-      >
+      <Text color={mode('blackAlpha.700', 'whiteAlpha.700')} fontSize="sm">
         {description}
       </Text>
     </SkeletonText>

@@ -22,7 +22,7 @@ export default {
 
 export const Default: Story<Props> = (args) => <ContributionCard {...args} />;
 
-export const Skeleton = Default.bind({});
-Skeleton.args = {
+export const SkeletonCard = Default.bind({});
+SkeletonCard.args = {
   isLoaded: false,
 };

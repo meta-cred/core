@@ -5,6 +5,7 @@ import '@fontsource/inter/700.css';
 
 import { RouterContext } from 'next/dist/shared/lib/router-context';
 import { ChakraProvider, Flex } from '@chakra-ui/react';
+import { DarkModeSwitch } from '@meta-cred/ui';
 import * as NextImage from 'next/image';
 
 import { theme } from '../src/theme';
@@ -30,10 +31,17 @@ export const parameters = {
   },
 };
 
+const ColorModeToggleBar = () => (
+  <Flex justify="flex-end" mb={4}>
+    <DarkModeSwitch />
+  </Flex>
+);
+
 const withChakra = (StoryFn: Function) => {
   return (
     <ChakraProvider theme={theme}>
       <ThemedWalletProvider>
+        <ColorModeToggleBar />
         <StoryFn />
       </ThemedWalletProvider>
     </ChakraProvider>

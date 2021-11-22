@@ -59,10 +59,11 @@ const UserPage: React.FC<UserPageProps> = ({
     <PageLayout>
       <Container maxW="container.sm">
         <ProfileInfo
+          mb={5}
           mt={4}
           address={resolvedAddress || address}
           name={profile?.name || address || 'No Name'}
-          description={profile?.description || ''}
+          bio={profile?.description || ''}
           image={getSelfIdImageUrl(profile?.image as Maybe<ImageSources>)}
           background={getSelfIdImageUrl(
             profile?.background as Maybe<ImageSources>,

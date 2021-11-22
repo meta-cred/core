@@ -124,7 +124,6 @@ export const useOnboard = (
 
   useEffect(() => {
     if (isSSR) return;
-    console.log({ isSSR });
 
     const onboard = Onboard({
       ...options,
