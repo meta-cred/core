@@ -1,4 +1,4 @@
-import { Stack } from '@chakra-ui/react';
+import { Stack, StackProps } from '@chakra-ui/react';
 import { shortenIfAddress } from '@meta-cred/utils';
 import React from 'react';
 
@@ -6,12 +6,13 @@ import { dao as Dao, order_by } from '@/gqty';
 
 import { ContributionCard } from './ui/ContributionCard';
 
-export type DaoContributionListProps = {
+export type DaoContributionListProps = StackProps & {
   dao: Dao;
 };
 
 export const DaoContributionList: React.FC<DaoContributionListProps> = ({
   dao,
+  ...props
 }) => {
   const contributions = dao.contributions({
     limit: 10,
@@ -19,7 +20,7 @@ export const DaoContributionList: React.FC<DaoContributionListProps> = ({
   });
 
   return (
-    <Stack my={8} w="100%">
+    <Stack my={8} w="100%" {...props}>
       {contributions.map((c) => (
         <ContributionCard
           key={c.id || 0}

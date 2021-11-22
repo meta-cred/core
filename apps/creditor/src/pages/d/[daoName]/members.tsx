@@ -1,13 +1,14 @@
 import { useColorModeValue as mode } from '@chakra-ui/react';
 import { NavBarSpacer } from '@meta-cred/ui/NavBarSpacer';
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import { DaoMemberList } from '@/components/DaoMemberList';
 import { DaoPageHeader } from '@/components/ui/DaoPageHeader';
 import { useQuery } from '@/gqty';
 import { Container } from '@/layout/Container';
 import { PageLayout } from '@/layout/PageLayout';
+import { DaoRoute, getNavItemsForDao } from '@/utils/navHelpers';
 
 const DaoMembersPage: React.FC = () => {
   const router = useRouter();
@@ -20,17 +21,20 @@ const DaoMembersPage: React.FC = () => {
     where: { name: { _ilike: daoName } },
   });
 
+  const navItems = useMemo(
+    () => getNavItemsForDao(daoName, DaoRoute.MEMBERS),
+    [daoName],
+  );
+
   return (
-    <PageLayout bg={mode('gray.50', 'gray.800')}>
+    <PageLayout bg={mode('gray.50', 'gray.800')} navItems={navItems}>
       <NavBarSpacer />
       <DaoPageHeader
-        title={dao.name || ''}
-        daoName={daoName}
-        selectedTab={1}
+        pageName={DaoRoute.MEMBERS}
+        daoName={dao.name || ''}
         isLoaded={Boolean(dao.name)}
-        pageName="Members"
       />
-      <Container noNavPadding maxW="container.xl">
+      <Container noNavPadding>
         <DaoMemberList dao={dao} />
       </Container>
     </PageLayout>

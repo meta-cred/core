@@ -19,7 +19,7 @@ export const DaoMemberList: React.FC<DaoContributionListProps> = ({ dao }) => {
       columns={{ base: 1, md: 2, lg: 3 }}
       spacing="6"
       mt={8}
-      px={[0, 4]}
+      px={{ base: 0, md: 4 }}
       w="100%"
     >
       {members.map((member) => {

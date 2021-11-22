@@ -4,9 +4,7 @@ import React from 'react';
 import { DaoPageHeader, Props } from './DaoPageHeader';
 
 const args: Props = {
-  title: 'MetaFactory',
-  daoName: 'metafactory',
-  selectedTab: 0,
+  daoName: 'MetaFactory',
   isLoaded: true,
   pageName: 'Page Title',
 };

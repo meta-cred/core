@@ -10,7 +10,7 @@ export const Container: React.FC<Props> = ({ noNavPadding, ...props }) => (
     display="flex"
     flexDirection="column"
     alignItems="flex-start"
-    maxW="container.md"
+    maxW="container.lg"
     pt={noNavPadding ? 0 : 20}
     flexShrink={0}
     {...props}
