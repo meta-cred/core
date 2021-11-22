@@ -8,6 +8,7 @@ const args: Props = {
   daoName: 'metafactory',
   selectedTab: 0,
   isLoaded: true,
+  pageName: 'Page Title',
 };
 
 export default {

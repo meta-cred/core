@@ -28,6 +28,7 @@ const DaoMembersPage: React.FC = () => {
         daoName={daoName}
         selectedTab={1}
         isLoaded={Boolean(dao.name)}
+        pageName="Members"
       />
       <Container noNavPadding maxW="container.xl">
         <DaoMemberList dao={dao} />

@@ -5,9 +5,11 @@ import {
   Heading,
   HStack,
   Skeleton,
+  Stack,
   Tab,
   TabList,
   Tabs,
+  Text,
   useColorModeValue as mode,
 } from '@chakra-ui/react';
 import { Link } from '@meta-cred/ui/Link';
@@ -20,6 +22,7 @@ export type Props = {
   isLoaded: boolean;
   headerRight?: React.ReactNode;
   daoName: string;
+  pageName: string;
 };
 
 export const DaoPageHeader: React.FC<Props> = ({
@@ -29,6 +32,7 @@ export const DaoPageHeader: React.FC<Props> = ({
   isLoaded,
   headerRight,
   daoName,
+  pageName,
 }) => (
   <Tabs
     isFitted
@@ -37,7 +41,7 @@ export const DaoPageHeader: React.FC<Props> = ({
     index={selectedTab}
     onChange={handleTabsChange}
   >
-    <Box pt="8">
+    <Box pt="8" maxW="container.xl" mx="auto">
       <Flex
         direction={['column', 'row']}
         justify="space-between"
@@ -45,9 +49,12 @@ export const DaoPageHeader: React.FC<Props> = ({
         mb="10"
         px={[4, 8]}
       >
-        <Skeleton isLoaded={isLoaded}>
-          <Heading size="lg">{title}</Heading>
-        </Skeleton>
+        <Stack>
+          <Skeleton isLoaded={isLoaded}>
+            <Text color="gray.500">{title}</Text>
+          </Skeleton>
+          <Heading size="lg">{pageName}</Heading>
+        </Stack>
 
         <HStack spacing={{ base: '2', md: '4' }}>{headerRight}</HStack>
       </Flex>

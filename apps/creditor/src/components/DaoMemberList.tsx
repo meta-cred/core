@@ -15,7 +15,13 @@ export const DaoMemberList: React.FC<DaoContributionListProps> = ({ dao }) => {
   const cardBg = mode('white', 'gray.700');
 
   return (
-    <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing="6" mt={8} w="100%">
+    <SimpleGrid
+      columns={{ base: 1, md: 2, lg: 3 }}
+      spacing="6"
+      mt={8}
+      px={[0, 4]}
+      w="100%"
+    >
       {members.map((member) => {
         const { profile, accounts } = member.user;
         const ethAddress = member.user.eth_address;

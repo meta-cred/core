@@ -34,6 +34,7 @@ const DaoPage: React.FC = () => {
             New Contribution
           </Button>
         }
+        pageName="Contributions"
       />
       <Container noNavPadding>
         <DaoContributionList dao={dao} />
