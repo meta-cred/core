@@ -135,7 +135,7 @@ export const ConnectWalletButton: React.FC<Props> = ({
           <>
             <MenuItem
               icon={<FiUser />}
-              onClick={() => router.push(`/user/${ens?.name || address}`)}
+              onClick={() => router.push(`/user/${address}`)}
             >
               Profile
             </MenuItem>
