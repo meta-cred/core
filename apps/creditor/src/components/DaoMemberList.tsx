@@ -35,7 +35,7 @@ export const DaoMemberList: React.FC<DaoContributionListProps> = ({ dao }) => {
             px={4}
             spacing={3}
             bg={cardBg}
-            key={ethAddress}
+            key={ethAddress || 0}
             address={ethAddress}
             avatarProps={{
               ...getUserAvatarProps(member.user),
