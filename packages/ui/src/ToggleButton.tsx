@@ -9,11 +9,11 @@ import {
 } from '@chakra-ui/react';
 import * as React from 'react';
 
-export interface ToggleButtonProps extends ButtonProps {
+export type ToggleButtonProps = ButtonProps & {
   value: string;
   colorScheme?: string;
   radioProps?: UseRadioProps;
-}
+};
 
 export const ToggleButton: React.FC<ToggleButtonProps> = ({
   radioProps,
@@ -26,8 +26,15 @@ export const ToggleButton: React.FC<ToggleButtonProps> = ({
   const id = useId(undefined, 'toggle-button');
 
   const inputProps = getInputProps();
-  const checkboxProps = getCheckboxProps();
-  const labelProps = getLabelProps();
+  // Hack for fixing NextJS specific type error (Type 'ArrayInterpolation<undefined>' provides no match for the signature '(theme: any): Interpolation<undefined>'.)
+  const checkboxProps = getCheckboxProps() as Omit<
+    ReturnType<typeof getCheckboxProps>,
+    'css'
+  >;
+  const labelProps = getLabelProps() as Omit<
+    ReturnType<typeof getLabelProps>,
+    'css'
+  >;
 
   return (
     <Box as="label" cursor="pointer" flex={flex} {...labelProps}>

@@ -26,6 +26,12 @@ export const ToggleButtonGroup = <T extends string>({
     onChange,
   });
 
+  // Hack for fixing NextJS specific type error
+  const rootProps = getRootProps(rest) as Omit<
+    ReturnType<typeof getRootProps>,
+    'css'
+  >;
+
   const buttons = React.useMemo(
     () =>
       React.Children.toArray(children)
@@ -51,5 +57,5 @@ export const ToggleButtonGroup = <T extends string>({
         }),
     [children, getRadioProps, rest.isDisabled],
   );
-  return <ButtonGroup {...getRootProps(rest)}>{buttons}</ButtonGroup>;
+  return <ButtonGroup {...rootProps}>{buttons}</ButtonGroup>;
 };
