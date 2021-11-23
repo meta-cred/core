@@ -20,7 +20,9 @@
     "console": "hasura --project ./hasura console"
   },
   "resolutions": {
-    "@graphql-tools/utils": "^8.5.0"
+    "@graphql-tools/utils": "^8.5.0",
+    "@ceramicnetwork/3id-did-resolver": "1.4.9",
+    "dids": "2.4.0"
   },
   "devDependencies": {
     "@types/jest": "27.0.2",
@@ -48,7 +50,7 @@
     "ts-jest": "27.0.6",
     "tsconfig-paths-jest": "0.0.1",
     "tsup": "5.2.1",
-    "typescript": "4.4.4"
+    "typescript": "4.5.2"
   },
   "engines": {
     "node": ">=12",

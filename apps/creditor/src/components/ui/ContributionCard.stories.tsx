@@ -15,9 +15,6 @@ export default {
     category: 'Category',
     createdAt: new Date(2021, 9, 1),
   },
-  parameters: {
-    layout: 'centered',
-  },
 };
 
 export const Default: Story<Props> = (args) => <ContributionCard {...args} />;

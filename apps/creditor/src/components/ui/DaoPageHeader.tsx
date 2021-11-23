@@ -32,11 +32,7 @@ export const DaoPageHeader: React.FC<Props> = ({
     px={{ base: 4, md: 8 }}
     {...props}
   >
-    <Flex
-      direction={['column', 'row']}
-      justify="space-between"
-      align="flex-start"
-    >
+    <Flex justify="space-between" align="flex-start">
       <Stack>
         <Skeleton isLoaded={isLoaded}>
           <Text color="gray.500">{daoName}</Text>

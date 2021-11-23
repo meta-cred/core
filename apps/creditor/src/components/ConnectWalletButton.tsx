@@ -20,7 +20,7 @@ export type Props = {
 export const ConnectWalletButton: React.FC<Props> = ({
   connectLabel = 'Connect Wallet',
 }) => {
-  const { connectWallet, address, ens, wallet, provider, disconnectWallet } =
+  const { connectWallet, address, wallet, provider, disconnectWallet } =
     useWallet();
   const toast = useToast();
 
