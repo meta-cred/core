@@ -36,7 +36,7 @@
     "gqty": "2.1.0",
     "graphql-ez": "0.13.2",
     "near-api-js": "0.42.0",
-    "next": "12.0.4",
+    "next": "11.1.2",
     "next-connect": "0.11.0",
     "react": "17.0.2",
     "react-dom": "17.0.2",
@@ -47,7 +47,7 @@
   "license": "GPL-3.0",
   "devDependencies": {
     "@babel/core": "^7.16.0",
-    "@ceramicnetwork/3id-did-resolver": "1.4.2",
+    "@ceramicnetwork/3id-did-resolver": "1.4.9",
     "@datamodels/identity-accounts-crypto": "0.1.2",
     "@datamodels/identity-accounts-web": "0.1.2",
     "@datamodels/identity-profile-basic": "0.1.2",
