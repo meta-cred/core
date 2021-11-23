@@ -1,5 +1,7 @@
 import DAO from '../../pages/d/[daoName]';
 
+const DAO_NAME = 'metafactory';
+
 export default {
   title: 'Pages/DAO',
   component: DAO,
@@ -8,15 +10,15 @@ export default {
   },
 };
 
-export const DAOPage = () => <DAO />;
+export const DAOPage = () => <DAO daoName={DAO_NAME} />;
 
 DAOPage.story = {
   parameters: {
     nextRouter: {
       path: '/d/[daoName]',
-      asPath: '/profile/metafactory',
+      asPath: `/d/${DAO_NAME}`,
       query: {
-        id: 'metafactory',
+        daoName: DAO_NAME,
       },
     },
   },

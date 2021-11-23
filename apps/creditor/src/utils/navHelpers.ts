@@ -6,17 +6,20 @@ export enum DaoRoute {
 }
 
 export const getNavItemsForDao = (
-  daoName: string,
+  daoName: string | undefined,
   activeRoute: DaoRoute,
-): NavItemProps[] => [
-  {
-    label: DaoRoute.CONTRIBUTIONS,
-    href: `/d/${daoName}`,
-    active: activeRoute === DaoRoute.CONTRIBUTIONS,
-  },
-  {
-    label: DaoRoute.MEMBERS,
-    href: `/d/${daoName}/members`,
-    active: activeRoute === DaoRoute.MEMBERS,
-  },
-];
+): NavItemProps[] =>
+  daoName
+    ? [
+        {
+          label: DaoRoute.CONTRIBUTIONS,
+          href: `/d/${daoName}`,
+          active: activeRoute === DaoRoute.CONTRIBUTIONS,
+        },
+        {
+          label: DaoRoute.MEMBERS,
+          href: `/d/${daoName}/members`,
+          active: activeRoute === DaoRoute.MEMBERS,
+        },
+      ]
+    : [];

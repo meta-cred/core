@@ -142,7 +142,7 @@ export const getStaticProps: GetStaticProps<UserPageProps> = async ({
 export const getStaticPaths: GetStaticPaths = async () => {
   const paths = await resolved(() =>
     query.user().map((u) => ({
-      params: { address: u.eth_address },
+      params: { address: u.eth_address?.toLowerCase() },
     })),
   );
 

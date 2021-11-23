@@ -1,19 +1,30 @@
 import { useColorModeValue as mode } from '@chakra-ui/react';
+import { PropsWithServerCache } from '@gqty/react';
 import { NavBarSpacer } from '@meta-cred/ui/NavBarSpacer';
-import { useRouter } from 'next/router';
+import { GetStaticPaths, GetStaticProps } from 'next';
 import React, { useMemo } from 'react';
 
 import { DaoMemberList } from '@/components/DaoMemberList';
 import { DaoPageHeader } from '@/components/ui/DaoPageHeader';
-import { useQuery } from '@/gqty';
+import {
+  prepareReactRender,
+  query,
+  resolved,
+  useHydrateCache,
+  useQuery,
+} from '@/gqty';
 import { Container } from '@/layout/Container';
 import { PageLayout } from '@/layout/PageLayout';
 import { DaoRoute, getNavItemsForDao } from '@/utils/navHelpers';
 
-const DaoMembersPage: React.FC = () => {
-  const router = useRouter();
+type DaoPageProps = PropsWithServerCache<{ daoName: string | undefined }>;
 
-  const daoName = router.query.daoName as string;
+const DaoMembersPage: React.FC<DaoPageProps> = ({ daoName, cacheSnapshot }) => {
+  useHydrateCache({
+    cacheSnapshot,
+    shouldRefetch: true,
+  });
+
   const q = useQuery();
 
   const [dao] = q.dao({
@@ -40,5 +51,32 @@ const DaoMembersPage: React.FC = () => {
     </PageLayout>
   );
 };
+
+type QueryParams = { daoName: string | undefined };
+
+export const getStaticPaths: GetStaticPaths<QueryParams> = async () => {
+  const paths = await resolved(() =>
+    query.dao().map((d) => ({
+      params: { daoName: d.name?.toLowerCase() },
+    })),
+  );
+
+  return { paths, fallback: 'blocking' };
+};
+
+export const getStaticProps: GetStaticProps<DaoPageProps, QueryParams> =
+  async ({ params }) => {
+    const { cacheSnapshot } = await prepareReactRender(
+      <DaoMembersPage daoName={params?.daoName} />,
+    );
+
+    return {
+      props: {
+        cacheSnapshot,
+        daoName: params?.daoName,
+      },
+      revalidate: 5,
+    };
+  };
 
 export default DaoMembersPage;

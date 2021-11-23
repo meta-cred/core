@@ -1,12 +1,26 @@
 import { Stack } from '@chakra-ui/react';
+import { PropsWithServerCache } from '@gqty/react';
+import { GetStaticProps } from 'next';
 import React from 'react';
 
 import { DaoCard } from '@/components/DaoCard';
-import { order_by, useQuery } from '@/gqty';
+import {
+  order_by,
+  prepareReactRender,
+  useHydrateCache,
+  useQuery,
+} from '@/gqty';
 import { Container } from '@/layout/Container';
 import { PageLayout } from '@/layout/PageLayout';
 
-const Index: React.FC = () => {
+type HomePageProps = PropsWithServerCache;
+
+const HomePage: React.FC<HomePageProps> = ({ cacheSnapshot }) => {
+  useHydrateCache({
+    cacheSnapshot,
+    shouldRefetch: true,
+  });
+
   const query = useQuery();
 
   const daos = query.dao({
@@ -27,4 +41,15 @@ const Index: React.FC = () => {
   );
 };
 
-export default Index;
+export const getStaticProps: GetStaticProps<HomePageProps> = async () => {
+  const { cacheSnapshot } = await prepareReactRender(<HomePage />);
+
+  return {
+    props: {
+      cacheSnapshot,
+    },
+    revalidate: 5,
+  };
+};
+
+export default HomePage;
