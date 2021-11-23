@@ -1,5 +1,4 @@
 import { Button, MenuItem, useToast } from '@chakra-ui/react';
-import type { ImageSources } from '@datamodels/identity-profile-basic';
 import { AccountMenu } from '@meta-cred/ui/AccountMenu';
 import { useAuthStore, useWallet } from '@meta-cred/usewallet';
 import { addressToCaip10String, getErrorMessage } from '@meta-cred/utils';

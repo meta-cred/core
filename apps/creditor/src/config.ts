@@ -1,5 +1,5 @@
-import { CeramicNetwork } from '@self.id/core/src/types';
-import { ConnectNetwork } from '@self.id/web/src/client';
+import type { CeramicNetwork } from '@self.id/core/src/types';
+import type { ConnectNetwork } from '@self.id/web/src/client';
 
 interface IConfig {
   appUrl: string;

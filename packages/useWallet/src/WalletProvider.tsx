@@ -1,17 +1,17 @@
+import type { Web3Provider } from '@ethersproject/providers';
 import { CHAIN_NAMES, ChainId } from '@meta-cred/utils';
-import {
+import type {
   API,
   Ens,
   Initialization,
   Wallet,
 } from 'bnc-onboard/dist/src/interfaces';
-import { providers } from 'ethers';
 import React, { createContext, useMemo } from 'react';
 
 import { useOnboard } from './useOnboard';
 
 export type IWalletContext = {
-  provider: providers.Web3Provider | null;
+  provider: Web3Provider | null;
   connectWallet: () => Promise<void>;
   disconnectWallet: () => void;
   isConnecting: boolean;

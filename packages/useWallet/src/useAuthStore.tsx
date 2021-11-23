@@ -1,12 +1,12 @@
-import { providers } from 'ethers';
+import type { Web3Provider } from '@ethersproject/providers';
 import create from 'zustand';
 
 import { authenticateWallet, clearToken, getExistingAuth } from './authToken';
 
 export type Web3Auth = {
   logout: () => void;
-  login: (provider: providers.Web3Provider) => Promise<void>;
-  checkAuth: (provider: providers.Web3Provider) => Promise<void>;
+  login: (provider: Web3Provider) => Promise<void>;
+  checkAuth: (provider: Web3Provider) => Promise<void>;
   authToken: string | null;
   isLoggingIn: boolean;
   didRehydrate: boolean;
@@ -16,11 +16,11 @@ export const useAuthStore = create<Web3Auth>((set) => ({
   authToken: null,
   isLoggingIn: false,
   didRehydrate: false,
-  checkAuth: async (provider: providers.Web3Provider) => {
+  checkAuth: async (provider: Web3Provider) => {
     const authToken = await getExistingAuth(provider);
     set({ authToken, didRehydrate: true });
   },
-  login: async (provider: providers.Web3Provider) => {
+  login: async (provider: Web3Provider) => {
     set({ isLoggingIn: true });
     try {
       let authToken = await getExistingAuth(provider);

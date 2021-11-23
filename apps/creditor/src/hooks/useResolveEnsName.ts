@@ -1,5 +1,4 @@
-import { resolveIfEnsName } from '@meta-cred/utils';
-import { utils } from 'ethers';
+import { isAddress, resolveIfEnsName } from '@meta-cred/utils';
 import { useQuery } from 'react-query';
 
 import { defaultMainnetProvider } from '@/utils/defaultProvider';
@@ -10,6 +9,6 @@ export const useResolveEnsName = (ensName: string) =>
     ['ensAddress', ensName],
     () => resolveIfEnsName(ensName, defaultMainnetProvider),
     {
-      initialData: utils.isAddress(ensName) ? ensName : undefined,
+      initialData: isAddress(ensName) ? ensName : undefined,
     },
   );

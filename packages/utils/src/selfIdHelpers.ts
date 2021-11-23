@@ -1,5 +1,5 @@
 import type { ImageSources } from '@datamodels/identity-profile-basic';
-import { utils } from 'ethers';
+import { isAddress } from '@ethersproject/address';
 
 import { ChainId } from './constants';
 import { Maybe } from './typeUtils';
@@ -12,7 +12,7 @@ export const addressToCaip10String = (
 export const formatCeramicId = (
   addressOrDID: string | null | undefined,
 ): string | null =>
-  addressOrDID && utils.isAddress(addressOrDID)
+  addressOrDID && isAddress(addressOrDID)
     ? addressToCaip10String(addressOrDID)
     : addressOrDID || null;
 

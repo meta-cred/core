@@ -1,8 +1,9 @@
 import { useWallet } from '@meta-cred/usewallet';
 import { useLocalStorage, usePrevious } from '@meta-cred/utils';
-import { EthereumAuthProvider, SelfID } from '@self.id/web';
+import type { SelfID } from '@self.id/web';
 import React, {
   createContext,
+  ReactElement,
   useCallback,
   useContext,
   useEffect,
@@ -28,11 +29,11 @@ export const SelfIdContext = createContext<ISelfIdContext>({
   disconnect: () => {},
 });
 
-type SelfIdProviderProps = {
-  children: React.ReactNode;
-};
-
 const STORAGE_KEY = '__selfID_connectedAddress__';
+
+export type SelfIdProviderProps = {
+  children: ReactElement;
+};
 
 export const SelfIdProvider: React.FC<SelfIdProviderProps> = ({ children }) => {
   const [mySelfId, setMySelfId] = useState<SelfID | null>(null);
@@ -52,6 +53,8 @@ export const SelfIdProvider: React.FC<SelfIdProviderProps> = ({ children }) => {
     }
     try {
       setIsConnecting(true);
+      const { EthereumAuthProvider, SelfID } = await import('@self.id/web');
+
       const self = await SelfID.authenticate({
         authProvider: new EthereumAuthProvider(provider.provider, address),
         ceramic: CONFIG.ceramicGateway,

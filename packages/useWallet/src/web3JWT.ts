@@ -1,4 +1,4 @@
-import { providers } from 'ethers';
+import type { BaseProvider, Web3Provider } from '@ethersproject/providers';
 import { Base64 } from 'js-base64';
 import { nanoid } from 'nanoid';
 
@@ -17,9 +17,7 @@ type Claim = {
 const MESSAGE =
   'Please sign this message with your wallet to authenticate.\n\n';
 
-export async function createToken(
-  provider: providers.Web3Provider,
-): Promise<string> {
+export async function createToken(provider: Web3Provider): Promise<string> {
   const signer = provider.getSigner();
   const address = await signer.getAddress();
 
@@ -42,7 +40,7 @@ export async function createToken(
 
 export async function verifyToken(
   token: string,
-  provider: providers.JsonRpcProvider,
+  provider: BaseProvider,
 ): Promise<Claim | null> {
   try {
     const rawToken = Base64.decode(token);

@@ -1,5 +1,5 @@
+import type { Web3Provider } from '@ethersproject/providers';
 import { storage } from '@meta-cred/utils';
-import { providers } from 'ethers';
 
 import * as did from './web3JWT';
 
@@ -12,7 +12,7 @@ export const setTokenInStore = (token: string): void =>
 export const clearToken = (): void => storage.remove(STORAGE_KEY);
 
 export async function getExistingAuth(
-  ethersProvider: providers.Web3Provider,
+  ethersProvider: Web3Provider,
 ): Promise<string | null> {
   const token = getTokenFromStore();
   if (!token) return null;
@@ -31,7 +31,7 @@ export async function getExistingAuth(
 }
 
 export async function authenticateWallet(
-  ethersProvider: providers.Web3Provider,
+  ethersProvider: Web3Provider,
 ): Promise<string> {
   const token = await did.createToken(ethersProvider);
   setTokenInStore(token);

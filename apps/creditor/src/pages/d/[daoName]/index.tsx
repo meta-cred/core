@@ -7,7 +7,7 @@ import { PropsWithServerCache } from '@gqty/react';
 import { NavBarSpacer } from '@meta-cred/ui/NavBarSpacer';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import React, { useMemo } from 'react';
-import { HiPlus } from 'react-icons/hi';
+import { FiPlus } from 'react-icons/fi';
 
 import { DaoContributionList } from '@/components/DaoContributionList';
 import { DaoPageHeader } from '@/components/ui/DaoPageHeader';
@@ -52,7 +52,7 @@ const DaoPage: React.FC<DaoPageProps> = ({ daoName, cacheSnapshot }) => {
         daoName={dao.name || ''}
         isLoaded={Boolean(dao.name)}
         headerRight={
-          <Button colorScheme="green" leftIcon={<HiPlus />} size="sm">
+          <Button colorScheme="green" leftIcon={<FiPlus />} size="sm">
             {buttonTitle}
           </Button>
         }
