@@ -11,7 +11,7 @@ export const formatDistanceFromNow = (
 
   const diff = Math.abs(differenceInDays(d, now));
 
-  if (diff >= 30) return `on ${format(d, 'MMM d, y')}`;
+  if (diff >= 14) return `on ${format(d, 'MMM d, y')}`;
 
   return formatDistanceStrict(d, now, { addSuffix: true });
 };
