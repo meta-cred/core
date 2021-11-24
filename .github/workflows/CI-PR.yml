@@ -46,6 +46,7 @@ jobs:
   build:
     name: Web Build
     runs-on: ubuntu-latest
+    if: ${{ false }}
 
     steps:
       - name: Cancel Previous Runs

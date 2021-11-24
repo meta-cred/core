@@ -15,10 +15,12 @@
     "test": "jest"
   },
   "peerDependencies": {
-    "ethers": ">=5.4",
     "react": ">=17"
   },
   "dependencies": {
+    "@ethersproject/address": "5.5.0",
+    "@ethersproject/providers": "5.5.0",
+    "@ethersproject/units": "5.5.0",
     "date-fns": "2.25.0",
     "dids": "2.4.0"
   },

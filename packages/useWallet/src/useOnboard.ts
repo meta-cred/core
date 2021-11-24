@@ -1,11 +1,10 @@
-import Onboard from 'bnc-onboard';
-import {
+import { Web3Provider } from '@ethersproject/providers';
+import type {
   API,
   Ens,
   Initialization,
   Wallet,
 } from 'bnc-onboard/dist/src/interfaces';
-import { ethers, providers } from 'ethers';
 import { useCallback, useEffect, useReducer } from 'react';
 
 const SELECTED_WALLET_STORAGE_KEY = '__onboardSelectedWallet__';
@@ -19,14 +18,14 @@ type OnboardState = {
   address: string | null;
   balance: string;
   ens: Ens;
-  provider: providers.Web3Provider | null;
+  provider: Web3Provider | null;
 };
 
 type OnboardAction =
   | {
       type: 'wallet_connected';
       wallet: Wallet;
-      provider: providers.Web3Provider;
+      provider: Web3Provider;
     }
   | { type: 'set_is_connecting'; isConnecting: boolean }
   | { type: 'set_onboard'; onboard: API }
@@ -124,81 +123,82 @@ export const useOnboard = (
 
   useEffect(() => {
     if (isSSR) return;
+    (async () => {
+      const Onboard = (await import('bnc-onboard')).default;
+      const onboard = Onboard({
+        ...options,
+        networkId: options?.networkId || 1,
+        walletCheck: [
+          { checkName: 'derivationPath' },
+          { checkName: 'accounts' },
+          { checkName: 'connect' },
+          { checkName: 'network' },
+        ],
+        subscriptions: {
+          ...options?.subscriptions,
+          wallet: (selectedWallet) => {
+            options?.subscriptions?.wallet?.(selectedWallet);
 
-    const onboard = Onboard({
-      ...options,
-      networkId: options?.networkId || 1,
-      walletCheck: [
-        { checkName: 'derivationPath' },
-        { checkName: 'accounts' },
-        { checkName: 'connect' },
-        { checkName: 'network' },
-      ],
-      subscriptions: {
-        ...options?.subscriptions,
-        wallet: (selectedWallet) => {
-          options?.subscriptions?.wallet?.(selectedWallet);
+            if (selectedWallet.provider && selectedWallet.name) {
+              const ethersProvider = new Web3Provider(selectedWallet.provider);
 
-          if (selectedWallet.provider && selectedWallet.name) {
-            const ethersProvider = new ethers.providers.Web3Provider(
-              selectedWallet.provider,
-            );
-
-            window.localStorage.setItem(
-              SELECTED_WALLET_STORAGE_KEY,
-              selectedWallet.name,
-            );
-            dispatch({
-              type: 'wallet_connected',
-              wallet: selectedWallet,
-              provider: ethersProvider,
-            });
-          }
-        },
-        address: (newAddress) => {
-          options?.subscriptions?.address?.(newAddress);
-          if (newAddress) {
+              window.localStorage.setItem(
+                SELECTED_WALLET_STORAGE_KEY,
+                selectedWallet.name,
+              );
+              dispatch({
+                type: 'wallet_connected',
+                wallet: selectedWallet,
+                provider: ethersProvider,
+              });
+            }
+          },
+          address: (newAddress) => {
+            options?.subscriptions?.address?.(newAddress);
+            if (newAddress) {
+              dispatch({
+                type: 'update_fields',
+                payload: {
+                  address: newAddress,
+                },
+              });
+            }
+          },
+          balance: (newBalance) => {
+            options?.subscriptions?.balance?.(newBalance);
+            if (state.address) {
+              dispatch({
+                type: 'update_fields',
+                payload: {
+                  balance: newBalance,
+                },
+              });
+            }
+          },
+          ens: (newEns) => {
+            options?.subscriptions?.ens?.(newEns);
             dispatch({
               type: 'update_fields',
               payload: {
-                address: newAddress,
+                ens: newEns,
               },
             });
-          }
-        },
-        balance: (newBalance) => {
-          options?.subscriptions?.balance?.(newBalance);
-          if (state.address) {
+          },
+          network: (networkId) => {
+            options?.subscriptions?.network?.(networkId);
             dispatch({
               type: 'update_fields',
               payload: {
-                balance: newBalance,
+                connectedNetworkId: networkId,
               },
             });
-          }
+          },
         },
-        ens: (newEns) => {
-          options?.subscriptions?.ens?.(newEns);
-          dispatch({
-            type: 'update_fields',
-            payload: {
-              ens: newEns,
-            },
-          });
-        },
-        network: (networkId) => {
-          options?.subscriptions?.network?.(networkId);
-          dispatch({
-            type: 'update_fields',
-            payload: {
-              connectedNetworkId: networkId,
-            },
-          });
-        },
-      },
-    });
+      });
 
-    dispatch({ type: 'set_onboard', onboard });
+      dispatch({ type: 'set_onboard', onboard });
+    })();
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSSR]);
 

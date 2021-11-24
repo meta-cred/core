@@ -5,17 +5,21 @@ import '@fontsource/inter/700.css';
 
 import { ChakraProvider } from '@chakra-ui/react';
 import { AppProps } from 'next/app';
+import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import React from 'react';
 import { Hydrate, QueryClient, QueryClientProvider } from 'react-query';
 
 import { SEO } from '@/components/SEO';
 import { SEO_TITLE } from '@/constants';
-import { SelfIdProvider } from '@/providers/SelfIdProvider';
+import { SelfIdProviderProps } from '@/providers/SelfIdProvider';
 import { ThemedWalletProvider } from '@/providers/ThemedWalletProvider';
 import { theme } from '@/theme';
 
-// const queryClient = new QueryClient();
+const SelfIdProvider = dynamic<SelfIdProviderProps>(
+  () => import('@/providers/SelfIdProvider').then((mod) => mod.SelfIdProvider),
+  { ssr: false },
+);
 
 const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => {
   const [queryClient] = React.useState(() => new QueryClient());

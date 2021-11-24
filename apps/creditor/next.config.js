@@ -1,4 +1,6 @@
-module.exports = {
+const shouldAnalyzeBundles = !!process.env.ANALYZE;
+
+let nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
@@ -7,3 +9,12 @@ module.exports = {
     esmExternals: true,
   },
 };
+
+if (shouldAnalyzeBundles) {
+  const withNextBundleAnalyzer = require('@next/bundle-analyzer')({
+    enabled: true,
+  });
+  nextConfig = withNextBundleAnalyzer(nextConfig);
+}
+
+module.exports = nextConfig;

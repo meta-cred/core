@@ -1,18 +1,15 @@
 import { verifyToken } from '@meta-cred/usewallet';
 import { addressToCaip10String } from '@meta-cred/utils';
-import { ethers } from 'ethers';
 import { NextApiRequest, NextApiResponse } from 'next';
 import nc from 'next-connect';
 
-import { CONFIG } from '@/config';
 import { mutation, query, resolved } from '@/gqty';
+import { defaultMainnetProvider } from '@/utils/defaultProvider';
 import { getSelfIdCore } from '@/utils/selfid';
 
 const unauthorizedVariables = {
   'X-Hasura-Role': 'anonymous',
 };
-
-const ethersProvider = new ethers.providers.InfuraProvider(1, CONFIG.infuraId);
 
 function getHeaderToken(req: NextApiRequest): string | null {
   const authHeader = req.headers.authorization;
@@ -81,7 +78,7 @@ handler.get(async (req, res) => {
     return;
   }
 
-  const claim = await verifyToken(token, ethersProvider);
+  const claim = await verifyToken(token, defaultMainnetProvider);
   if (!claim) {
     res.status(401).send('Invalid Auth Token');
     return;

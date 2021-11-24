@@ -2,10 +2,18 @@ import { BackgroundProps, Flex, Heading } from '@chakra-ui/react';
 import { Link } from '@meta-cred/ui/Link';
 import { NavBar } from '@meta-cred/ui/NavBar';
 import { NavItemProps } from '@meta-cred/ui/NavItem';
-import { useRouter } from 'next/router';
+import dynamic from 'next/dynamic';
 import React from 'react';
 
-import { ConnectWalletButton } from '@/components/ConnectWalletButton';
+import { Props as ConnectWalletButtonProps } from '@/components/ConnectWalletButton';
+
+const ConnectWalletButton = dynamic<ConnectWalletButtonProps>(
+  () =>
+    import('@/components/ConnectWalletButton').then(
+      (mod) => mod.ConnectWalletButton,
+    ),
+  { ssr: false },
+);
 
 type PageLayoutProps = {
   bg?: BackgroundProps['bg'];
