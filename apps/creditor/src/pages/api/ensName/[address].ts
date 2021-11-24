@@ -3,7 +3,7 @@ import { NextApiHandler } from 'next';
 
 import { defaultMainnetProvider } from '@/utils/defaultProvider';
 
-const handler: NextApiHandler<string> = async (req, res) => {
+const handler: NextApiHandler<string | null> = async (req, res) => {
   const address = req.query.address as string;
 
   try {
@@ -12,12 +12,8 @@ const handler: NextApiHandler<string> = async (req, res) => {
       defaultMainnetProvider,
     );
     res.setHeader('Cache-Control', 's-maxage=30, stale-while-revalidate');
-    if (resolvedName) {
-      res.status(200).send(resolvedName);
-      return;
-    }
-
-    res.status(404).end();
+    res.status(200).send(resolvedName);
+    return;
   } catch (e) {
     res.status(500).end();
   }

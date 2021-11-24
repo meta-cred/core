@@ -80,7 +80,7 @@ export const {
     // Set this flag as "true" if your usage involves React Suspense
     // Keep in mind that you can overwrite it in a per-hook basis
     suspense: false,
-
+    refetchAfterHydrate: true,
     // Set this flag based on your needs
     staleWhileRevalidate: false,
     transactionFetchPolicy: 'cache-and-network',

@@ -20,7 +20,6 @@ export const ContributionRatingButtons: React.FC<Props> = () => {
       aria-label="Rate Contribution"
       maxW="lg"
       w="100%"
-      mt={4}
     >
       <ToggleButton value="common" colorScheme="gray">
         Common
