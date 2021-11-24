@@ -16,13 +16,13 @@ export type SelfIdResult = {
   profile: SelfIdProfileResult;
 };
 
-const getAccounts = async (did: string): Promise<Account[] | null> => {
+const getAccounts = async (did: string): Promise<Account[]> => {
   try {
     const accountsRes = await core.get<'alsoKnownAs'>('alsoKnownAs', did);
-    return accountsRes?.accounts || null;
+    return accountsRes?.accounts || [];
   } catch (e) {
     console.log(`Unable to fetch accounts from SelfID for did: ${did}`);
-    return null;
+    return [];
   }
 };
 

@@ -46,7 +46,6 @@ const UserPage: React.FC<UserPageProps> = ({
 
   useHydrateCache({
     cacheSnapshot,
-    shouldRefetch: true,
   });
 
   const profileQuery = useQuery();

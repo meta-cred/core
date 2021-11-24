@@ -18,7 +18,6 @@ type HomePageProps = PropsWithServerCache;
 const HomePage: React.FC<HomePageProps> = ({ cacheSnapshot }) => {
   useHydrateCache({
     cacheSnapshot,
-    shouldRefetch: true,
   });
 
   const query = useQuery();

@@ -8,12 +8,14 @@ export type Web3Auth = {
   login: (provider: Web3Provider) => Promise<void>;
   checkAuth: (provider: Web3Provider) => Promise<void>;
   authToken: string | null;
+  address: string | null;
   isLoggingIn: boolean;
   didRehydrate: boolean;
 };
 
 export const useAuthStore = create<Web3Auth>((set) => ({
   authToken: null,
+  address: null,
   isLoggingIn: false,
   didRehydrate: false,
   checkAuth: async (provider: Web3Provider) => {
@@ -27,7 +29,8 @@ export const useAuthStore = create<Web3Auth>((set) => ({
       if (!authToken) {
         authToken = await authenticateWallet(provider);
       }
-      set({ authToken, isLoggingIn: false });
+      const address = (await provider.getSigner().getAddress())?.toLowerCase();
+      set({ authToken, address, isLoggingIn: false });
     } catch (e) {
       set({ isLoggingIn: false });
       throw e;
@@ -35,6 +38,6 @@ export const useAuthStore = create<Web3Auth>((set) => ({
   },
   logout: () => {
     clearToken();
-    set({ authToken: null, isLoggingIn: false });
+    set({ authToken: null, address: null, isLoggingIn: false });
   },
 }));

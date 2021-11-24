@@ -3,6 +3,17 @@ import { withUseWalletStyles } from '@meta-cred/usewallet';
 
 export const theme = extendTheme(
   {
+    components: {
+      Avatar: {
+        baseStyle: {
+          excessLabel: {
+            borderWidth: 2,
+            borderColor: 'white',
+            marginStart: '0rem',
+          },
+        },
+      },
+    },
     colors: {
       black: '#16161D',
     },

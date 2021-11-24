@@ -22,7 +22,6 @@ type DaoPageProps = PropsWithServerCache<{ daoName: string | undefined }>;
 const DaoMembersPage: React.FC<DaoPageProps> = ({ daoName, cacheSnapshot }) => {
   useHydrateCache({
     cacheSnapshot,
-    shouldRefetch: true,
   });
 
   const q = useQuery();

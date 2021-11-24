@@ -92,7 +92,7 @@ const schema: EZSchema = {
       selfIdAccounts: async (
         root,
         { address }: { address: string },
-      ): Promise<Account[] | null> => {
+      ): Promise<Account[]> => {
         try {
           const { data } = await axios.get<SelfIdAccountsResult>(
             `${NEXTJS_API_BASE_URL}/api/selfId/${address}/accounts`,
@@ -104,11 +104,11 @@ const schema: EZSchema = {
               attestations: a.attestations?.map((att) => ({
                 didJwtVc: att['did-jwt-vc'],
               })),
-            })) || null
+            })) || []
           );
         } catch (e) {
           console.log(e);
-          return null;
+          return [];
         }
       },
     },

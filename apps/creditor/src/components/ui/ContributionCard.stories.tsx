@@ -1,25 +1,32 @@
 import type { Story } from '@storybook/react';
 import React from 'react';
 
+import { mockContribution } from '@/utils/mockData';
+
 import { ContributionCard, Props } from './ContributionCard';
+
+const args: Props = {
+  contribution: mockContribution,
+};
 
 export default {
   title: 'UI/ContributionCard',
   component: ContributionCard,
-  args: {
-    isLoaded: true,
-    author: 'METADREAMER',
-    title: 'Contribution Title',
-    description:
-      'This is the description for this mock contribution. Details the work that was done for this contribution.',
-    category: 'Category',
-    createdAt: new Date(2021, 9, 1),
+  args,
+};
+
+export const Default: Story<Props> = (props) => <ContributionCard {...props} />;
+
+export const Editable = Default.bind({});
+Editable.args = {
+  canEdit: true,
+  contribution: {
+    ...mockContribution,
+    title: 'This contribution title is a longer one to test',
   },
 };
 
-export const Default: Story<Props> = (args) => <ContributionCard {...args} />;
-
 export const SkeletonCard = Default.bind({});
 SkeletonCard.args = {
-  isLoaded: false,
+  contribution: undefined,
 };

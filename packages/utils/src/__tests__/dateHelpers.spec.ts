@@ -38,17 +38,17 @@ describe('dateHelpers', () => {
       expect(formatDistanceFromNow(before)).toBe(`2 hours ago`);
     });
 
-    it('should return how many days ago the given time is if less than 3 days ago', () => {
+    it('should return how many days ago the given time is if less than 14 days ago', () => {
       const before = Date.now();
 
-      advanceBy(hoursToMilliseconds(24) * 3 - 1);
-      expect(formatDistanceFromNow(before)).toBe(`3 days ago`);
+      advanceBy(hoursToMilliseconds(24) * 14 - 1);
+      expect(formatDistanceFromNow(before)).toBe(`14 days ago`);
     });
 
-    it('should return the date if the given time is more than 3 days ago', () => {
+    it('should return the date if the given time is more than 14 days ago', () => {
       const before = Date.now();
 
-      advanceBy(hoursToMilliseconds(24) * 3);
+      advanceBy(hoursToMilliseconds(24) * 14);
       expect(formatDistanceFromNow(before)).toBe(`on Jan 1, 2020`);
     });
   });

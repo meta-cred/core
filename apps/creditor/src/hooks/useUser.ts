@@ -20,6 +20,8 @@ export const useUser = ({ redirectTo, redirectIfFound }: UseUserOpts = {}) => {
     (query) => {
       const { user } = query.me()[0];
       user?.did;
+      user?.profile?.name;
+      user?.profile?.image;
       return user;
     },
     { skip: !authToken },
