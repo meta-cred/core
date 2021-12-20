@@ -1,7 +1,9 @@
-import { IdentityProposal } from 'sourcecred';
+import { IdentityProposal, IdentityType, sourcecred as sc } from 'sourcecred';
 
-import { getIdentityForEthAddress } from './addressUtils';
+import { getNodeAddressForEthAddress } from './addressUtils';
 import { Participant } from './types';
+
+const { utils } = sc.plugins.ethereum;
 
 export const createIdentityProposals = (
   participants: Participant[],
@@ -9,7 +11,16 @@ export const createIdentityProposals = (
   const result: IdentityProposal[] = [];
 
   for (const p of participants) {
-    result.push(getIdentityForEthAddress(p.eth_address));
+    const alias = {
+      description: utils.address.parseAddress(p.eth_address),
+      address: getNodeAddressForEthAddress(p.eth_address),
+    };
+    result.push({
+      pluginName: 'creditor',
+      name: p.name,
+      type: IdentityType.USER,
+      alias,
+    });
   }
 
   return result;
