@@ -84,6 +84,12 @@
 
     // Doesnt work in monorepo
     "@next/next/no-html-link-for-pages": "off",
+    "no-restricted-syntax": [
+      "error",
+      "ForInStatement",
+      "LabeledStatement",
+      "WithStatement"
+    ],
 
     "@typescript-eslint/ban-ts-comment": [
       "error",
