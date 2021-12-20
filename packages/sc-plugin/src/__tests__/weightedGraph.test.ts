@@ -54,9 +54,8 @@ describe('weightedGraph', () => {
   };
 
   it('should generate a weighted graph without errors', () => {
-    const { graph, weights } = createWeightedGraph([mockContribution]);
+    const weightedGraph = createWeightedGraph([mockContribution]);
 
-    expect(graph).toBeTruthy();
-    expect(weights).toBeTruthy();
+    expect(weightedGraph).toBeTruthy();
   });
 });

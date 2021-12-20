@@ -1,4 +1,4 @@
-import { SCGraph, sourcecred as sc, WeightsT } from 'sourcecred';
+import { sourcecred as sc, WeightedGraphJSON } from 'sourcecred';
 
 import { getNodeAddressForEthAddress } from './addressUtils';
 import {
@@ -11,12 +11,8 @@ import { Contribution, RATING_WEIGHTS } from './types';
 
 export const createWeightedGraph = (
   contributions: Contribution[],
-): {
-  graph: SCGraph;
-  weights: WeightsT;
-} => {
-  const graph = new sc.core.graph.Graph();
-  const weights = sc.core.weights.empty();
+): WeightedGraphJSON => {
+  const { graph, weights } = sc.core.weightedGraph.empty();
 
   for (const contribution of contributions) {
     const contributionTimestamp = +new Date(contribution.date);
@@ -121,5 +117,5 @@ export const createWeightedGraph = (
 
   // weights.nodeWeights.set(getNodeAddress(), 1)
 
-  return { graph, weights };
+  return sc.core.weightedGraph.toJSON({ graph, weights });
 };

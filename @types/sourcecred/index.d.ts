@@ -4,7 +4,6 @@ declare module 'sourcecred' {
   type Address = string;
   export type NodeAddressT = string;
   export type EdgeAddressT = string;
-  type GraphJSON = Record<string, any>;
 
   declare const sourcecred: {
     sourcecred: {
@@ -103,11 +102,11 @@ declare module 'sourcecred' {
           nodeToString: any;
         };
         weightedGraph: {
-          empty: any;
+          empty(): WeightedGraph;
           fromJSON: any;
           merge: any;
           overrideWeights: any;
-          toJSON: any;
+          toJSON(w: WeightedGraph): WeightedGraphJSON;
         };
         weights: {
           compareWeights: any;
@@ -813,6 +812,13 @@ declare module 'sourcecred' {
 
   type NodeWeight = number;
 
+  type CompatInfo = {
+    type: string;
+    version: string;
+  };
+
+  type Compatible<T> = [CompatInfo, T];
+
   interface EdgeWeight {
     backwards: number;
     forwards: number;
@@ -823,6 +829,7 @@ declare module 'sourcecred' {
     description: string;
     timestampMs: number;
   }
+
   export interface SCEdge {
     address: EdgeAddressT;
     src: NodeAddressT;
@@ -857,22 +864,59 @@ declare module 'sourcecred' {
 
   export class SCGraph {
     constructor();
+
     addNode(node: SCNode): this;
+
     removeNode(a: NodeAddressT): this;
+
     hasNode(a: NodeAddressT): boolean;
+
     node(a: NodeAddressT): SCNode | null | undefined;
+
     addEdge(edge: SCEdge): this;
+
     removeEdge(a: EdgeAddressT): this;
+
     hasEdge(a: EdgeAddressT): boolean;
+
     edge(a: EdgeAddressT): SCEdge | null | undefined;
+
     toJSON(): GraphJSON;
+
     static fromJSON(json: GraphJSON): SCGraph;
   }
+
+  type IndexedNodeJSON = {
+    index: number;
+    description: string;
+    timestampMs: number | null;
+  };
+  type IndexedEdgeJSON = {
+    address: string[];
+    srcIndex: number;
+    dstIndex: number;
+    timestampMs: number;
+  };
+  export type GraphJSON = Compatible<{
+    sortedNodeAddresses: string[];
+    nodes: IndexedNodeJSON[];
+    edges: IndexedEdgeJSON[];
+  }>;
 
   export interface WeightsT {
     nodeWeights: Map<NodeAddressT, NodeWeight>;
     edgeWeights: Map<EdgeAddressT, EdgeWeight>;
   }
+
+  export interface WeightedGraph {
+    graph: SCGraph;
+    weights: WeightsT;
+  }
+
+  export type WeightedGraphJSON = Compatible<{
+    graphJSON: GraphJSON;
+    weightsJSON: WeightsJSON;
+  }>;
 
   export enum IdentityType {
     USER = 'USER',
@@ -893,6 +937,7 @@ declare module 'sourcecred' {
 
   export class CredGrainView {
     constructor(graph: CredGraph, ledger: Ledger);
+
     participants: () => ParticipantCredGrain[];
 
     totalCredPerInterval: () => number[];
