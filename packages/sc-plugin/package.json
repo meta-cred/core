@@ -1,6 +1,6 @@
 {
   "name": "@meta-cred/sc-plugin",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "type": "module",
   "source": "src/index.ts",
   "main": "dist/index.cjs",

@@ -227,7 +227,7 @@ declare module 'sourcecred' {
       };
       plugins: {
         ConstructorPlugin: any;
-        coerceNameFromString: any;
+        coerceNameFromString(name: string): string;
         declarationParser: {
           fmap: any;
           parse: any;

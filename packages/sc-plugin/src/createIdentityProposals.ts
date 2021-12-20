@@ -17,8 +17,8 @@ export const createIdentityProposals = (
     };
     result.push({
       pluginName: 'creditor',
-      name: p.name,
-      type: IdentityType.USER,
+      name: sc.plugins.coerceNameFromString(p.name),
+      type: 'USER' as IdentityType,
       alias,
     });
   }
