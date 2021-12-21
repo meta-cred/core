@@ -8,6 +8,7 @@ import {
   NodeNames,
 } from './declaration';
 import { Contribution, RATING_WEIGHTS } from './types';
+import { getContributionNodeWeight } from './weightUtils';
 
 export const createWeightedGraph = (
   contributions: Contribution[],
@@ -27,14 +28,7 @@ export const createWeightedGraph = (
       timestampMs: contributionTimestamp,
     });
 
-    // Calculate and set weight of contribution based on votes
-    const totalVoteWeight = contribution.votes.reduce(
-      (total, v) => total + RATING_WEIGHTS[v.rating],
-      0,
-    );
-
-    const voteWeight =
-      (totalVoteWeight / contribution.votes.length + totalVoteWeight / 10) * 2;
+    const voteWeight = getContributionNodeWeight(contribution);
     weights.nodeWeights.set(contributionNodeAddress, voteWeight);
 
     // Add edge to author of the contribution

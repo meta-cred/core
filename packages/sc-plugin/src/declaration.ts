@@ -38,7 +38,7 @@ export const getDeclaration = (): PluginDeclaration => {
     name: 'Contribution',
     pluralName: 'Contributions',
     prefix: getNodeAddress(NodeNames.Contribution),
-    defaultWeight: 0,
+    defaultWeight: 1,
     description: 'A contribution',
   };
 
@@ -46,7 +46,7 @@ export const getDeclaration = (): PluginDeclaration => {
     name: 'Rating',
     pluralName: 'Ratings',
     prefix: getNodeAddress(NodeNames.Rating),
-    defaultWeight: 0,
+    defaultWeight: 1 / 8,
     description: 'A rating given to a contribution',
   };
 
