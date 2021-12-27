@@ -29,6 +29,7 @@
       "@meta-cred/usewallet": ["../useWallet/src/index"],
       "@meta-cred/ui/*": ["../ui/src/*"],
       "@meta-cred/ui": ["../ui/src"]
-    }
+    },
+    "typeRoots": ["./@types", "./node_modules/@types"]
   }
 }
