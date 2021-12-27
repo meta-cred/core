@@ -17,7 +17,10 @@ type Claim = {
 const MESSAGE =
   'Please sign this message with your wallet to authenticate.\n\n';
 
-export async function createToken(provider: Web3Provider): Promise<string> {
+export async function createToken(
+  provider: Web3Provider,
+  appName: string,
+): Promise<string> {
   const signer = provider.getSigner();
   const address = await signer.getAddress();
 
@@ -27,7 +30,7 @@ export async function createToken(provider: Web3Provider): Promise<string> {
     iat,
     exp: iat + tokenDuration,
     iss: address,
-    aud: 'meta-cred',
+    aud: appName,
     tid: nanoid(),
   };
 
@@ -41,6 +44,7 @@ export async function createToken(provider: Web3Provider): Promise<string> {
 export async function verifyToken(
   token: string,
   provider: BaseProvider,
+  appName: string,
 ): Promise<Claim | null> {
   try {
     const rawToken = Base64.decode(token);
@@ -52,6 +56,9 @@ export async function verifyToken(
     const valid = await verifySignature(address, rawClaim, proof, provider);
     if (!valid) {
       throw new Error('invalid signature');
+    }
+    if (claim.aud !== appName) {
+      throw new Error('token not issued by this app');
     }
     return claim;
   } catch (e) {

@@ -7,6 +7,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { FiUser } from 'react-icons/fi';
 
 import { ConnectCeramicButton } from '@/components/ConnectCeramicButton';
+import { CONFIG } from '@/config';
 import { useUser } from '@/hooks/useUser';
 import { useSelfId } from '@/providers/SelfIdProvider';
 import { getSelfIdCore } from '@/utils/selfid';
@@ -54,7 +55,7 @@ export const ConnectWalletButton: React.FC<Props> = ({
   useEffect(() => {
     if (!provider) return;
 
-    checkAuth(provider);
+    checkAuth(provider, CONFIG.appName);
   }, [checkAuth, provider, address]);
 
   const onClickAuthenticate = useCallback(async () => {
@@ -72,7 +73,7 @@ export const ConnectWalletButton: React.FC<Props> = ({
       }
 
       if (!authToken) {
-        await login(provider);
+        await login(provider, CONFIG.appName);
       }
     } catch (e) {
       toast({

@@ -13,12 +13,13 @@ export const clearToken = (): void => storage.remove(STORAGE_KEY);
 
 export async function getExistingAuth(
   ethersProvider: Web3Provider,
+  appName: string,
 ): Promise<string | null> {
   const token = getTokenFromStore();
   if (!token) return null;
 
   try {
-    const claim = await did.verifyToken(token, ethersProvider);
+    const claim = await did.verifyToken(token, ethersProvider, appName);
     const address = await ethersProvider.getSigner().getAddress();
 
     if (claim?.iss !== address) throw new Error('User changed');
@@ -32,8 +33,9 @@ export async function getExistingAuth(
 
 export async function authenticateWallet(
   ethersProvider: Web3Provider,
+  appName: string,
 ): Promise<string> {
-  const token = await did.createToken(ethersProvider);
+  const token = await did.createToken(ethersProvider, appName);
   setTokenInStore(token);
   return token;
 }
