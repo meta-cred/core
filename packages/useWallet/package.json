@@ -1,6 +1,6 @@
 {
   "name": "@meta-cred/usewallet",
-  "version": "0.1.18",
+  "version": "0.2.0",
   "type": "module",
   "source": "src/index.ts",
   "main": "dist/index.cjs",
