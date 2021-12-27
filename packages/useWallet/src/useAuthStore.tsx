@@ -5,8 +5,8 @@ import { authenticateWallet, clearToken, getExistingAuth } from './authToken';
 
 export type Web3Auth = {
   logout: () => void;
-  login: (provider: Web3Provider) => Promise<void>;
-  checkAuth: (provider: Web3Provider) => Promise<void>;
+  login: (provider: Web3Provider, appName: string) => Promise<void>;
+  checkAuth: (provider: Web3Provider, appName: string) => Promise<void>;
   authToken: string | null;
   address: string | null;
   isLoggingIn: boolean;
@@ -18,16 +18,16 @@ export const useAuthStore = create<Web3Auth>((set) => ({
   address: null,
   isLoggingIn: false,
   didRehydrate: false,
-  checkAuth: async (provider: Web3Provider) => {
-    const authToken = await getExistingAuth(provider);
+  checkAuth: async (provider: Web3Provider, appName: string) => {
+    const authToken = await getExistingAuth(provider, appName);
     set({ authToken, didRehydrate: true });
   },
-  login: async (provider: Web3Provider) => {
+  login: async (provider: Web3Provider, appName: string) => {
     set({ isLoggingIn: true });
     try {
-      let authToken = await getExistingAuth(provider);
+      let authToken = await getExistingAuth(provider, appName);
       if (!authToken) {
-        authToken = await authenticateWallet(provider);
+        authToken = await authenticateWallet(provider, appName);
       }
       const address = (await provider.getSigner().getAddress())?.toLowerCase();
       set({ authToken, address, isLoggingIn: false });

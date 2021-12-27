@@ -3,6 +3,7 @@ import { addressToCaip10String } from '@meta-cred/utils';
 import { NextApiRequest, NextApiResponse } from 'next';
 import nc from 'next-connect';
 
+import { CONFIG } from '@/config';
 import { mutation, query, resolved } from '@/gqty';
 import { defaultMainnetProvider } from '@/utils/defaultProvider';
 import { getSelfIdCore } from '@/utils/selfid';
@@ -78,7 +79,11 @@ handler.get(async (req, res) => {
     return;
   }
 
-  const claim = await verifyToken(token, defaultMainnetProvider);
+  const claim = await verifyToken(
+    token,
+    defaultMainnetProvider,
+    CONFIG.appName,
+  );
   if (!claim) {
     res.status(401).send('Invalid Auth Token');
     return;

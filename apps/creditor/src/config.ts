@@ -2,6 +2,7 @@ import type { CeramicNetwork } from '@self.id/core/src/types';
 import type { ConnectNetwork } from '@self.id/web/src/client';
 
 interface IConfig {
+  appName: string;
   appUrl: string;
   chainId: number;
   onboardDappId: string;
@@ -29,6 +30,7 @@ function parseEnv<T extends string | number>(
 }
 
 export const CONFIG: IConfig = {
+  appName: 'meta-cred',
   appUrl: parseEnv(process.env.NEXT_PUBLIC_VERCEL_URL, 'localhost:3000'),
   chainId: parseEnv(process.env.NEXT_PUBLIC_CHAIN_ID, 1),
   onboardDappId: parseEnv(process.env.NEXT_PUBLIC_ONBOARD_DAPP_ID, ''),
